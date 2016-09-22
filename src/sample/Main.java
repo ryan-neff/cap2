@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import sample.models.Dbconfig;
+import sample.models.DbConnectionManager;
 
 public class Main extends Application {
 
@@ -19,8 +19,8 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        Dbconfig db = new Dbconfig();
-        db.connect();
+        DbConnectionManager conn = new DbConnectionManager();
+        conn.connect();
         launch(args);
     }
 }
