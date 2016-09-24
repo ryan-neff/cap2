@@ -10,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -29,19 +28,21 @@ public class NoteCardModel {
     public Stack getSingleStack(String stackName, String userId) {
         try {
          final String query = "SELECT id, name, course, subject, date_created, date_modified " +
-                              "FROM stacks, WHERE stackName = "+ stackName +
-                              " AND user_id = "  + userId +
-                              " ORDER BY date_created DESC";
+                              "FROM stacks WHERE name = '"+ stackName +
+                              "' AND user_id = '"  + userId +
+                              "' ORDER BY date_created DESC";
 
          final Statement stmt = connection.createStatement();
          final ResultSet resultSet = stmt.executeQuery(query);
          final Stack stack = new Stack();
-         stack.setName(resultSet.getString("name"));
-         stack.setCourse(resultSet.getString("course"));
-         stack.setSubject(resultSet.getString("subject"));
-         stack.setDateCreated(resultSet.getString("date_created"));
-         stack.setDateModified(resultSet.getString("date_modified"));
-         stack.setNoteCards(getNoteCardsForStack(resultSet.getString("id"), userId));
+         if(resultSet.next()) {
+             stack.setName(resultSet.getString("name"));
+             stack.setCourse(resultSet.getString("course"));
+             stack.setSubject(resultSet.getString("subject"));
+             stack.setDateCreated(resultSet.getString("date_created"));
+             stack.setDateModified(resultSet.getString("date_modified"));
+             stack.setNoteCards(getNoteCardsForStack(resultSet.getString("id"), userId));
+         }
          return stack;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -52,9 +53,9 @@ public class NoteCardModel {
     public Map<String, Stack> getStacksByCourse(String course, String userId) {
         try {
         final String query = "SELECT id, name, course, subject, date_created, date_modified " +
-                             "FROM course, WHERE course = "+ course +
-                             " AND user_id = "  + userId +
-                             " ORDER BY date_created DESC";
+                             "FROM stacks WHERE course = '"+ course +
+                             "' AND user_id = '"  + userId +
+                             "' ORDER BY date_created DESC";
 
         final Statement stmt = connection.createStatement();
         final ResultSet result = stmt.executeQuery(query);
@@ -82,10 +83,10 @@ public class NoteCardModel {
     public Map<String,Stack> getStacksBySubject(String course, String subject, String userId) {
         try {
             final String query = "SELECT id, name, course, subject, date_created, date_modified " +
-                                "FROM course, WHERE course = "+ course +
-                                " AND subject = " + subject +
-                                " AND user_id = " + userId +
-                                " ORDER BY date_created DESC";
+                                "FROM stacks, WHERE course = '"+ course +
+                                "' AND subject = '" + subject +
+                                "' AND user_id = '" + userId +
+                                "' ORDER BY date_created DESC";
 
             final Statement stmt = connection.createStatement();
             final ResultSet result = stmt.executeQuery(query);
