@@ -9,7 +9,7 @@ import java.sql.SQLException;
  */
 public class DbConnectionManager {
 
-    public Connection connect() {
+    public static Connection connect() {
         try{
             String url = "jdbc:mysql://capstone.cno7c7zt0gap.us-west-2.rds.amazonaws.com:3306/";
             String userName = "capstone";
