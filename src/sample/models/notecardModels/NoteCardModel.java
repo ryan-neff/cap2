@@ -229,7 +229,7 @@ public class NoteCardModel {
             stmt.setString(1, updatedStack.getName());
             stmt.setString(2, updatedStack.getDateModified());
             stmt.setString(3, updatedStack.getCourse());
-            stmt.setString(4, updatedStack.getSubject();
+            stmt.setString(4, updatedStack.getSubject());
             stmt.setString(5, updatedStack.getId());
             stmt.setString(6, userId);
 
@@ -288,6 +288,6 @@ public class NoteCardModel {
         }
         return false;
     }
-    }
-
 }
+
+
