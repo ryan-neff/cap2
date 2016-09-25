@@ -141,7 +141,7 @@ public class NoteCardModel {
 
     public boolean createNoteCard(final NoteCard noteCard, final String userId) {
         try{
-            final String query = "INSERT INTO notecard (id, front, back, stack_id, stack_index, user_id " +
+            final String query = "INSERT INTO notecard (id, front, back, stack_id, stack_index, user_id) " +
                                  "VALUES (?, ?, ?, ?, ?, ?)";
 
             final PreparedStatement stmt = connection.prepareStatement(query);
@@ -167,7 +167,7 @@ public class NoteCardModel {
 
     public boolean createStack(final Stack stack, final String userId) {
         try {
-            final String query = "INSERT INTO stacks (id, name, date_modified, date_created, course, subject, user_id " +
+            final String query = "INSERT INTO stacks (id, name, date_modified, date_created, course, subject, user_id) " +
                                  "VALUES (?, ?, ?, ?, ?, ?, ?)";
             final PreparedStatement stmt = connection.prepareStatement(query);
 
@@ -220,7 +220,7 @@ public class NoteCardModel {
 
     public boolean updateStack(Stack updatedStack, String userId) {
         try {
-            final String query = "INSERT UPDATE stacks " +
+            final String query = "UPDATE stacks " +
                                  "SET name=?, date_modified=?, course=?, subject=? " +
                                  "WHERE id=? " +
                                  "AND user_id=? ";
