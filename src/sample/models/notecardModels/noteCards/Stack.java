@@ -6,6 +6,7 @@ import java.util.List;
  * @author rn046359
  */
 public class Stack {
+    private String id;
     private String name;
     private String course;
     private String subject;
@@ -63,6 +64,14 @@ public class Stack {
         this.noteCards = noteCards;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(final String id) {
+        this.id = id;
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
@@ -70,31 +79,33 @@ public class Stack {
 
         final Stack stack = (Stack) o;
 
+        if (!getId().equals(stack.getId())) return false;
         if (!getName().equals(stack.getName())) return false;
         if (!getCourse().equals(stack.getCourse())) return false;
-        if (!getSubject().equals(stack.getSubject())) return false;
+        if (getSubject() != null ? !getSubject().equals(stack.getSubject()) : stack.getSubject() != null) return false;
         if (!getDateCreated().equals(stack.getDateCreated())) return false;
-        if (getDateModified() != null ? !getDateModified().equals(stack.getDateModified()) : stack.getDateModified() != null)
-            return false;
-        return getNoteCards() != null ? getNoteCards().equals(stack.getNoteCards()) : stack.getNoteCards() == null;
+        if (!getDateModified().equals(stack.getDateModified())) return false;
+        return getNoteCards().equals(stack.getNoteCards());
 
     }
 
     @Override
     public int hashCode() {
-        int result = getName().hashCode();
+        int result = getId().hashCode();
+        result = 31 * result + getName().hashCode();
         result = 31 * result + getCourse().hashCode();
-        result = 31 * result + getSubject().hashCode();
+        result = 31 * result + (getSubject() != null ? getSubject().hashCode() : 0);
         result = 31 * result + getDateCreated().hashCode();
-        result = 31 * result + (getDateModified() != null ? getDateModified().hashCode() : 0);
-        result = 31 * result + (getNoteCards() != null ? getNoteCards().hashCode() : 0);
+        result = 31 * result + getDateModified().hashCode();
+        result = 31 * result + getNoteCards().hashCode();
         return result;
     }
 
     @Override
     public String toString() {
         return "Stack{" +
-                "name='" + name + '\'' +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
                 ", course='" + course + '\'' +
                 ", subject='" + subject + '\'' +
                 ", dateCreated='" + dateCreated + '\'' +

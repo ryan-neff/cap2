@@ -7,6 +7,9 @@ public class NoteCard {
     private String front;
     private String back;
     private Integer stackIndex;
+    private String id;
+    public String stackId;
+
 
 
     public String getFront() {
@@ -33,6 +36,22 @@ public class NoteCard {
         this.stackIndex = stackIndex;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(final String id) {
+        this.id = id;
+    }
+
+    public String getStackId() {
+        return stackId;
+    }
+
+    public void setStackId(final String stackId) {
+        this.stackId = stackId;
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
@@ -42,7 +61,9 @@ public class NoteCard {
 
         if (!getFront().equals(noteCard.getFront())) return false;
         if (!getBack().equals(noteCard.getBack())) return false;
-        return getStackIndex().equals(noteCard.getStackIndex());
+        if (!getStackIndex().equals(noteCard.getStackIndex())) return false;
+        if (!getId().equals(noteCard.getId())) return false;
+        return getStackId().equals(noteCard.getStackId());
 
     }
 
@@ -51,6 +72,8 @@ public class NoteCard {
         int result = getFront().hashCode();
         result = 31 * result + getBack().hashCode();
         result = 31 * result + getStackIndex().hashCode();
+        result = 31 * result + getId().hashCode();
+        result = 31 * result + getStackId().hashCode();
         return result;
     }
 
@@ -60,6 +83,8 @@ public class NoteCard {
                 "front='" + front + '\'' +
                 ", back='" + back + '\'' +
                 ", stackIndex=" + stackIndex +
+                ", id='" + id + '\'' +
+                ", stackId='" + stackId + '\'' +
                 '}';
     }
 }
