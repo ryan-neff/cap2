@@ -289,5 +289,3 @@ public class NoteCardModel {
         return false;
     }
 }
-
-
