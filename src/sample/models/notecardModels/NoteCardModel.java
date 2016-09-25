@@ -16,6 +16,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
+ * Model for the NoteCards and NoteCard Stacks
  * @author rn046359
  */
 public class NoteCardModel {
@@ -25,6 +26,17 @@ public class NoteCardModel {
         connection = DbConnectionManager.connect();
     }
 
+    /**
+     * Get a single stack from the DB
+     *
+     * @param stackName
+     *          the stack name
+     *
+     * @param userId
+     *          the user id
+     *
+     * @return the stack
+     */
     public Stack getSingleStack(final String stackName, final String userId) {
         try {
          final String query = "SELECT id, name, course, subject, date_created, date_modified " +
@@ -51,6 +63,17 @@ public class NoteCardModel {
         return null;
     }
 
+    /**
+     * Get a group of stacks by course name
+     *
+     * @param course
+     *          the course name
+     *
+     * @param userId
+     *          the user id
+     *
+     * @return A Map of stacks mapped by stack name
+     */
     public Map<String, Stack> getStacksByCourse(final String course, final String userId) {
         try {
         final String query = "SELECT id, name, course, subject, date_created, date_modified " +
@@ -81,6 +104,20 @@ public class NoteCardModel {
         return null;
     }
 
+    /**
+     * Get a group of stacks by subject name
+     *
+     * @param course
+     *          the course name
+     *
+     * @param subject
+     *          the subject name
+     *
+     * @param userId
+     *          the user id
+     *
+     * @return a Map of stacks mapped by stack name
+     */
     public Map<String,Stack> getStacksBySubject(final String course, final String subject, final String userId) {
         try {
             final String query = "SELECT id, name, course, subject, date_created, date_modified " +
@@ -113,10 +150,21 @@ public class NoteCardModel {
 
     }
 
-    private List<NoteCard> getNoteCardsForStack(final String id, final String uid ) {
+    /**
+     * Get all notecards that belong to a single stack
+     *
+     * @param stackId
+     *          the stack id
+     *
+     * @param uid
+     *          the user id
+     *
+     * @return the list of notecards
+     */
+    private List<NoteCard> getNoteCardsForStack(final String stackId, final String uid ) {
         try {
            final String query = "SELECT front, back, stack_index FROM notecard " +
-                                "WHERE stack_id = " + id +
+                                "WHERE stack_id = " + stackId +
                                 " AND user_id = " + uid +
                                 " ORDER BY id DESC";
 
@@ -139,6 +187,17 @@ public class NoteCardModel {
         return null;
     }
 
+    /**
+     * Insert a notecard into the database
+     *
+     * @param noteCard
+     *          the notecard instance
+     *
+     * @param userId
+     *          the user id
+     *
+     * @return True if the insert was successful. False otherwise.
+     */
     public boolean createNoteCard(final NoteCard noteCard, final String userId) {
         try{
             final String query = "INSERT INTO notecard (id, front, back, stack_id, stack_index, user_id) " +
@@ -165,6 +224,17 @@ public class NoteCardModel {
         return false;
     }
 
+    /**
+     * Insert a stack into the database
+     *
+     * @param stack
+     *          the new stack instance
+     *
+     * @param userId
+     *          the user id
+     *
+     * @return True if the insert was successful. False otherwise.
+     */
     public boolean createStack(final Stack stack, final String userId) {
         try {
             final String query = "INSERT INTO stacks (id, name, date_modified, date_created, course, subject, user_id) " +
@@ -191,6 +261,17 @@ public class NoteCardModel {
         return false;
     }
 
+    /**
+     * Update a specific notecard
+     *
+     * @param updatedNoteCard
+     *          the updated notecard instance
+     *
+     * @param userId
+     *          the user id
+     *
+     * @return True if the insert was successful. False otherwise.
+     */
     public boolean updateNoteCard(NoteCard updatedNoteCard, String userId) {
         try{
             final String query = "UPDATE notecard " +
@@ -218,6 +299,17 @@ public class NoteCardModel {
         return false;
     }
 
+    /**
+     * Update a specific stack
+     *
+     * @param updatedStack
+     *          the updated stack instance
+     *
+     * @param userId
+     *          the user id
+     *
+     * @return True if the insert was successful. False otherwise.
+     */
     public boolean updateStack(Stack updatedStack, String userId) {
         try {
             final String query = "UPDATE stacks " +
@@ -245,6 +337,17 @@ public class NoteCardModel {
     return false;
     }
 
+    /**
+     * Delete a specific notecard from the database
+     *
+     * @param noteCard
+     *          the notecard instance to delete
+     *
+     * @param userId
+     *          the user id
+     *
+     * @return True if the insert was successful. False otherwise.
+     */
     public boolean deleteNoteCard(NoteCard noteCard, String userId) {
         try {
             final String query = "DELETE FROM notecard " +
@@ -267,6 +370,17 @@ public class NoteCardModel {
         return false;
     }
 
+    /**
+     * Delete a specific stack from the database
+     *
+     * @param stack
+     *          the stack instance to delete
+     *
+     * @param userId
+     *          the userId
+     *
+     * @return True if the insert was successful. False otherwise.
+     */
     public boolean deleteStack(Stack stack, String userId) {
         try {
             final String query = "DELETE FROM stacks " +
