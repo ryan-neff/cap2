@@ -38,6 +38,7 @@ public class NoteCardModel {
      * @return the stack
      */
     public Stack getSingleStack(final String stackName, final String userId) {
+        final Stack stack = new Stack();
         try {
          final String query = "SELECT id, name, course, subject, date_created, date_modified " +
                               "FROM stacks WHERE name = '"+ stackName +
@@ -46,7 +47,6 @@ public class NoteCardModel {
 
          final Statement stmt = connection.createStatement();
          final ResultSet resultSet = stmt.executeQuery(query);
-         final Stack stack = new Stack();
 
             if(resultSet.next()) {
              stack.setName(resultSet.getString("name"));
@@ -56,11 +56,10 @@ public class NoteCardModel {
              stack.setDateModified(resultSet.getString("date_modified"));
              stack.setNoteCards(getNoteCardsForStack(resultSet.getString("id"), userId));
          }
-         return stack;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return stack;
     }
 
     /**
