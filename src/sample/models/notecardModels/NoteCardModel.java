@@ -74,15 +74,18 @@ public class NoteCardModel {
      * @return A Map of stacks mapped by stack name
      */
     public Map<String, Stack> getStacksByCourse(final String course, final String userId) {
+       final Statement stmt;
+       final ResultSet result;
+        final List<Stack> stacks;
         try {
         final String query = "SELECT id, name, course, subject, date_created, date_modified " +
                              "FROM stacks WHERE course = '"+ course +
                              "' AND user_id = '"  + userId +
                              "' ORDER BY date_created DESC";
 
-        final Statement stmt = connection.createStatement();
-        final ResultSet result = stmt.executeQuery(query);
-        final List<Stack> stacks = new ArrayList<>();
+        stmt = connection.createStatement();
+        result = stmt.executeQuery(query);
+        stacks = new ArrayList<>();
 
         while(result.next()) {
             final Stack stack = new Stack();
