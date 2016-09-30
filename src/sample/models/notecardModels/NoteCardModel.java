@@ -38,6 +38,7 @@ public class NoteCardModel {
      * @return the stack
      */
     public Stack getSingleStack(final String stackName, final String userId) {
+        final Stack stack = new Stack();
         try {
          final String query = "SELECT id, name, course, subject, date_created, date_modified " +
                               "FROM stacks WHERE name = '"+ stackName +
@@ -46,7 +47,6 @@ public class NoteCardModel {
 
          final Statement stmt = connection.createStatement();
          final ResultSet resultSet = stmt.executeQuery(query);
-         final Stack stack = new Stack();
 
             if(resultSet.next()) {
              stack.setName(resultSet.getString("name"));
@@ -56,11 +56,10 @@ public class NoteCardModel {
              stack.setDateModified(resultSet.getString("date_modified"));
              stack.setNoteCards(getNoteCardsForStack(resultSet.getString("id"), userId));
          }
-         return stack;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return stack;
     }
 
     /**
@@ -75,15 +74,18 @@ public class NoteCardModel {
      * @return A Map of stacks mapped by stack name
      */
     public Map<String, Stack> getStacksByCourse(final String course, final String userId) {
+       final Statement stmt;
+       final ResultSet result;
+        final List<Stack> stacks;
         try {
         final String query = "SELECT id, name, course, subject, date_created, date_modified " +
                              "FROM stacks WHERE course = '"+ course +
                              "' AND user_id = '"  + userId +
                              "' ORDER BY date_created DESC";
 
-        final Statement stmt = connection.createStatement();
-        final ResultSet result = stmt.executeQuery(query);
-        final List<Stack> stacks = new ArrayList<>();
+        stmt = connection.createStatement();
+        result = stmt.executeQuery(query);
+        stacks = new ArrayList<>();
 
         while(result.next()) {
             final Stack stack = new Stack();
