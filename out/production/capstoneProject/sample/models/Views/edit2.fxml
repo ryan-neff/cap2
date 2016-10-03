@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="443.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.models.Views.Edit2Controller">
+   <children>
+      <HBox prefHeight="127.0" prefWidth="600.0">
+         <children>
+            <ImageView fitHeight="100.0" fitWidth="182.0" pickOnBounds="true" preserveRatio="true" />
+            <Label prefHeight="107.0" prefWidth="245.0" text="Edit">
+               <font>
+                  <Font size="64.0" />
+               </font>
+            </Label>
+            <TitledPane animated="false" prefHeight="125.0" prefWidth="202.0" text="Login">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <PasswordField layoutY="34.0" prefHeight="31.0" prefWidth="188.0" />
+                        <TextField layoutX="-1.0" layoutY="3.0" />
+                        <Button layoutX="121.0" layoutY="64.0" mnemonicParsing="false" text="Submit" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </TitledPane>
+         </children>
+      </HBox>
+      <SplitPane dividerPositions="0.19732441471571907" layoutY="165.0" prefHeight="278.0" prefWidth="600.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <ScrollPane prefHeight="256.0" prefWidth="114.0" />
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <Pane layoutX="309.0" layoutY="5.0" prefHeight="246.0" prefWidth="153.0" />
+                  <SplitPane dividerPositions="0.48945147679324896" layoutX="-1.0" prefHeight="160.0" prefWidth="476.0">
+                    <items>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+                    </items>
+                  </SplitPane>
+                  <TextField layoutX="14.0" layoutY="168.0" prefHeight="80.0" prefWidth="211.0" />
+                  <TextField layoutX="237.0" layoutY="168.0" prefHeight="80.0" prefWidth="216.0" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+      <Button layoutX="398.0" layoutY="127.0" mnemonicParsing="false" text="Save" />
+      <Button layoutX="521.0" layoutY="127.0" mnemonicParsing="false" onAction="#handleGoHome" text="Home" />
+   </children>
+</AnchorPane>
