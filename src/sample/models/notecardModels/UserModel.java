@@ -60,9 +60,9 @@ public class UserModel {
      *      the salt applied to the password
      * @return true if the insert succeeds. False otherwise.
      */
-    public Boolean createUser(User user, String passwordHash, String passwordSalt){
+    public boolean createUser(User user, String passwordHash, String passwordSalt){
         try{
-            final String query = "INSERT INTO User {FName, LName, user_id, PassHash, Salt)" +
+            final String query = "INSERT INTO User (FName, LName, user_id, PassHash, Salt) " +
                     "VALUES (?, ?, ?, ?, ?)";
             final PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, user.getFirstName());
@@ -92,7 +92,7 @@ public class UserModel {
      *      the user's password
      * @return true if the provided password matches the password in the database. False otherwise.
      */
-    public Boolean getLoginInfo(String userId, String passwordHash){
+    public boolean getLoginInfo(String userId, String passwordHash){
         try{
             final String query = "SELECT PassHash FROM User WHERE user_id = "+ userId;
             final Statement stmt = connection.createStatement();
@@ -122,7 +122,7 @@ public class UserModel {
      *      an updated instance of the user
      * @return true if UPDATE was successful. False otherwise.
      */
-    public Boolean updateUserInfo(String userId, User updatedUser){
+    public boolean updateUserInfo(String userId, User updatedUser){
         try{
             final String query = "UPDATE User " +
                                 "SET FName=?, LName=?, user_id=? " +
@@ -153,10 +153,10 @@ public class UserModel {
      *      the user's new password
      * @return true if UPDATE was successful. False otherwise.
      */
-    public Boolean updatePassword(String oldPasswordHash, String newPasswordHash){
+    public boolean updatePassword(String oldPasswordHash, String newPasswordHash){
         try{
             final String query = "UPDATE User " +
-                                "SET PassHash=?" +
+                                "SET PassHash=? " +
                                 "WHERE PassHash=?";
             final PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, newPasswordHash);
@@ -180,11 +180,11 @@ public class UserModel {
      *      instance of the user to be deleted.
      * @return true if DELETE was successful. False otherwise.
      */
-    public Boolean deleteUser(User user){
+    public boolean deleteUser(User user){
         try{
             final String query = "DELETE FROM User " +
                                 "WHERE FName=? " +
-                                "AND LName=?" +
+                                "AND LName=? " +
                                 "AND user_id=?";
             final PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, user.getFirstName());
