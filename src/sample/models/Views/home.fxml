@@ -45,5 +45,6 @@
       </SplitPane>
       <Button layoutX="398.0" layoutY="127.0" mnemonicParsing="false" onAction="#handleGoEdit" prefHeight="31.0" prefWidth="56.0" text="Edit" />
       <Button layoutX="478.0" layoutY="127.0" mnemonicParsing="false" onAction="#handleGoQuiz" text="Quiz" />
+      <Button layoutX="280.0" layoutY="127.0" mnemonicParsing="false" onAction="#handleGoQuote" text="QuoteMaker" />
    </children>
 </AnchorPane>
