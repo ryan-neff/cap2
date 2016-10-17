@@ -55,6 +55,10 @@ import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 import javafx.util.Duration;
+import sample.models.DbConnectionManager;
+import sample.models.notecardModels.NoteCardModel;
+import sample.models.notecardModels.noteCards.NoteCard;
+import sample.models.notecardModels.noteCards.StackModel;
 
 
 public class QuoteMaker extends Switch implements Initializable {
@@ -150,7 +154,7 @@ public class QuoteMaker extends Switch implements Initializable {
     
     //set all of the objects for the sidebar area
     Text relatedTitle = new Text();
-    relatedTitle.setText("Related Stacks");
+    relatedTitle.setText("Related StackModel");
     relatedTitle.setStyle("-fx-text-fill: #6666ff; -fx-font: 16px 'Times New Roman';");
     ImageView logo = new ImageView(new Image("logo1.PNG"));
     logo.setFitWidth(180);
@@ -216,18 +220,23 @@ public class QuoteMaker extends Switch implements Initializable {
   }
   
   public void makeStack(String param1, String param2){
+     final NoteCardModel model = new NoteCardModel();
       String title = param1 +" " + param2;
       Stack stack = new Stack(title);
-      ArrayList<String> front = fillFront(param1, param2);
+      /*ArrayList<String> front = fillFront(param1, param2);
       ArrayList<String> back = fillBack(param1, param2);
       ArrayList<Integer> ids = fillIDs(param1, param2);
       ArrayList<String> imgPaths = new ArrayList<String>();
       stack.related = getRelatedQuery();
       for(int i = 0; i < front.size(); ++i){
           imgPaths = getAssocImgs(ids.get(i));
-          stack.notecards.add(new Notecard(front.get(i), back.get(i), ids.get(i), imgPaths));
+          stack.notecards.add(new NoteCard(front.get(i), back.get(i), ids.get(i), imgPaths));
       }
-      
+      */
+      StackModel stackModel = model.getSingleStack("Unit 1", "uid_1");
+
+      ArrayList<NoteCard> stackModelList = (ArrayList<NoteCard>) stackModel.getNoteCards();
+      stack.notecards = stackModelList;
       focusStack = stack;
       stackList.add(focusStack);
       
@@ -241,7 +250,7 @@ public class QuoteMaker extends Switch implements Initializable {
   public void initMessageBoard(LabeledSlider widthSlider, LabeledSlider heightSlider){
       String myLabel = "myLabel";
       String backLabel = "back";
-      final StackPane sp = messageBoard.post(focusStack.notecards.get(focusStack.index).getFrontData(), colors.next());
+      final StackPane sp = messageBoard.post(focusStack.notecards.get(focusStack.index).getFront(), colors.next());
         //focusStack.incIndex();
         for(int i = 0; i < 3; ++i){
             if(myLabel.equals(sp.getChildren().get(i).getId())){
@@ -272,7 +281,7 @@ public class QuoteMaker extends Switch implements Initializable {
   public void postMessageBoard(){
       System.out.println("in postMessageBoard");
       String myLabel = "myLabel";
-      final StackPane sp = messageBoard.post(focusStack.notecards.get(focusStack.index).getFrontData(), colors.next());
+      final StackPane sp = messageBoard.post(focusStack.notecards.get(focusStack.index).getFront(), colors.next());
       
       int numChildren = messageBoard.getChildren().size();
       System.out.println("numChildren in messageboard in postMessageBoard " + numChildren);
@@ -610,13 +619,13 @@ public class QuoteMaker extends Switch implements Initializable {
     }
   }
   public void flipCard(){
-      if(focusStack.notecards.get(focusStack.index).isFront){
-              focusStack.label.setText(focusStack.notecards.get(focusStack.index).getBackData());
-              focusStack.notecards.get(focusStack.index).setisFront(false);
+      if(focusStack.notecards.get(focusStack.index).getIsFront()){
+              focusStack.label.setText(focusStack.notecards.get(focusStack.index).getBack());
+              focusStack.notecards.get(focusStack.index).setIsFront(false);
       }
       else{
-              focusStack.label.setText(focusStack.notecards.get(focusStack.index).getFrontData());
-              focusStack.notecards.get(focusStack.index).setisFront(true);
+              focusStack.label.setText(focusStack.notecards.get(focusStack.index).getFront());
+              focusStack.notecards.get(focusStack.index).setIsFront(true);
       }
   }
   public void nextCard(){
@@ -627,13 +636,13 @@ public class QuoteMaker extends Switch implements Initializable {
       else{
               focusStack.resetIndex();
       }
-      if(focusStack.notecards.get(focusStack.index).hasPics){
+      if(focusStack.notecards.get(focusStack.index).isHasPics()){
           picIcon.setVisible(true);
       }
       else{
           picIcon.setVisible(false);
       }
-      focusStack.label.setText(focusStack.notecards.get(focusStack.index).getFrontData());
+      focusStack.label.setText(focusStack.notecards.get(focusStack.index).getFront());
       focusStack.projector.imageFiles.clear();
       focusStack.projector.currentImageView.setImage(null);
       focusStack.projector.currentIndex = -1;
@@ -743,7 +752,7 @@ public class QuoteMaker extends Switch implements Initializable {
       menu.setMinWidth(USE_PREF_SIZE);
       HBox iconAndPic = new HBox();
       picIcon = new ImageView(new Image("pic.png"));
-      if(focusStack.notecards.get(focusStack.index).hasPics){
+      if(focusStack.notecards.get(focusStack.index).isHasPics()){
           picIcon.setVisible(true);
       }
       else{
@@ -1029,13 +1038,13 @@ public class QuoteMaker extends Switch implements Initializable {
           conn = getMySqlConnection();
           
           
-          stmt = conn.createStatement();
+          stmt = conn.createStatement();  //TODO Write query to add notecards
           String sql;
-          int param1 = focusStack.notecards.get(focusStack.index).id;
+          String param1 = focusStack.notecards.get(focusStack.index).getId();
           System.out.println(param1+" "+ param2);
           sql = "insert into image (id, path) values (?, ?)";
           pstmt = conn.prepareStatement(sql); // create a statement
-          pstmt.setInt(1, param1); // set input parameter 1
+       //   pstmt.setInt(1, param1); // set input parameter 1
           pstmt.setString(2, param2);
           int count = pstmt.executeUpdate();
           //ResultSet rs = stmt.executeQuery(sql);
@@ -1060,7 +1069,7 @@ public class QuoteMaker extends Switch implements Initializable {
   private void setupLoadWoDrag(){
       
       
-      ArrayList<String> imgs = focusStack.notecards.get(focusStack.index).imgPaths;
+      List<String> imgs = focusStack.notecards.get(focusStack.index).getImgPaths();
       System.out.println("imgs.size: " + imgs.size());
       for(int i = 0; i < imgs.size(); ++i){
           addImage(imgs.get(i));
@@ -1238,7 +1247,7 @@ public class QuoteMaker extends Switch implements Initializable {
       HBox hTimeline = new HBox();
       ArrayList<Label> effect = new ArrayList<Label>();
       for(int i = 0; i < focusStack.notecards.size(); ++i){
-            final Label label = new Label(focusStack.notecards.get(i).frontData);
+            final Label label = new Label(focusStack.notecards.get(i).getFront());
             String id = Integer.toString(i);
             label.setId(id);
             final int idx = i;
@@ -1250,7 +1259,7 @@ public class QuoteMaker extends Switch implements Initializable {
                     focusStack.index = idx;
                     focusStack.setIdx(idx);
                     final Label label = (Label)focusStack.sp.getChildren().get(0);
-                    label.setText(focusStack.notecards.get(focusStack.index).getFrontData());
+                    label.setText(focusStack.notecards.get(focusStack.index).getFront());
                   }
                   }
              });
@@ -1456,7 +1465,7 @@ public class QuoteMaker extends Switch implements Initializable {
         return conn;
     }
     
-     
+  /*
      class Notecard {
          String frontData;
          String backData;
@@ -1478,7 +1487,7 @@ public class QuoteMaker extends Switch implements Initializable {
             setId(id);
          }
           
-         
+
          
          public void addImg(String url){
              imgPaths.add(url);
@@ -1517,13 +1526,13 @@ public class QuoteMaker extends Switch implements Initializable {
              return isFront;
          }
      }
-     
+     */
      class Stack {
          int index;
          int prevIndex;
          public IntegerProperty Idx = new SimpleIntegerProperty();
          String title;
-         ArrayList<Notecard> notecards;
+         ArrayList<NoteCard> notecards;
          ArrayList<String> related = new ArrayList<String>(); // These are query keywords, unitialized stacks. 
          //ArrayList<Integer> distance = new ArrayList<Integer>();
          ArrayList<Label> timelineLabels = new ArrayList<Label>();
@@ -1532,7 +1541,7 @@ public class QuoteMaker extends Switch implements Initializable {
          Label label = new Label();
          Projector projector = new Projector();
          public Stack(String stackTitle){
-             notecards = new ArrayList<Notecard>();
+             notecards = new ArrayList<NoteCard>();
              title = stackTitle;
              resetIndex();
          }
@@ -1585,28 +1594,3 @@ public class QuoteMaker extends Switch implements Initializable {
     
 }
 
-class Projector extends Pane{
-        final Random random = new Random();
-  // List of URL strings 
-        List<String> imageFiles = new Vector<String>();
-          // The current index into the imageFile 
-        int currentIndex = -1;
-          // Enumeration of next and previous button directions
-        public static enum ButtonMove {NEXT, PREV};
-          // Current image view display
-        public ImageView currentImageView;
-          // Loading progress indicator
-        public ProgressIndicator progressIndicator;
-          // mutex */
-        public AtomicBoolean loading = new AtomicBoolean();
-        Pane projectorPane;
-        public Projector(){
-
-        }
-        
-       
-        
- 
-
-
-}

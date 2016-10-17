@@ -2,7 +2,7 @@ package sample.models.notecardModels;
 
 import sample.models.DbConnectionManager;
 import sample.models.notecardModels.noteCards.NoteCard;
-import sample.models.notecardModels.noteCards.Stack;
+import sample.models.notecardModels.noteCards.StackModel;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,7 +16,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * Model for the NoteCards and NoteCard Stacks
+ * Model for the NoteCards and NoteCard StackModel
  * @author rn046359
  */
 public class NoteCardModel {
@@ -37,29 +37,29 @@ public class NoteCardModel {
      *
      * @return the stack
      */
-    public Stack getSingleStack(final String stackName, final String userId) {
-        final Stack stack = new Stack();
+    public StackModel getSingleStack(final String stackName, final String userId) {
+        final StackModel stackModel = new StackModel();
         try {
-         final String query = "SELECT id, name, course, subject, date_created, date_modified " +
-                              "FROM stacks WHERE name = '"+ stackName +
-                              "' AND user_id = '"  + userId +
+         final String query = "SELECT stack_id, name, course, subject, date_created, date_modified " +
+                              "FROM stacks WHERE name = '"+stackName+
+                             // "' AND user_id = "+ userId +
                               "' ORDER BY date_created DESC";
 
          final Statement stmt = connection.createStatement();
          final ResultSet resultSet = stmt.executeQuery(query);
 
             if(resultSet.next()) {
-             stack.setName(resultSet.getString("name"));
-             stack.setCourse(resultSet.getString("course"));
-             stack.setSubject(resultSet.getString("subject"));
-             stack.setDateCreated(resultSet.getString("date_created"));
-             stack.setDateModified(resultSet.getString("date_modified"));
-             stack.setNoteCards(getNoteCardsForStack(resultSet.getString("id"), userId));
+             stackModel.setName(resultSet.getString("name"));
+             stackModel.setCourse(resultSet.getString("course"));
+             stackModel.setSubject(resultSet.getString("subject"));
+             stackModel.setDateCreated(resultSet.getString("date_created"));
+             stackModel.setDateModified(resultSet.getString("date_modified"));
+             stackModel.setNoteCards(getNoteCardsForStack(resultSet.getString("stack_id"), userId));
          }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return stack;
+        return stackModel;
     }
 
     /**
@@ -73,32 +73,32 @@ public class NoteCardModel {
      *
      * @return A Map of stacks mapped by stack name
      */
-    public Map<String, Stack> getStacksByCourse(final String course, final String userId) {
+    public Map<String, StackModel> getStacksByCourse(final String course, final String userId) {
        final Statement stmt;
        final ResultSet result;
-        final List<Stack> stacks;
+        final List<StackModel> stackses;
         try {
         final String query = "SELECT id, name, course, subject, date_created, date_modified " +
-                             "FROM stacks WHERE course = '"+ course +
+                             "FROM stackses WHERE course = '"+ course +
                              "' AND user_id = '"  + userId +
                              "' ORDER BY date_created DESC";
 
         stmt = connection.createStatement();
         result = stmt.executeQuery(query);
-        stacks = new ArrayList<>();
+        stackses = new ArrayList<>();
 
         while(result.next()) {
-            final Stack stack = new Stack();
+            final StackModel stack = new StackModel();
             stack.setName(result.getString("name"));
             stack.setCourse(result.getString("course"));
             stack.setSubject(result.getString("subject"));
             stack.setDateCreated(result.getString("date_created"));
             stack.setDateModified(result.getString("date_modified"));
             stack.setNoteCards(getNoteCardsForStack(result.getString("id"), userId));
-            stacks.add(stack);
+            stackses.add(stack);
         }
 
-        final Map<String, Stack> mapByStackName = stacks.stream().collect(Collectors.toMap(Stack::getName, Function.identity()));
+        final Map<String, StackModel> mapByStackName = stackses.stream().collect(Collectors.toMap(StackModel::getName, Function.identity()));
             return mapByStackName;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -120,30 +120,30 @@ public class NoteCardModel {
      *
      * @return a Map of stacks mapped by stack name
      */
-    public Map<String,Stack> getStacksBySubject(final String course, final String subject, final String userId) {
+    public Map<String,StackModel> getStacksBySubject(final String course, final String subject, final String userId) {
         try {
             final String query = "SELECT id, name, course, subject, date_created, date_modified " +
-                                "FROM stacks, WHERE course = '"+ course +
+                                "FROM stackses, WHERE course = '"+ course +
                                 "' AND subject = '" + subject +
                                 "' AND user_id = '" + userId +
                                 "' ORDER BY date_created DESC";
 
             final Statement stmt = connection.createStatement();
             final ResultSet result = stmt.executeQuery(query);
-            final List<Stack> stacks = new ArrayList<>();
+            final List<StackModel> stackses = new ArrayList<>();
 
             while(result.next()) {
-                final Stack stack = new Stack();
+                final StackModel stack = new StackModel();
                 stack.setName(result.getString("name"));
                 stack.setCourse(result.getString("course"));
                 stack.setSubject(result.getString("subject"));
                 stack.setDateCreated(result.getString("date_created"));
                 stack.setDateModified(result.getString("date_modified"));
                 stack.setNoteCards(getNoteCardsForStack(result.getString("id"), userId));
-                stacks.add(stack);
+                stackses.add(stack);
             }
 
-            final Map<String, Stack> mapByStackName = stacks.stream().collect(Collectors.toMap(Stack::getName, Function.identity()));
+            final Map<String, StackModel> mapByStackName = stackses.stream().collect(Collectors.toMap(StackModel::getName, Function.identity()));
             return mapByStackName;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -166,9 +166,9 @@ public class NoteCardModel {
     private List<NoteCard> getNoteCardsForStack(final String stackId, final String uid ) {
         try {
            final String query = "SELECT front, back, stack_index FROM notecard " +
-                                "WHERE stack_id = " + stackId +
-                                " AND user_id = " + uid +
-                                " ORDER BY id DESC";
+                                "WHERE stack_id = " + stackId ;
+                               // " AND user_id = " + uid +
+                               // " ORDER BY id DESC";
 
            final Statement stmt = connection.createStatement();
            final ResultSet results = stmt.executeQuery(query);
@@ -227,28 +227,28 @@ public class NoteCardModel {
     }
 
     /**
-     * Insert a stack into the database
+     * Insert a stackModel into the database
      *
-     * @param stack
-     *          the new stack instance
+     * @param stackModel
+     *          the new stackModel instance
      *
      * @param userId
      *          the user id
      *
      * @return True if the insert was successful. False otherwise.
      */
-    public boolean createStack(final Stack stack, final String userId) {
+    public boolean createStack(final StackModel stackModel, final String userId) {
         try {
-            final String query = "INSERT INTO stacks (id, name, date_modified, date_created, course, subject, user_id) " +
+            final String query = "INSERT INTO stackModel (id, name, date_modified, date_created, course, subject, user_id) " +
                                  "VALUES (?, ?, ?, ?, ?, ?, ?)";
             final PreparedStatement stmt = connection.prepareStatement(query);
 
-            stmt.setString(1, stack.getId());
-            stmt.setString(2, stack.getName());
-            stmt.setString(3, stack.getDateModified());
-            stmt.setString(4, stack.getDateCreated());
-            stmt.setString(5, stack.getCourse());
-            stmt.setString(6, stack.getSubject());
+            stmt.setString(1, stackModel.getId());
+            stmt.setString(2, stackModel.getName());
+            stmt.setString(3, stackModel.getDateModified());
+            stmt.setString(4, stackModel.getDateCreated());
+            stmt.setString(5, stackModel.getCourse());
+            stmt.setString(6, stackModel.getSubject());
             stmt.setString(7, userId);
 
             final int rowsInserted = stmt.executeUpdate();
@@ -304,7 +304,7 @@ public class NoteCardModel {
     /**
      * Update a specific stack
      *
-     * @param updatedStack
+     * @param updatedStackModel
      *          the updated stack instance
      *
      * @param userId
@@ -312,7 +312,7 @@ public class NoteCardModel {
      *
      * @return True if the insert was successful. False otherwise.
      */
-    public boolean updateStack(Stack updatedStack, String userId) {
+    public boolean updateStack(StackModel updatedStackModel, String userId) {
         try {
             final String query = "UPDATE stacks " +
                                  "SET name=?, date_modified=?, course=?, subject=? " +
@@ -320,16 +320,16 @@ public class NoteCardModel {
                                  "AND user_id=? ";
 
             final PreparedStatement stmt = connection.prepareStatement(query);
-            stmt.setString(1, updatedStack.getName());
-            stmt.setString(2, updatedStack.getDateModified());
-            stmt.setString(3, updatedStack.getCourse());
-            stmt.setString(4, updatedStack.getSubject());
-            stmt.setString(5, updatedStack.getId());
+            stmt.setString(1, updatedStackModel.getName());
+            stmt.setString(2, updatedStackModel.getDateModified());
+            stmt.setString(3, updatedStackModel.getCourse());
+            stmt.setString(4, updatedStackModel.getSubject());
+            stmt.setString(5, updatedStackModel.getId());
             stmt.setString(6, userId);
 
             int rowsUpdated = stmt.executeUpdate();
             if (rowsUpdated > 0) {
-                System.out.println("An existing Stack was updated successfully!");
+                System.out.println("An existing StackModel was updated successfully!");
                 return true;
             }
 
@@ -373,29 +373,29 @@ public class NoteCardModel {
     }
 
     /**
-     * Delete a specific stack from the database
+     * Delete a specific stackModel from the database
      *
-     * @param stack
-     *          the stack instance to delete
+     * @param stackModel
+     *          the stackModel instance to delete
      *
      * @param userId
      *          the userId
      *
      * @return True if the insert was successful. False otherwise.
      */
-    public boolean deleteStack(Stack stack, String userId) {
+    public boolean deleteStack(StackModel stackModel, String userId) {
         try {
-            final String query = "DELETE FROM stacks " +
+            final String query = "DELETE FROM stackModel " +
                     "WHERE id=? " +
                     "AND user_id=?";
 
             final PreparedStatement stmt = connection.prepareStatement(query);
-            stmt.setString(1, stack.getId());
+            stmt.setString(1, stackModel.getId());
             stmt.setString(2, userId);
 
             int rowsUpdated = stmt.executeUpdate();
             if (rowsUpdated > 0) {
-                System.out.println("An existing Stack deleted successfully!");
+                System.out.println("An existing StackModel deleted successfully!");
                 return true;
             }
 
