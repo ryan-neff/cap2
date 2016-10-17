@@ -38,4 +38,3 @@ public class HomeController extends Switch implements Initializable {
         this.getSceneManager().switchTo("QuoteMaker");
     }
 }
-

@@ -27,7 +27,10 @@ public class Main extends Application {
         root.getChildren().add(message);
         Scene scene = new Scene(root);
         this.sceneManager = new SceneManager(scene);
-        this.sceneManager.switchTo("home");
+        //this.sceneManager.switchTo("home");
+        //^^use this to make it work^^
+        //vv use this to test quotemaker vv
+        this.sceneManager.switchTo("QuoteMaker");
         primaryStage.setOnCloseRequest(e -> {
             Platform.exit();
             System.exit(0);
