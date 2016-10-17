@@ -30,7 +30,7 @@ public class Main extends Application {
         //this.sceneManager.switchTo("home");
         //^^use this to make it work^^
         //vv use this to test quotemaker vv
-        this.sceneManager.switchTo("QuoteMaker");
+        this.sceneManager.switchTo("home");
         primaryStage.setOnCloseRequest(e -> {
             Platform.exit();
             System.exit(0);

@@ -34,6 +34,11 @@ public class HomeController extends Switch implements Initializable {
     }
 
     @FXML
+    private void hangleGoRegister(ActionEvent event) {
+        this.getSceneManager().switchTo("registration");
+    }
+
+    @FXML
     private void handleGoQuote(ActionEvent event) {
         this.getSceneManager().switchTo("QuoteMaker");
     }
