@@ -156,15 +156,15 @@ public class QuoteMaker extends Switch implements Initializable {
     Text relatedTitle = new Text();
     relatedTitle.setText("Related StackModel");
     relatedTitle.setStyle("-fx-text-fill: #6666ff; -fx-font: 16px 'Times New Roman';");
-    ImageView logo = new ImageView(new Image("logo1.PNG"));
+    ImageView logo = new ImageView(new Image("resources/logo1.PNG"));
     logo.setFitWidth(180);
     logo.setFitHeight(60);
-    VBox relatedNotecards = getRelated();
-    relatedNotecards.setStyle(" -fx-background-color: cornsilk; -fx-background-insets: 3; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, #ccccff, 10, 0, 0, 0);");
+  //  VBox relatedNotecards = getRelated(); TODO
+  //  relatedNotecards.setStyle(" -fx-background-color: cornsilk; -fx-background-insets: 3; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, #ccccff, 10, 0, 0, 0);");
     Text dimensions = new Text();
     dimensions.setText("Notecard\nDimensions");
     dimensions.setStyle("-fx-text-fill: #6666ff; -fx-font: 16px 'Times New Roman';");
-    controls.getChildren().addAll(logo, relatedTitle, new Separator(), relatedNotecards, new Separator(), dimensions, new Separator(), widthSlider, heightSlider, layoutXSlider, layoutYSlider, new Separator());
+//    controls.getChildren().addAll(logo, relatedTitle, new Separator(), relatedNotecards, new Separator(), dimensions, new Separator(), widthSlider, heightSlider, layoutXSlider, layoutYSlider, new Separator());
     controls.setPrefWidth(180);
     controls.setMinWidth(180);
     controls.setMaxWidth(Control.USE_PREF_SIZE);
@@ -237,6 +237,9 @@ public class QuoteMaker extends Switch implements Initializable {
 
       ArrayList<NoteCard> stackModelList = (ArrayList<NoteCard>) stackModel.getNoteCards();
       stack.notecards = stackModelList;
+      ArrayList<String> related = new ArrayList<>(); //TODO
+      related.add("Unit 2");
+      stack.related = related;
       focusStack = stack;
       stackList.add(focusStack);
       
@@ -298,7 +301,7 @@ public class QuoteMaker extends Switch implements Initializable {
         
   }
   
-  
+  /*  TODO
   public VBox getRelated(){//This displays the related notecards in teh sidebar up to 10
       VBox temp = new VBox();
      
@@ -371,7 +374,7 @@ public class QuoteMaker extends Switch implements Initializable {
         
         return related;
   }
-
+*/
 
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -569,7 +572,7 @@ public class QuoteMaker extends Switch implements Initializable {
       
       //4) Set the flip Button
       Button flipIt = new Button();
-      ImageView im = new ImageView(new Image("flipThickGrey.png"));
+      ImageView im = new ImageView(new Image("resources/flipThickGrey.png"));
       im.setFitWidth(20);
       im.setFitHeight(20);
       flipIt.setGraphic(im);
@@ -587,7 +590,7 @@ public class QuoteMaker extends Switch implements Initializable {
       //5) Set the next Button
       Button next = new Button();
       next.setStyle("-fx-font: 1px;");
-      ImageView imNext = new ImageView(new Image("rightArrowGrey.png"));
+      ImageView imNext = new ImageView(new Image("resources/rightArrowGrey.png"));
       imNext.setFitWidth(20);
       imNext.setFitHeight(20);
       next.setGraphic(imNext);
@@ -751,7 +754,7 @@ public class QuoteMaker extends Switch implements Initializable {
       menu.setPrefWidth(75);
       menu.setMinWidth(USE_PREF_SIZE);
       HBox iconAndPic = new HBox();
-      picIcon = new ImageView(new Image("pic.png"));
+      picIcon = new ImageView(new Image("resources/pic.png"));
       if(focusStack.notecards.get(focusStack.index).isHasPics()){
           picIcon.setVisible(true);
       }
@@ -759,7 +762,7 @@ public class QuoteMaker extends Switch implements Initializable {
           picIcon.setVisible(false);
       }
       
-      ImageView imageIcon = new ImageView(new Image("Icon.PNG"));
+      ImageView imageIcon = new ImageView(new Image("resources/Icon.PNG"));
       picIcon.setOnMouseClicked(new EventHandler<MouseEvent>() {
         @Override public void handle(MouseEvent mouseEvent) {
             
@@ -1038,7 +1041,7 @@ public class QuoteMaker extends Switch implements Initializable {
           conn = getMySqlConnection();
           
           
-          stmt = conn.createStatement();  //TODO Write query to add notecards
+          stmt = conn.createStatement();  //TODO Write query to add images
           String sql;
           String param1 = focusStack.notecards.get(focusStack.index).getId();
           System.out.println(param1+" "+ param2);
