@@ -177,9 +177,9 @@ public class QuoteMaker extends Switch implements Initializable {
     HBox.setHgrow(messageBoard, Priority.ALWAYS);
     final Scene scene = new Scene(layout);
     scene.getStylesheets()
-                .add(getClass()
+             .add(getClass()
                 .getResource("notecard.css")
-                .toExternalForm());
+               .toExternalForm());
         
     
     // allow the selected quote to be deleted.
