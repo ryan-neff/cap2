@@ -1,16 +1,37 @@
 package sample.models.notecardModels.noteCards;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author rn046359
  */
 public class NoteCard {
     private String front;
     private String back;
-    private Integer stackIndex;
+    private Integer stackIndex = 0;
     private String id;
-    public String stackId;
+    private String stackId;
+    private boolean isFront;
+    private boolean hasPics = false;
+    private List<String> imgPaths = new ArrayList();
 
 
+    public NoteCard() {
+    }
+
+    public NoteCard(String front, String back, String id, ArrayList<String> ImgPaths) {
+        if (ImgPaths.size() > 0) {
+            imgPaths = ImgPaths;
+            hasPics = true;
+
+        }
+
+        setIsFront(true);
+        setFront(front);
+        setBack(back);
+        setId(id);
+    }
 
     public String getFront() {
         return front;
@@ -52,6 +73,30 @@ public class NoteCard {
         this.stackId = stackId;
     }
 
+    public boolean getIsFront() {
+        return isFront;
+    }
+
+    public void setIsFront(final boolean front) {
+        isFront = front;
+    }
+
+    public boolean isHasPics() {
+        return hasPics;
+    }
+
+    public void setHasPics(final boolean hasPics) {
+        this.hasPics = hasPics;
+    }
+
+    public List<String> getImgPaths() {
+        return imgPaths;
+    }
+
+    public void setImgPaths(final List<String> imgPaths) {
+        this.imgPaths = imgPaths;
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
@@ -67,6 +112,11 @@ public class NoteCard {
 
     }
 
+    public void addImg(String url){
+        imgPaths.add(url);
+        hasPics = true;
+
+    }
     @Override
     public int hashCode() {
         int result = getFront().hashCode();

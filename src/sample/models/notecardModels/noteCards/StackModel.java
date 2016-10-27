@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * @author rn046359
  */
-public class Stack {
+public class StackModel {
     private String id;
     private String name;
     private String course;
@@ -75,17 +75,17 @@ public class Stack {
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
-        if (!(o instanceof Stack)) return false;
+        if (!(o instanceof StackModel)) return false;
 
-        final Stack stack = (Stack) o;
+        final StackModel stackModel = (StackModel) o;
 
-        if (!getId().equals(stack.getId())) return false;
-        if (!getName().equals(stack.getName())) return false;
-        if (!getCourse().equals(stack.getCourse())) return false;
-        if (getSubject() != null ? !getSubject().equals(stack.getSubject()) : stack.getSubject() != null) return false;
-        if (!getDateCreated().equals(stack.getDateCreated())) return false;
-        if (!getDateModified().equals(stack.getDateModified())) return false;
-        return getNoteCards().equals(stack.getNoteCards());
+        if (!getId().equals(stackModel.getId())) return false;
+        if (!getName().equals(stackModel.getName())) return false;
+        if (!getCourse().equals(stackModel.getCourse())) return false;
+        if (getSubject() != null ? !getSubject().equals(stackModel.getSubject()) : stackModel.getSubject() != null) return false;
+        if (!getDateCreated().equals(stackModel.getDateCreated())) return false;
+        if (!getDateModified().equals(stackModel.getDateModified())) return false;
+        return getNoteCards().equals(stackModel.getNoteCards());
 
     }
 
@@ -103,7 +103,7 @@ public class Stack {
 
     @Override
     public String toString() {
-        return "Stack{" +
+        return "StackModel{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", course='" + course + '\'' +

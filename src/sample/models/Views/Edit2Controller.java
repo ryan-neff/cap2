@@ -11,16 +11,18 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import sample.models.notecardModels.NoteCardModel;
 
 public class Edit2Controller extends Switch implements Initializable {
     private Stage primaryStage;
     @FXML
     private AnchorPane anchorPane;
-
+    private NoteCardModel model = new NoteCardModel();
     public Edit2Controller() {
     }
 
     public void initialize(URL url, ResourceBundle rb) {
+
     }
 
     @FXML

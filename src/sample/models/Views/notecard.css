@@ -1,0 +1,25 @@
+#menuContainer label {
+	-fx-background-color: #6666ff;
+	-fx-text-fill: white;
+	-fx-font: 12px 'Segoe Script';
+	-fx-padding:3;
+}
+
+.root {
+    -fx-arrow-fill: rgba(255, 255, 255, .90); 
+}
+.button-panel {
+    -fx-arc-width: 15px;
+    -fx-arc-height: 20px;
+    -fx-fill: rgba(0,0,0, .55);
+    -fx-stroke: rgba(255, 255, 255, .70);
+    -fx-stroke-width: 1;
+}
+.left-arrow {
+    -fx-fill: -fx-arrow-fill;
+}
+
+.right-arrow {
+    -fx-fill: -fx-arrow-fill;
+    -fx-translate-x: 40;
+}

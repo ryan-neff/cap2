@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
@@ -8,42 +9,22 @@
 
 <AnchorPane id="anchorpPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="443.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.models.Views.HomeController">
    <children>
-      <HBox prefHeight="127.0" prefWidth="600.0">
+      <HBox prefHeight="82.0" prefWidth="600.0">
          <children>
-            <ImageView fitHeight="100.0" fitWidth="182.0" pickOnBounds="true" preserveRatio="true" />
-            <Label prefHeight="107.0" prefWidth="245.0" text="Home">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="79.0" prefWidth="750.0" text="Home">
                <font>
                   <Font size="64.0" />
                </font>
             </Label>
-            <TitledPane animated="false" prefHeight="125.0" prefWidth="202.0" text="Login">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <PasswordField layoutY="34.0" prefHeight="31.0" prefWidth="188.0" />
-                        <TextField layoutX="-1.0" layoutY="3.0" />
-                        <Button layoutX="121.0" layoutY="64.0" mnemonicParsing="false" text="Submit" />
-                     </children>
-                  </AnchorPane>
-              </content>
-            </TitledPane>
          </children>
       </HBox>
-      <SplitPane dividerPositions="0.19732441471571907" layoutY="163.0" prefHeight="280.0" prefWidth="600.0">
-        <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-               <children>
-                  <ScrollPane prefHeight="278.0" prefWidth="114.0" />
-               </children>
-            </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-               <children>
-                  <Pane layoutX="-7.0" layoutY="-4.0" prefHeight="264.0" prefWidth="483.0" />
-               </children>
-            </AnchorPane>
-        </items>
-      </SplitPane>
-      <Button layoutX="398.0" layoutY="127.0" mnemonicParsing="false" onAction="#handleGoEdit" prefHeight="31.0" prefWidth="56.0" text="Edit" />
-      <Button layoutX="478.0" layoutY="127.0" mnemonicParsing="false" onAction="#handleGoQuiz" text="Quiz" />
+      <HBox alignment="CENTER" layoutY="82.0" prefHeight="64.0" prefWidth="600.0" spacing="15.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#hangleGoRegister" prefHeight="20.0" prefWidth="130.0" text="Login" />
+            <Button mnemonicParsing="false" onAction="#handleGoEdit" prefHeight="20.0" prefWidth="130.0" text="Edit" />
+            <Button mnemonicParsing="false" onAction="#handleGoQuiz" prefHeight="20.0" prefWidth="130.0" text="Quiz" />
+            <Button mnemonicParsing="false" onAction="#handleGoQuote" prefHeight="20.0" prefWidth="130.0" text="Quote Maker" />
+         </children>
+      </HBox>
    </children>
 </AnchorPane>
