@@ -14,8 +14,10 @@ import javafx.stage.Stage;
 
 public class HomeController extends Switch implements Initializable {
     private Stage primaryStage;
+
     @FXML
     private AnchorPane anchorPane;
+
 
     QuoteMaker maker = new QuoteMaker();
     public HomeController() {
@@ -41,9 +43,9 @@ public class HomeController extends Switch implements Initializable {
 
     @FXML
     private void handleGoQuote(ActionEvent event) {
-        //this.getSceneManager().switchTo("Quotemaker");
+       // this.getSceneManager().switchTo("Quotemaker");
         try {
-            maker.startQuote(new Stage());
+            this.maker.startQuote(new Stage());
         } catch (Exception e) {
             e.printStackTrace();
         }
