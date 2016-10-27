@@ -233,7 +233,7 @@ public class QuoteMaker extends Switch implements Initializable {
           stack.notecards.add(new NoteCard(front.get(i), back.get(i), ids.get(i), imgPaths));
       }
       */
-      StackModel stackModel = model.getSingleStack("Unit 1", "uid_1");
+      StackModel stackModel = model.getSingleStack("Unit 1", "uid_1"); //TODO Temporary
 
       ArrayList<NoteCard> stackModelList = (ArrayList<NoteCard>) stackModel.getNoteCards();
       stack.notecards = stackModelList;
