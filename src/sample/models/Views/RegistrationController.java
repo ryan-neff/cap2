@@ -1,5 +1,6 @@
 package sample.models.Views;
-
+import sample.models.notecardModels.utils.UserSingleton;
+import sample.models.notecardModels.UserModel;
 /**
  * Created by JOSH
  */
@@ -16,6 +17,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class RegistrationController extends Switch implements Initializable {
+    UserSingleton singleton;
     private Stage primaryStage;
     @FXML
     private AnchorPane anchorPane;
@@ -101,6 +103,17 @@ public class RegistrationController extends Switch implements Initializable {
 
 
     public void handleLoginOk(ActionEvent actionEvent) {
+        singleton = new UserSingleton();
+        UserModel UM = new UserModel();
+        singleton.setUser(UM.getLoginInfo(loginUsername.getText(), loginPassword.getText()));
+        if(singleton.getUser() == null)
+        {
+            SetErrorLabel("Incorrect Username and/or Password.");
+        }
+        else
+        {
+            this.getSceneManager().switchTo("home");
+        }
     }
 }
 

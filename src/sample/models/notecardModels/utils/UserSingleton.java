@@ -13,7 +13,8 @@ public class UserSingleton {
         return ourInstance;
     }
 
-    private UserSingleton() {
+    public UserSingleton() {
+        
     }
 
     public User getUser() {
