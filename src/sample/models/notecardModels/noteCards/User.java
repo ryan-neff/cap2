@@ -8,6 +8,8 @@ public class User {
     private String userId;
     private String firstName;
     private String lastName;
+    private int salt;
+    private String pwd;
 
     public String getUserId() {
         return userId;
@@ -32,6 +34,14 @@ public class User {
     public void setLastName(final String lastName) {
         this.lastName = lastName;
     }
+
+    public int getSalt() {return salt;}
+
+    public void setSalt(final int salt) {this.salt = salt;}
+
+    public String getPwd() {return pwd;}
+
+    public void setPwd(final String pass) {this.pwd = pass;}
 
     @Override
     public boolean equals(final Object o) {
