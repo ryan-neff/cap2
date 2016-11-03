@@ -65,6 +65,47 @@ public class NoteCardModel {
     }
 
     /**
+     * Get a all  stacks by
+
+     * @param userId
+     *          the user id
+     *
+     * @return A Map of stacks mapped by stack name
+     */
+    public Map<String, StackModel> getAllStacks(final String userId) {
+        final PreparedStatement stmt;
+        final ResultSet result;
+        final List<StackModel> stacks;
+        try {
+            final String query = "SELECT stack_id, name, course, subject, date_created, date_modified " +
+                    "FROM stacks WHERE user_id = ?" +
+                    " ORDER BY date_created DESC";
+
+            stmt = connection.prepareStatement(query);
+            stmt.setString(1, userId);
+            result = stmt.executeQuery();
+            stacks = new ArrayList<>();
+
+            while(result.next()) {
+                final StackModel stack = new StackModel();
+                stack.setName(result.getString("name"));
+                stack.setCourse(result.getString("course"));
+                stack.setSubject(result.getString("subject"));
+                stack.setDateCreated(result.getString("date_created"));
+                stack.setDateModified(result.getString("date_modified"));
+                stack.setNoteCards(getNoteCardsForStack(result.getString("stack_id"), userId));
+                stacks.add(stack);
+            }
+
+            final Map<String, StackModel> mapByStackName = stacks.stream().collect(Collectors.toMap(StackModel::getName, Function.identity()));
+            return mapByStackName;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * Get a group of stacks by course name
      *
      * @param course

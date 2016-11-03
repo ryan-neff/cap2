@@ -12,6 +12,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
@@ -32,8 +34,14 @@ public class QuizpageController extends Switch implements Initializable {
 
     @FXML
     final TextArea textArea = new TextArea();
+
+    @FXML
+    final ScrollPane scrollPane = new ScrollPane();
+
     private UserModel userModel;
+    private User user;
     private NoteCardModel noteCardModel;
+    private Map<String, StackModel> stacks;
 
     public QuizpageController() {
     }
@@ -42,15 +50,15 @@ public class QuizpageController extends Switch implements Initializable {
 
         tempSetup();  //TODO Fix setup once Auth is finished.
 
-      /*  TODO Uncomment once Auth is finished
-        final User user = UserSingleton.getInstance().getUser();
+      /* TODO Uncomment once Auth is finished
+        user = UserSingleton.getInstance().getUser();
 
         if(user == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING, "How the hell did you get in here? Go log in you menace!");
             alert.showAndWait()
                     .filter(response -> response == ButtonType.OK)
                     .ifPresent(response -> this.getSceneManager().switchTo("home"));
-        } */
+        }*/
 
         beginQuiz();
     }
@@ -62,9 +70,15 @@ public class QuizpageController extends Switch implements Initializable {
     private void tempSetup() {
         userModel = new UserModel();
         noteCardModel = new NoteCardModel();
-        User user = userModel.getUserInfo("uid_1", "pash");
-        StackModel stack = noteCardModel.getSingleStack("Unit1", "uid_1");
-        System.out.println(stack.toString());
+        user = userModel.getUserInfo("uid_1", "pash");
+        stacks = noteCardModel.getAllStacks("uid_1");
+
+        stacks.forEach((stackLabelName, stack) -> {
+
+        });
+
+        System.out.println(stacks.toString());
+
     }
 
     @FXML
