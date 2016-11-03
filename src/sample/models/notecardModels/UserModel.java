@@ -34,9 +34,10 @@ public class UserModel {
     public User getUserInfo(String userId, String passwordHash){
         User user = new User();
         try{
-            final String query = "Select FName, LName FROM User WHERE user_id = "+ userId;
-            final Statement stmt = connection.createStatement();
-            final ResultSet rset = stmt.executeQuery(query);
+            final String query = "Select FName, LName FROM User WHERE user_id = ?";
+            final PreparedStatement stmt = connection.prepareStatement(query);
+                    stmt.setString(1, userId);
+            final ResultSet rset = stmt.executeQuery();
 
             if(rset.next()){
                 user.setFirstName(rset.getString("FName"));

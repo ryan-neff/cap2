@@ -78,9 +78,9 @@ public class NoteCardModel {
     public Map<String, StackModel> getStacksByCourse(final String course, final String userId) {
        final PreparedStatement stmt;
        final ResultSet result;
-        final List<StackModel> stackses;
+        final List<StackModel> stacks;
         try {
-        final String query = "SELECT id, name, course, subject, date_created, date_modified " +
+        final String query = "SELECT stack_id, name, course, subject, date_created, date_modified " +
                              "FROM stacks WHERE course = ?" +
                              " AND user_id = ?" +
                              " ORDER BY date_created DESC";
@@ -89,7 +89,7 @@ public class NoteCardModel {
             stmt.setString(1, course);
             stmt.setString(2, userId);
         result = stmt.executeQuery();
-        stackses = new ArrayList<>();
+        stacks = new ArrayList<>();
 
         while(result.next()) {
             final StackModel stack = new StackModel();
@@ -98,11 +98,11 @@ public class NoteCardModel {
             stack.setSubject(result.getString("subject"));
             stack.setDateCreated(result.getString("date_created"));
             stack.setDateModified(result.getString("date_modified"));
-            stack.setNoteCards(getNoteCardsForStack(result.getString("id"), userId));
-            stackses.add(stack);
+            stack.setNoteCards(getNoteCardsForStack(result.getString("stack_id"), userId));
+            stacks.add(stack);
         }
 
-        final Map<String, StackModel> mapByStackName = stackses.stream().collect(Collectors.toMap(StackModel::getName, Function.identity()));
+        final Map<String, StackModel> mapByStackName = stacks.stream().collect(Collectors.toMap(StackModel::getName, Function.identity()));
             return mapByStackName;
         } catch (SQLException e) {
             e.printStackTrace();
