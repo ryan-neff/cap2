@@ -24,6 +24,7 @@ public class HomeController extends Switch implements Initializable {
     }
 
     public void initialize(URL url, ResourceBundle rb) {
+
     }
 
     @FXML

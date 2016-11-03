@@ -6,13 +6,14 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="443.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.models.Views.QuizpageController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="443.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.models.Views.QuizpageController">
    <children>
       <HBox prefHeight="127.0" prefWidth="600.0">
          <children>
@@ -28,16 +29,19 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <ScrollPane prefHeight="273.0" prefWidth="114.0" />
+                  <ScrollPane fx:id="scrollPane" prefHeight="273.0" prefWidth="114.0" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
                   <Pane layoutX="8.0" prefHeight="256.0" prefWidth="285.0">
                      <children>
-                        <RadioButton layoutX="53.0" layoutY="159.0" mnemonicParsing="false" text="RadioButton" />
-                        <RadioButton layoutX="53.0" layoutY="191.0" mnemonicParsing="false" text="RadioButton" />
-                        <RadioButton layoutX="53.0" layoutY="221.0" mnemonicParsing="false" text="RadioButton" />
+                        <RadioButton layoutX="53.0" layoutY="159.0" mnemonicParsing="false" text="RadioButton">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="toggleGroup" />
+                           </toggleGroup></RadioButton>
+                        <RadioButton layoutX="53.0" layoutY="191.0" mnemonicParsing="false" text="RadioButton" toggleGroup="$toggleGroup" />
+                        <RadioButton layoutX="53.0" layoutY="221.0" mnemonicParsing="false" text="RadioButton" toggleGroup="$toggleGroup" />
                         <TextArea layoutY="3.0" prefHeight="136.0" prefWidth="285.0" />
                      </children>
                   </Pane>
