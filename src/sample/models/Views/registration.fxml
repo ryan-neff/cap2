@@ -19,7 +19,7 @@
             <Label text="Password" />
             <PasswordField fx:id="loginPassword" />
             <Button fx:id="loginOk" mnemonicParsing="false" onAction="#handleLoginOk" prefHeight="27.0" prefWidth="79.0" text="Ok" />
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="222.0" textFill="RED" />
+            <Label fx:id="errorLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="222.0" textFill="RED" />
          </children>
       </VBox>
       <VBox alignment="CENTER" layoutX="300.0" prefHeight="282.0" prefWidth="290.0" spacing="10.0">
@@ -29,6 +29,10 @@
                   <Font size="38.0" />
                </font>
             </Label>
+            <Label text="FName" />
+            <TextField fx:id="registrationFName" />
+            <Label text="LName" />
+            <TextField fx:id="registrationLName" />
             <Label text="Username" />
             <TextField fx:id="registrationUsername" />
             <Label text="Password" />
@@ -39,5 +43,6 @@
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="222.0" textFill="RED" />
          </children>
       </VBox>
+      
    </children>
 </AnchorPane>

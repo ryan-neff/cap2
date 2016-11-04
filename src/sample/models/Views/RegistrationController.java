@@ -1,5 +1,7 @@
 package sample.models.Views;
-
+import sample.models.notecardModels.utils.UserSingleton;
+import sample.models.notecardModels.UserModel;
+import sample.models.notecardModels.noteCards.User;
 /**
  * Created by JOSH
  */
@@ -12,10 +14,20 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import java.security.MessageDigest;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.security.MessageDigest;
+import java.util.Random;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class RegistrationController extends Switch implements Initializable {
+    UserSingleton singleton;
     private Stage primaryStage;
     @FXML
     private AnchorPane anchorPane;
@@ -36,6 +48,12 @@ public class RegistrationController extends Switch implements Initializable {
 
     @FXML
     private TextField loginPassword;
+    
+    @FXML
+    private TextField registrationFName;
+    
+    @FXML
+    private TextField registrationLName;
 
     @FXML
     private TextField registrationUsername;
@@ -70,7 +88,8 @@ public class RegistrationController extends Switch implements Initializable {
         String usernameText = registrationUsername.getText();
         String passwordText = registrationPassword.getText();
         String reEnterPasswordText = registrationReEnterPassword.getText();
-
+        String FName = registrationFName.getText();
+        String LName = registrationLName.getText();
 
         if(usernameText.equals((""))) {
             SetErrorLabel("Error: Please enter a username.");
@@ -92,6 +111,14 @@ public class RegistrationController extends Switch implements Initializable {
 
 
         this.getSceneManager().switchTo("home");
+        
+        singleton = new UserSingleton();
+        UserModel UM = new UserModel();
+        User user = new User();
+        user.setFirstName(FName);
+        user.setLastName(LName);
+        user.setUserId(usernameText);
+        UM.createUser(user, passwordText);
     }
 
     private void SetErrorLabel(String errorMessage) {
@@ -101,6 +128,17 @@ public class RegistrationController extends Switch implements Initializable {
 
 
     public void handleLoginOk(ActionEvent actionEvent) {
+        singleton = new UserSingleton();
+        UserModel UM = new UserModel();
+        singleton.setUser(UM.getLoginInfo(loginUsername.getText(), loginPassword.getText()));
+        if(singleton.getUser() == null)
+        {
+            SetErrorLabel("Incorrect Username and/or Password.");
+        }
+        else
+        {
+            this.getSceneManager().switchTo("home");
+        }
     }
 }
 

@@ -3,12 +3,14 @@ package sample.models.notecardModels;
 import sample.models.DbConnectionManager;
 import sample.models.notecardModels.noteCards.User;
 
+import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+import java.security.MessageDigest;
+import java.util.Random;
 
 
 /**
@@ -30,8 +32,11 @@ public class UserModel {
      *      the user's password
      *
      * @return an instance of the User created from the database info.
+     *
+     * Legacy Code
+     * Functionality now in getLoginInfo function.
      */
-    public User getUserInfo(String userId, String passwordHash){
+    /*public User getUserInfo(String userId){
         User user = new User();
         try{
             final String query = "Select FName, LName FROM User WHERE user_id = ?";
@@ -49,19 +54,20 @@ public class UserModel {
         }
         return user;
     }
-
+    */
     /**
      * Inserts a new user into the database.
      *
      * @param user
      *      a user instance
-     * @param passwordHash
+     * @param rawPassword
      *      the User's password.
-     * @param passwordSalt
-     *      the salt applied to the password
+
      * @return true if the insert succeeds. False otherwise.
      */
-    public boolean createUser(User user, String passwordHash, String passwordSalt){
+    public User createUser(User user, String rawPassword){
+        int salt = generateSalt();
+        String passwordHash = authUser(rawPassword, salt);
         try{
             final String query = "INSERT INTO User (FName, LName, user_id, PassHash, Salt) " +
                     "VALUES (?, ?, ?, ?, ?)";
@@ -70,18 +76,20 @@ public class UserModel {
             stmt.setString(2, user.getLastName());
             stmt.setString(3, user.getUserId());
             stmt.setString(4, passwordHash);
-            stmt.setString(5, passwordSalt);
+            stmt.setInt(5, salt);
 
             final int rowsInserted = stmt.executeUpdate();
 
             if (rowsInserted > 0){
                 System.out.println("A new User was created");
-                return true;
+                user.setPwd(passwordHash);
+                return user;
             }
         }catch (SQLException e){
             e.printStackTrace();
+            return null;
         }
-        return false;
+        return null;
     }
 
     /**
@@ -89,29 +97,46 @@ public class UserModel {
      *
      * @param userId
      *      the userId
-     * @param passwordHash
-     *      the user's password
+     * @param password
+     *      the user's password entered into the client
      * @return true if the provided password matches the password in the database. False otherwise.
      */
-    public boolean getLoginInfo(String userId, String passwordHash){
+    public User getLoginInfo(String userId, String password){
         try{
-            final String query = "SELECT PassHash FROM User WHERE user_id = "+ userId;
+            final String query = "SELECT * FROM User WHERE user_id = '"+ userId + "'";
             final Statement stmt = connection.createStatement();
             final ResultSet rset = stmt.executeQuery(query);
-
-            final int rowsReturned = rset.getFetchSize();
-
-            if (rowsReturned == 1){
-                if(rset.getString("PassHash").equals(passwordHash)){
-                    return true;
-                }
-            }else{
-                return false;
+            User user = new User();
+            
+            int rowsReturned = 0;
+            
+            while(rset.next())
+            {
+                user.setFirstName(rset.getString(1));
+                user.setLastName(rset.getString(2));
+                user.setUserId(userId);
+                user.setPwd(rset.getString(5));
+                user.setSalt(rset.getInt(4));
+                rowsReturned++;
+            }
+            
+            if(rowsReturned != 1)
+            {
+                
+                return null;
+            }
+            
+            if(user.getPwd().equals(authUser(password, user.getSalt()))){
+                return user;
+            }
+            else{
+                return null;
             }
         }catch(SQLException e){
+            
             e.printStackTrace();
+            return null;
         }
-        return false;
     }
 
     /**
@@ -201,5 +226,43 @@ public class UserModel {
             e.printStackTrace();
         }
         return false;
+    }
+
+    /**
+     *
+     * @param pwd
+     *      The user password entered into the client.
+     * @param salt
+     *      The user salt value.
+     * @return the hashed password and salt.
+     */
+    public String authUser(String pwd, int salt){
+        try{
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            String newString = pwd + Integer.toString(salt);
+            md.update(newString.getBytes());
+
+            byte byteData[] = md.digest();
+
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < byteData.length; i++){
+                sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+            }
+
+            return sb.toString();
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     *
+     * @return salt value as an int.
+     */
+    public int generateSalt(){
+        Random rand = new Random();
+        return rand.nextInt(9999998) + 1;
     }
 }
