@@ -60,13 +60,14 @@ public class UserModel {
      *
      * @param user
      *      a user instance
-     * @param passwordHash
+     * @param rawPassword
      *      the User's password.
 
      * @return true if the insert succeeds. False otherwise.
      */
-    public boolean createUser(User user, String passwordHash){
+    public User createUser(User user, String rawPassword){
         int salt = generateSalt();
+        String passwordHash = authUser(rawPassword, salt);
         try{
             final String query = "INSERT INTO User (FName, LName, user_id, PassHash, Salt) " +
                     "VALUES (?, ?, ?, ?, ?)";
@@ -81,12 +82,14 @@ public class UserModel {
 
             if (rowsInserted > 0){
                 System.out.println("A new User was created");
-                return true;
+                user.setPwd(passwordHash);
+                return user;
             }
         }catch (SQLException e){
             e.printStackTrace();
+            return null;
         }
-        return false;
+        return null;
     }
 
     /**
@@ -100,34 +103,40 @@ public class UserModel {
      */
     public User getLoginInfo(String userId, String password){
         try{
-            final String query = "SELECT * FROM User WHERE user_id = "+ userId;
+            final String query = "SELECT * FROM User WHERE user_id = '"+ userId + "'";
             final Statement stmt = connection.createStatement();
             final ResultSet rset = stmt.executeQuery(query);
-
-            final int rowsReturned = rset.getFetchSize();
-
-            final int salt = rset.getInt("Salt");
-
-
-            if (rowsReturned == 1){
-                if(rset.getString("PassHash").equals(authUser(password, salt))){
-                    User user = new User();
-                    if(rset.next()){
-                        user.setFirstName(rset.getString("FName"));
-                        user.setLastName(rset.getString("LName"));
-                        user.setUserId(userId);
-                        user.setPwd(rset.getString("PassHash"));
-                        user.setSalt(rset.getInt("Salt"));
-                    }
-                    return user;
-                }
-            }else{
+            User user = new User();
+            
+            int rowsReturned = 0;
+            
+            while(rset.next())
+            {
+                user.setFirstName(rset.getString(1));
+                user.setLastName(rset.getString(2));
+                user.setUserId(userId);
+                user.setPwd(rset.getString(5));
+                user.setSalt(rset.getInt(4));
+                rowsReturned++;
+            }
+            
+            if(rowsReturned != 1)
+            {
+                
+                return null;
+            }
+            
+            if(user.getPwd().equals(authUser(password, user.getSalt()))){
+                return user;
+            }
+            else{
                 return null;
             }
         }catch(SQLException e){
+            
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     /**

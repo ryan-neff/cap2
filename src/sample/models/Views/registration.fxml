@@ -29,6 +29,10 @@
                   <Font size="38.0" />
                </font>
             </Label>
+            <Label text="FName" />
+            <TextField fx:id="registrationFName" />
+            <Label text="LName" />
+            <TextField fx:id="registrationLName" />
             <Label text="Username" />
             <TextField fx:id="registrationUsername" />
             <Label text="Password" />
