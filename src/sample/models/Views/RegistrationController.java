@@ -133,7 +133,6 @@ public class RegistrationController extends Switch implements Initializable {
         singleton.setUser(UM.getLoginInfo(loginUsername.getText(), loginPassword.getText()));
         if(singleton.getUser() == null)
         {
-            System.out.println("SHITS ON FIRE YO");
             SetErrorLabel("Incorrect Username and/or Password.");
         }
         else
