@@ -18,6 +18,7 @@ public class NoteCard {
 
 
     public NoteCard() {
+        setIsFront(true);
     }
 
     public NoteCard(String front, String back, String id, ArrayList<String> ImgPaths) {
@@ -97,6 +98,12 @@ public class NoteCard {
         this.imgPaths = imgPaths;
     }
 
+    public void addImg(String url){
+        imgPaths.add(url);
+        hasPics = true;
+
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
@@ -104,26 +111,29 @@ public class NoteCard {
 
         final NoteCard noteCard = (NoteCard) o;
 
-        if (!getFront().equals(noteCard.getFront())) return false;
-        if (!getBack().equals(noteCard.getBack())) return false;
-        if (!getStackIndex().equals(noteCard.getStackIndex())) return false;
-        if (!getId().equals(noteCard.getId())) return false;
-        return getStackId().equals(noteCard.getStackId());
+        if (getFront() != noteCard.getFront()) return false;
+        if (isHasPics() != noteCard.isHasPics()) return false;
+        if (getFront() != null ? !getFront().equals(noteCard.getFront()) : noteCard.getFront() != null) return false;
+        if (getBack() != null ? !getBack().equals(noteCard.getBack()) : noteCard.getBack() != null) return false;
+        if (getStackIndex() != null ? !getStackIndex().equals(noteCard.getStackIndex()) : noteCard.getStackIndex() != null)
+            return false;
+        if (getId() != null ? !getId().equals(noteCard.getId()) : noteCard.getId() != null) return false;
+        if (getStackId() != null ? !getStackId().equals(noteCard.getStackId()) : noteCard.getStackId() != null)
+            return false;
+        return getImgPaths() != null ? getImgPaths().equals(noteCard.getImgPaths()) : noteCard.getImgPaths() == null;
 
     }
 
-    public void addImg(String url){
-        imgPaths.add(url);
-        hasPics = true;
-
-    }
     @Override
     public int hashCode() {
-        int result = getFront().hashCode();
-        result = 31 * result + getBack().hashCode();
-        result = 31 * result + getStackIndex().hashCode();
-        result = 31 * result + getId().hashCode();
-        result = 31 * result + getStackId().hashCode();
+        int result = getFront() != null ? getFront().hashCode() : 0;
+        result = 31 * result + (getBack() != null ? getBack().hashCode() : 0);
+        result = 31 * result + (getStackIndex() != null ? getStackIndex().hashCode() : 0);
+        result = 31 * result + (getId() != null ? getId().hashCode() : 0);
+        result = 31 * result + (getStackId() != null ? getStackId().hashCode() : 0);
+        result = 31 * result + (getIsFront() ? 1 : 0);
+        result = 31 * result + (isHasPics() ? 1 : 0);
+        result = 31 * result + (getImgPaths() != null ? getImgPaths().hashCode() : 0);
         return result;
     }
 
@@ -135,6 +145,9 @@ public class NoteCard {
                 ", stackIndex=" + stackIndex +
                 ", id='" + id + '\'' +
                 ", stackId='" + stackId + '\'' +
+                ", isFront=" + isFront +
+                ", hasPics=" + hasPics +
+                ", imgPaths=" + imgPaths +
                 '}';
     }
 }

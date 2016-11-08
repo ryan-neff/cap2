@@ -88,6 +88,7 @@ public class QuoteMaker extends Switch implements Initializable {
     int StackId = 0;
     Scene fullScreen;
     ImageView picIcon;
+    NoteCardModel model;
 
   public void startQuote(final Stage primaryStage) throws Exception {
 
@@ -95,8 +96,10 @@ public class QuoteMaker extends Switch implements Initializable {
     messageBoard = new MessageBoard();//init messageBoard
     messageBoard.setStyle("-fx-background-color: cornsilk; -fx-background-insets: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, purple, 10, 0, 0, 0);");
     messageBoard.setPrefSize(1000, 700);
-    
-    //init first stack
+    model = new NoteCardModel();
+
+
+      //init first stack
     String stackParam1 = "os";
     String stackParam2 = "chapter1";
     makeStack(stackParam1, stackParam2);
@@ -222,7 +225,6 @@ public class QuoteMaker extends Switch implements Initializable {
   }
   
   public void makeStack(String param1, String param2){
-     final NoteCardModel model = new NoteCardModel();
       String title = param1 +" " + param2;
       Stack stack = new Stack(title);
       /*ArrayList<String> front = fillFront(param1, param2);
@@ -235,7 +237,7 @@ public class QuoteMaker extends Switch implements Initializable {
           stack.notecards.add(new NoteCard(front.get(i), back.get(i), ids.get(i), imgPaths));
       }
       */
-      StackModel stackModel = model.getSingleStack("Unit 1", "uid_1"); //TODO Temporary
+      StackModel stackModel = model.getSingleStack("Unit 1", "test"); //TODO Temporary
 
       stack.notecards = (ArrayList<NoteCard>) stackModel.getNoteCards();
       ArrayList<String> related = new ArrayList<>(); //TODO
@@ -713,7 +715,16 @@ public class QuoteMaker extends Switch implements Initializable {
                 submit.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override public void handle(MouseEvent mouseEvent) {
                         String sent = EditorFld.getText();
-                        //insertEditString(sent);
+                        NoteCard currentNotecard = focusStack.notecards.get(focusStack.index);
+
+                        if (currentNotecard.getIsFront()) {
+                            currentNotecard.setFront(sent);
+                        } else {
+                            currentNotecard.setBack(sent);
+                        }
+
+                        System.out.println(currentNotecard.toString());
+                        model.updateNoteCard(currentNotecard, "test");
                         editStage.close();
                     }
                 });
@@ -1533,69 +1544,7 @@ public class QuoteMaker extends Switch implements Initializable {
         Connection conn = DriverManager.getConnection(url, username, password);
         return conn;
     }
-    
-  /*
-     class Notecard {
-         String frontData;
-         String backData;
-         boolean isFront;
-         int index = 0;
-         int id = 0;
-         boolean hasPics = false;
-         ArrayList<String> imgPaths = new ArrayList();
-         public Notecard(String front, String back, int id, ArrayList<String> ImgPaths){
-             if(ImgPaths.size() > 0){
-                 imgPaths = ImgPaths;
-                 hasPics= true;
-                 
-             }
-            
-            setisFront(true);
-            setFrontData(front);
-            setBackData(back);
-            setId(id);
-         }
-          
 
-         
-         public void addImg(String url){
-             imgPaths.add(url);
-             hasPics = true;
-             
-         }
-         public void setId(int Id){
-             this.id = Id;
-         }
-         
-         public int getId(){
-             return id;
-         }
-         
-         public void setFrontData(String data){
-             frontData = data;
-         }
-         
-         public String getFrontData(){
-             return frontData;
-         }
-         
-         public void setBackData(String data){
-             backData = data;
-         }
-         
-         public String getBackData(){
-             return backData;
-         }
-         
-         public void setisFront(boolean bool){
-             isFront = bool;
-         }
-         
-         public boolean getisFront(){
-             return isFront;
-         }
-     }
-     */
      class Stack {
          int index;
          int prevIndex;
