@@ -17,6 +17,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import sample.models.notecardModels.NoteCardModel;
 import sample.models.notecardModels.UserModel;
@@ -74,6 +75,7 @@ public class QuizpageController extends Switch implements Initializable {
         stacks = noteCardModel.getAllStacks("uid_1");
 
         stacks.forEach((stackLabelName, stack) -> {
+            StackPane p = new StackPane();
 
         });
 

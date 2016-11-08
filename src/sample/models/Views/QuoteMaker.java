@@ -21,6 +21,7 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -54,6 +55,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import sample.models.DbConnectionManager;
 import sample.models.notecardModels.NoteCardModel;
@@ -86,6 +88,7 @@ public class QuoteMaker extends Switch implements Initializable {
     int StackId = 0;
     Scene fullScreen;
     ImageView picIcon;
+    NoteCardModel model;
 
   public void startQuote(final Stage primaryStage) throws Exception {
 
@@ -93,8 +96,10 @@ public class QuoteMaker extends Switch implements Initializable {
     messageBoard = new MessageBoard();//init messageBoard
     messageBoard.setStyle("-fx-background-color: cornsilk; -fx-background-insets: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, purple, 10, 0, 0, 0);");
     messageBoard.setPrefSize(1000, 700);
-    
-    //init first stack
+    model = new NoteCardModel();
+
+
+      //init first stack
     String stackParam1 = "os";
     String stackParam2 = "chapter1";
     makeStack(stackParam1, stackParam2);
@@ -220,7 +225,6 @@ public class QuoteMaker extends Switch implements Initializable {
   }
   
   public void makeStack(String param1, String param2){
-     final NoteCardModel model = new NoteCardModel();
       String title = param1 +" " + param2;
       Stack stack = new Stack(title);
       /*ArrayList<String> front = fillFront(param1, param2);
@@ -233,10 +237,9 @@ public class QuoteMaker extends Switch implements Initializable {
           stack.notecards.add(new NoteCard(front.get(i), back.get(i), ids.get(i), imgPaths));
       }
       */
-      StackModel stackModel = model.getSingleStack("Unit 1", "uid_1"); //TODO Temporary
+      StackModel stackModel = model.getSingleStack("Unit 1", "test"); //TODO Temporary
 
-      ArrayList<NoteCard> stackModelList = (ArrayList<NoteCard>) stackModel.getNoteCards();
-      stack.notecards = stackModelList;
+      stack.notecards = (ArrayList<NoteCard>) stackModel.getNoteCards();
       ArrayList<String> related = new ArrayList<>(); //TODO
       related.add("Unit 2");
       stack.related = related;
@@ -651,147 +654,221 @@ public class QuoteMaker extends Switch implements Initializable {
       focusStack.projector.currentIndex = -1;
       setupLoadWoDrag();
   }
-  
-  public VBox initDropDown(){
-      VBox container = new VBox();
-      container.setMaxHeight(focusStack.label.getHeight()/2);
-      container.setId("menuContainer");
-      VBox menu = new VBox();
-      menu.setId("menu");
-      menu.setStyle(" -fx-background-color: #6666ff; -fx-text-fill: white; -fx-font: 12px 'Segoe Script'; -fx-padding:3;");
-      
-      container.setPrefWidth(75);
-      container.setMinWidth(USE_PREF_SIZE);
-      container.setMaxWidth(USE_PREF_SIZE);
-      Label edit = new Label();
-      edit.setOnMouseEntered(new EventHandler<MouseEvent>() {
-        @Override public void handle(MouseEvent mouseEvent) {
-            
-          edit.setStyle("-fx-text-fill:black");
+
+    public VBox initDropDown(){
+        VBox container = new VBox();
+        container.setMaxHeight(focusStack.label.getHeight()/2);
+        container.setId("menuContainer");
+        VBox menu = new VBox();
+        menu.setId("menu");
+        menu.setStyle(" -fx-background-color: #6666ff; -fx-text-fill: white; -fx-font: 12px 'Segoe Script'; -fx-padding:3;");
+
+        container.setPrefWidth(75);
+        container.setMinWidth(USE_PREF_SIZE);
+        container.setMaxWidth(USE_PREF_SIZE);
+        Label edit = new Label();
+        edit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent mouseEvent) {
+
+                edit.setStyle("-fx-text-fill:black");
+                final Stage editStage = new Stage(StageStyle.UNDECORATED);
+                editStage.initModality(Modality.APPLICATION_MODAL);
+                editStage.initOwner(primaryStage);
+                HBox buttonArea = new HBox();
+
+                Button submit = new Button();
+                submit.setText("Submit");
+                submit.setStyle(
+                        "-fx-background-radius: 15em; " +
+                                "-fx-min-width: 60px; " +
+                                "-fx-min-height: 30px; " +
+                                "-fx-max-width: 60px; " +
+                                "-fx-max-height: 30px;"
+                );
+
+                Button exit = new Button();
+                exit.setText("Exit");
+                exit.setStyle(
+                        "-fx-background-radius: 15em; " +
+                                "-fx-min-width: 60px; " +
+                                "-fx-min-height: 30px; " +
+                                "-fx-max-width: 60px; " +
+                                "-fx-max-height: 30px;"
+                );
+                buttonArea.getChildren().add(submit);
+                buttonArea.getChildren().add(exit);
+                TextArea EditorFld = new TextArea();
+                String currentText;
+                if(focusStack.notecards.get(focusStack.index).getIsFront()){
+                    currentText = focusStack.notecards.get(focusStack.index).getFront();
+
+                }
+                else{
+                    currentText = focusStack.notecards.get(focusStack.index).getBack();
+
+                }
+                EditorFld.setText(currentText);
+                EditorFld.setPrefRowCount(10);
+                EditorFld.setPrefColumnCount(100);
+                EditorFld.setWrapText(true);
+                EditorFld.setPrefWidth(400);
+                submit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override public void handle(MouseEvent mouseEvent) {
+                        String sent = EditorFld.getText();
+                        NoteCard currentNotecard = focusStack.notecards.get(focusStack.index);
+
+                        if (currentNotecard.getIsFront()) {
+                            currentNotecard.setFront(sent);
+                        } else {
+                            currentNotecard.setBack(sent);
+                        }
+
+                        System.out.println(currentNotecard.toString());
+                        model.updateNoteCard(currentNotecard, "test");
+                        editStage.close();
+                    }
+                });
+                exit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override public void handle(MouseEvent mouseEvent) {
+                        editStage.close();
+
+                    }
+                });
+                VBox editArea = new VBox(EditorFld, buttonArea);
+                Scene editScene = new Scene(editArea, 500, 200);
+                editStage.setScene(editScene);
+                editStage.show();
+            }
+        });
+        edit.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent mouseEvent) {
+
+                edit.setStyle("-fx-text-fill:black");
+            }
+        });
+        edit.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent mouseEvent) {
+
+                edit.setStyle("-fx-text-fill: white; -fx-font: 16px 'Times New Roman';");
+            }
+        });
+        edit.setMinWidth(75);
+        edit.setText("Edit");
+        edit.setStyle("-fx-text-fill: white; -fx-font: 16px 'Times New Roman';");
+        Label delete = new Label();
+        delete.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent mouseEvent) {
+
+                delete.setStyle("-fx-text-fill:black");
+            }
+        });
+        delete.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent mouseEvent) {
+
+                delete.setStyle("-fx-text-fill: white; -fx-font: 16px 'Times New Roman'; ");
+            }
+        });
+        delete.setText("Delete");
+        delete.setMinWidth(75);
+        delete.setStyle("-fx-text-fill: white; -fx-font: 16px 'Times New Roman'; ");
+        Label addURL = new Label();
+        addURL.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent mouseEvent) {
+
+                addURL.setStyle("-fx-text-fill:black");
+            }
+        });
+        addURL.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent mouseEvent) {
+
+                addURL.setStyle("-fx-text-fill: white; -fx-font: 16px 'Times New Roman'; ");
+            }
+        });
+        addURL.setText("Add URL");
+        addURL.setMinWidth(75);
+        addURL.setStyle("-fx-text-fill: white; -fx-font: 16px 'Times New Roman'; ");
+        Label addImg = new Label();
+        addImg.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent mouseEvent) {
+
+                addImg.setStyle("-fx-text-fill:black");
+            }
+        });
+        addImg.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent mouseEvent) {
+
+                addImg.setStyle("-fx-text-fill: white; -fx-font: 16px 'Times New Roman'; ");
+            }
+        });
+        addImg.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent mouseEvent) {
+
+                dragDrop();
+            }
+        });
+        addImg.setText("Add Img");
+        addImg.setMinWidth(75);
+        addImg.setStyle("-fx-text-fill: white; -fx-font: 16px 'Times New Roman'; ");
+        Label fullscreen = new Label();
+        fullscreen.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent mouseEvent) {
+
+                fullscreen.setStyle("-fx-text-fill:black");
+            }
+        });
+        fullscreen.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent mouseEvent) {
+
+                fullscreen.setStyle("-fx-text-fill: white; -fx-font: 16px 'Times New Roman';");
+            }
+        });
+        fullscreen.setMinWidth(75);
+        fullscreen.setText("Fullscreen");
+        fullscreen.setStyle("-fx-text-fill: white; -fx-font: 16px 'Times New Roman';");
+        menu.getChildren().addAll(edit, delete, addURL, addImg, fullscreen);
+        menu.setVisible(true);
+        menu.setPrefWidth(75);
+        menu.setMinWidth(USE_PREF_SIZE);
+        HBox iconAndPic = new HBox();
+        picIcon = new ImageView(new Image("resources/pic.png"));
+        if(focusStack.notecards.get(focusStack.index).isHasPics()){
+            picIcon.setVisible(true);
         }
-      });
-      edit.setOnMouseExited(new EventHandler<MouseEvent>() {
-        @Override public void handle(MouseEvent mouseEvent) {
-            
-          edit.setStyle("-fx-text-fill: white; -fx-font: 16px 'Times New Roman';");
+        else{
+            picIcon.setVisible(false);
         }
-      });
-      edit.setMinWidth(75);
-      edit.setText("Edit");
-      edit.setStyle("-fx-text-fill: white; -fx-font: 16px 'Times New Roman';");
-      Label delete = new Label();
-      delete.setOnMouseEntered(new EventHandler<MouseEvent>() {
-        @Override public void handle(MouseEvent mouseEvent) {
-            
-          delete.setStyle("-fx-text-fill:black");
-        }
-      });
-      delete.setOnMouseExited(new EventHandler<MouseEvent>() {
-        @Override public void handle(MouseEvent mouseEvent) {
-            
-          delete.setStyle("-fx-text-fill: white; -fx-font: 16px 'Times New Roman'; ");
-        }
-      });
-      delete.setText("Delete");
-      delete.setMinWidth(75);
-      delete.setStyle("-fx-text-fill: white; -fx-font: 16px 'Times New Roman'; ");
-      Label addURL = new Label();
-      addURL.setOnMouseEntered(new EventHandler<MouseEvent>() {
-        @Override public void handle(MouseEvent mouseEvent) {
-            
-          addURL.setStyle("-fx-text-fill:black");
-        }
-      });
-      addURL.setOnMouseExited(new EventHandler<MouseEvent>() {
-        @Override public void handle(MouseEvent mouseEvent) {
-            
-          addURL.setStyle("-fx-text-fill: white; -fx-font: 16px 'Times New Roman'; ");
-        }
-      });
-      addURL.setText("Add URL");
-      addURL.setMinWidth(75);
-      addURL.setStyle("-fx-text-fill: white; -fx-font: 16px 'Times New Roman'; ");
-      Label addImg = new Label();
-      addImg.setOnMouseEntered(new EventHandler<MouseEvent>() {
-        @Override public void handle(MouseEvent mouseEvent) {
-            
-          addImg.setStyle("-fx-text-fill:black");
-        }
-      });
-      addImg.setOnMouseExited(new EventHandler<MouseEvent>() {
-        @Override public void handle(MouseEvent mouseEvent) {
-            
-          addImg.setStyle("-fx-text-fill: white; -fx-font: 16px 'Times New Roman'; ");
-        }
-      });
-      addImg.setOnMouseClicked(new EventHandler<MouseEvent>() {
-        @Override public void handle(MouseEvent mouseEvent) {
-            
-          dragDrop();
-        }
-      });
-      addImg.setText("Add Img");
-      addImg.setMinWidth(75);
-      addImg.setStyle("-fx-text-fill: white; -fx-font: 16px 'Times New Roman'; ");
-      Label fullscreen = new Label();
-      fullscreen.setOnMouseEntered(new EventHandler<MouseEvent>() {
-        @Override public void handle(MouseEvent mouseEvent) {
-            
-          fullscreen.setStyle("-fx-text-fill:black");
-        }
-      });
-      fullscreen.setOnMouseExited(new EventHandler<MouseEvent>() {
-        @Override public void handle(MouseEvent mouseEvent) {
-            
-          fullscreen.setStyle("-fx-text-fill: white; -fx-font: 16px 'Times New Roman';");
-        }
-      });
-      fullscreen.setMinWidth(75);
-      fullscreen.setText("Fullscreen");
-      fullscreen.setStyle("-fx-text-fill: white; -fx-font: 16px 'Times New Roman';");
-      menu.getChildren().addAll(edit, delete, addURL, addImg, fullscreen);
-      menu.setVisible(true);
-      menu.setPrefWidth(75);
-      menu.setMinWidth(USE_PREF_SIZE);
-      HBox iconAndPic = new HBox();
-      picIcon = new ImageView(new Image("resources/pic.png"));
-      if(focusStack.notecards.get(focusStack.index).isHasPics()){
-          picIcon.setVisible(true);
-      }
-      else{
-          picIcon.setVisible(false);
-      }
-      
-      ImageView imageIcon = new ImageView(new Image("resources/Icon.PNG"));
-      picIcon.setOnMouseClicked(new EventHandler<MouseEvent>() {
-        @Override public void handle(MouseEvent mouseEvent) {
-            
-          focusStack.projector.projectorPane.setVisible(true);
-        }
-      });
-      
-      imageIcon.setOnMouseClicked(new EventHandler<MouseEvent>() {
-        @Override public void handle(MouseEvent mouseEvent) {
-            
-          menu.setVisible(true);
-        }
-      });
-      container.setOnMouseExited(new EventHandler<MouseEvent>() {
-        @Override public void handle(MouseEvent mouseEvent) {
-            
-          menu.setVisible(false);
-        }
-      });
-      picIcon.setFitWidth(30);
-      picIcon.setFitHeight(40);
-      imageIcon.setFitWidth(40);
-      imageIcon.setFitHeight(40);
-      iconAndPic.getChildren().addAll(imageIcon, picIcon);
-      container.getChildren().addAll(iconAndPic, menu);
-      menu.setVisible(false);
-      return container;
-  }
-  public void dragDrop(){
+
+        ImageView imageIcon = new ImageView(new Image("resources/Icon.PNG"));
+        picIcon.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent mouseEvent) {
+
+                focusStack.projector.projectorPane.setVisible(true);
+            }
+        });
+
+        imageIcon.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent mouseEvent) {
+
+                menu.setVisible(true);
+            }
+        });
+        container.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent mouseEvent) {
+
+                menu.setVisible(false);
+            }
+        });
+        picIcon.setFitWidth(30);
+        picIcon.setFitHeight(40);
+        imageIcon.setFitWidth(40);
+        imageIcon.setFitHeight(40);
+        iconAndPic.getChildren().addAll(imageIcon, picIcon);
+        container.getChildren().addAll(iconAndPic, menu);
+        menu.setVisible(false);
+        return container;
+    }
+
+    public void dragDrop(){
       
         Group projectorGrp = new Group();
         
@@ -1467,69 +1544,7 @@ public class QuoteMaker extends Switch implements Initializable {
         Connection conn = DriverManager.getConnection(url, username, password);
         return conn;
     }
-    
-  /*
-     class Notecard {
-         String frontData;
-         String backData;
-         boolean isFront;
-         int index = 0;
-         int id = 0;
-         boolean hasPics = false;
-         ArrayList<String> imgPaths = new ArrayList();
-         public Notecard(String front, String back, int id, ArrayList<String> ImgPaths){
-             if(ImgPaths.size() > 0){
-                 imgPaths = ImgPaths;
-                 hasPics= true;
-                 
-             }
-            
-            setisFront(true);
-            setFrontData(front);
-            setBackData(back);
-            setId(id);
-         }
-          
 
-         
-         public void addImg(String url){
-             imgPaths.add(url);
-             hasPics = true;
-             
-         }
-         public void setId(int Id){
-             this.id = Id;
-         }
-         
-         public int getId(){
-             return id;
-         }
-         
-         public void setFrontData(String data){
-             frontData = data;
-         }
-         
-         public String getFrontData(){
-             return frontData;
-         }
-         
-         public void setBackData(String data){
-             backData = data;
-         }
-         
-         public String getBackData(){
-             return backData;
-         }
-         
-         public void setisFront(boolean bool){
-             isFront = bool;
-         }
-         
-         public boolean getisFront(){
-             return isFront;
-         }
-     }
-     */
      class Stack {
          int index;
          int prevIndex;

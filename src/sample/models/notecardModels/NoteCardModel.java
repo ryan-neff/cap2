@@ -213,7 +213,7 @@ public class NoteCardModel {
      */
     private List<NoteCard> getNoteCardsForStack(final String stackId, final String uid ) {
         try {
-           final String query = "SELECT front, back, stack_index FROM notecard " +
+           final String query = "SELECT front, back, stack_index, card_id, stack_id FROM notecard " +
                                 "WHERE stack_id = ? " +
                                 "AND user_id = ? " +
                                 "ORDER BY card_id DESC";
@@ -229,6 +229,8 @@ public class NoteCardModel {
                 noteCard.setFront(results.getString("front"));
                 noteCard.setBack(results.getString("back"));
                 noteCard.setStackIndex(results.getInt("stack_index"));
+                noteCard.setStackId(results.getString("stack_id"));
+                noteCard.setId(results.getString("card_id"));
                 noteCards.add(noteCard);
             }
 
@@ -327,10 +329,10 @@ public class NoteCardModel {
     public boolean updateNoteCard(NoteCard updatedNoteCard, String userId) {
         try{
             final String query = "UPDATE notecard " +
-                                 "SET front=?, back=?, stack_index=? "+
-                                 "WHERE stack_id=? " +
-                                 "AND id=?" +
-                                 "AND user_id=?";
+                                 "SET front= ?, back= ?, stack_index= ? "+
+                                 "WHERE stack_id= ? " +
+                                 "AND card_id= ? " +
+                                 "AND user_id= ?";
 
             final PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, updatedNoteCard.getFront());
