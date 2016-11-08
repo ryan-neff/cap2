@@ -3,6 +3,7 @@ package sample.models.Views;
 /**
  * Created by JOSH
  */
+import javafx.scene.Parent;
 import sample.models.Views.Switch;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,6 +18,9 @@ public class HomeController extends Switch implements Initializable {
 
     @FXML
     private AnchorPane anchorPane;
+
+    @FXML
+    Parent p;
 
 
     QuoteMaker maker = new QuoteMaker();
@@ -46,7 +50,7 @@ public class HomeController extends Switch implements Initializable {
     private void handleGoQuote(ActionEvent event) {
        // this.getSceneManager().switchTo("Quotemaker");
         try {
-            this.maker.startQuote(new Stage());
+            this.maker.startQuote((Stage) this.getRoot().getScene().getWindow());
         } catch (Exception e) {
             e.printStackTrace();
         }
