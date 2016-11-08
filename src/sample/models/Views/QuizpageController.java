@@ -71,7 +71,7 @@ public class QuizpageController extends Switch implements Initializable {
     private void tempSetup() {
         userModel = new UserModel();
         noteCardModel = new NoteCardModel();
-        user = userModel.getUserInfo("uid_1", "pash");
+        user = userModel.getLoginInfo("uid_1", "pash");
         stacks = noteCardModel.getAllStacks("uid_1");
 
         stacks.forEach((stackLabelName, stack) -> {
