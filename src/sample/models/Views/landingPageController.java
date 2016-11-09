@@ -118,7 +118,7 @@ public class landingPageController implements Initializable {
         container.setMinWidth(-1.0D / 0.0);
         container.setMaxWidth(-1.0D / 0.0);
         final Label edit = new Label();
-        edit.setOnMouseClicked(new EventHandler() {
+/*        edit.setOnMouseClicked(new EventHandler() {
             public void handle(MouseEvent mouseEvent) {
             }
         });
@@ -131,12 +131,12 @@ public class landingPageController implements Initializable {
             public void handle(MouseEvent mouseEvent) {
                 edit.setStyle("-fx-text-fill: white; -fx-font: 16px \'Times New Roman\';");
             }
-        });
+        });  */
         edit.setMinWidth(75.0D);
         edit.setText("Edit");
         edit.setStyle("-fx-text-fill: white; -fx-font: 16px \'Times New Roman\';");
         final Label delete = new Label();
-        delete.setOnMouseEntered(new EventHandler() {
+/*        delete.setOnMouseEntered(new EventHandler() {
             public void handle(MouseEvent mouseEvent) {
                 delete.setStyle("-fx-text-fill:black");
             }
@@ -146,7 +146,7 @@ public class landingPageController implements Initializable {
                 delete.setStyle("-fx-text-fill: white; -fx-font: 16px \'Times New Roman\'; ");
             }
         });
-        delete.setText("Delete");
+*/      delete.setText("Delete");
         delete.setMinWidth(75.0D);
         delete.setStyle("-fx-text-fill: white; -fx-font: 16px \'Times New Roman\'; ");
         menu.getChildren().addAll(new Node[]{edit, delete});
@@ -157,7 +157,7 @@ public class landingPageController implements Initializable {
         ImageView imageIcon = new ImageView(new Image("Icon.PNG"));
         imageIcon.setFitWidth(40.0D);
         imageIcon.setFitHeight(40.0D);
-        imageIcon.setOnMouseClicked(new EventHandler() {
+/*        imageIcon.setOnMouseClicked(new EventHandler() {
             public void handle(MouseEvent mouseEvent) {
                 menu.setVisible(true);
             }
@@ -167,7 +167,7 @@ public class landingPageController implements Initializable {
                 menu.setVisible(false);
             }
         });
-        container.getChildren().addAll(new Node[]{imageIcon, menu});
+*/        container.getChildren().addAll(new Node[]{imageIcon, menu});
         menu.setVisible(false);
         return container;
     }
@@ -204,10 +204,10 @@ public class landingPageController implements Initializable {
 
     public Label getLabel() {
         Label label = new Label();
-        label.setOnMouseClicked(new EventHandler() {
+/*        label.setOnMouseClicked(new EventHandler() {
             public void handle(MouseEvent mouseEvent) {
             }
-        });
+        }); */
         label.setStyle("-fx-background-radius: 5;  -fx-text-fill:black;  -fx-font: 18px \'Segoe Script\'; -fx-font-weight: bold;; -fx-padding:10; -fx-border-color: white; -fx-border-width: 4px; -fx-background-image: url(\'notecardBackFixed.png\');");
         label.setWrapText(true);
         label.setPadding(new Insets(0.0D, 10.0D, 0.0D, 10.0D));
