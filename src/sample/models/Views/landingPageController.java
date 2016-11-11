@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -35,7 +36,7 @@ import javafx.stage.Stage;
 import sample.models.notecardModels.NoteCardModel;
 import sample.models.notecardModels.noteCards.StackModel;
 
-public class LandingPageController extends Switch implements Initializable {
+public class landingPageController extends Switch implements Initializable {
     @FXML
     private BorderPane borderPane;
     @FXML
@@ -51,8 +52,9 @@ public class LandingPageController extends Switch implements Initializable {
     ObservableList<String> categoryNames = FXCollections.observableArrayList();
     NoteCardModel noteCardModel = new NoteCardModel();
     Map<String, StackModel> stackModels = new HashMap<>();
+    private Stage stage;
 
-    public LandingPageController() {
+    public landingPageController() {
     }
 
     public void initialize(URL url, ResourceBundle rb) {
@@ -73,10 +75,16 @@ public class LandingPageController extends Switch implements Initializable {
         this.categories.setStyle("-fx-border-color:white;");
     }
 
-   /* public void ready(Stage stage) {
-        this.stage = stage;
-        this.makeStacks();
-   } */
+    @FXML
+    private void handleLangingPage(ActionEvent event) throws Exception {
+        this.getSceneManager().switchTo("landingPage");
+        LandingPage.startLandingPage(primaryStage);
+    }
+
+   void ready(Stage stage) {
+/*        this.stage = stage;
+       this.makeStacks();
+*/   }
 
     public void makeStacks() {
 
