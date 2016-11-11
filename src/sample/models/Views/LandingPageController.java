@@ -38,8 +38,6 @@ import sample.models.notecardModels.noteCards.StackModel;
 
 public class LandingPageController extends Switch implements Initializable {
 
-    @FXML
-    private BorderPane borderPane;
 
     @FXML
     public HBox stacks;
@@ -53,7 +51,7 @@ public class LandingPageController extends Switch implements Initializable {
     @FXML
     public ListView categoryChoices;
 
-    private Stage primaryStage;
+    QuoteMaker maker;
     ObservableList<String> categoryNames = FXCollections.observableArrayList();
     NoteCardModel noteCardModel;
     Map<String, StackModel> stackModels = new HashMap<>();
@@ -66,6 +64,7 @@ public class LandingPageController extends Switch implements Initializable {
         stackModels = getStacks();
         this.getCategories();
         this.makeStacks();
+        maker = new QuoteMaker();
     }
 
     @FXML
@@ -79,11 +78,6 @@ public class LandingPageController extends Switch implements Initializable {
         this.categoryChoices.setVisible(false);
         this.categories.setStyle("-fx-border-color:white;");
     }
-
-   /* public void ready(Stage stage) {
-        this.stage = stage;
-        this.makeStacks();
-   } */
 
     public void makeStacks() {
 
@@ -156,7 +150,41 @@ public class LandingPageController extends Switch implements Initializable {
         delete.setText("Delete");
         delete.setMinWidth(75.0D);
         delete.setStyle("-fx-text-fill: white; -fx-font: 16px \'Times New Roman\'; ");
-        menu.getChildren().addAll(new Node[]{edit, delete});
+
+        final Label study = new Label();
+        //primaryStage = ((Stage)this.getRoot().getScene().getWindow());
+        study.setOnMouseEntered(new EventHandler() {
+
+            @Override
+            public void handle(final Event event) {
+                study.setStyle("-fx-text-fill:black");
+            }
+        });
+
+        study.setOnMouseClicked(new EventHandler() {
+
+            @Override
+            public void handle(final Event event) {
+                try {
+                    this.toString();
+                    maker.startQuote(getPrimaryStage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        study.setOnMouseExited(new EventHandler() {
+
+            @Override
+            public void handle(final Event event) {
+                study.setStyle("-fx-text-fill: white; -fx-font: 16px \'Times New Roman\'; ");
+            }
+        });
+        study.setText("Study");
+        study.setMinWidth(75.0D);
+        study.setStyle("-fx-text-fill: white; -fx-font: 16px \'Times New Roman\'; ");
+
+        menu.getChildren().addAll(new Node[]{edit, delete, study});
         menu.setVisible(true);
         menu.setPrefWidth(75.0D);
         menu.setMinWidth(-1.0D / 0.0);
@@ -203,7 +231,7 @@ public class LandingPageController extends Switch implements Initializable {
             public void handle(final Event event) {
             }
         });
-        label.setStyle("-fx-background-radius: 5;  -fx-text-fill:black;  -fx-font: 18px \'Segoe Script\'; -fx-font-weight: bold;; -fx-padding:10; -fx-border-color: white; -fx-border-width: 4px; -fx-background-image: url(\'../../../notecardBackFixed.png\');");
+        label.getStyleClass().add("cardLabel");
         label.setWrapText(true);
         label.setPadding(new Insets(0.0D, 10.0D, 0.0D, 10.0D));
         label.setAlignment(Pos.CENTER);
@@ -223,6 +251,11 @@ public class LandingPageController extends Switch implements Initializable {
         System.out.println("getStacks");
         this.stackModels = noteCardModel.getAllStacks("test"); //TODO Change when user can create stacks
         return stackModels;
+    }
+
+    private Stage getPrimaryStage () {
+        Stage stage = ((Stage)this.getRoot().getScene().getWindow());
+        return stage;
     }
 }
 

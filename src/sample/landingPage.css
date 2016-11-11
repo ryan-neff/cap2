@@ -1,0 +1,15 @@
+
+.categoryPane {
+    fx-border-bottom: 1px solid black;
+}
+
+.cardLabel {
+-fx-background-radius: 5;
+-fx-text-fill:black;
+-fx-font: 18px 'Segoe Script';
+-fx-font-weight: bold;
+ -fx-padding:10;
+ -fx-border-color: white;
+ -fx-border-width: 4px;
+ -fx-background-image: url('/resources/notecardBackFixed.png');
+}

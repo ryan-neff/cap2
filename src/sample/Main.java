@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -26,8 +27,18 @@ public class Main extends Application {
         message.setFont(Font.font("MODENA", 32.0D));
         root.getChildren().add(message);
         Scene scene = new Scene(root);
+
+        scene.getStylesheets()
+                .add(getClass()
+                        .getResource("notecard.css")
+                        .toExternalForm());
+        scene.getStylesheets()
+                .add(getClass()
+                        .getResource("landingPage.css")
+                        .toExternalForm());
         this.sceneManager = new SceneManager(scene);
         this.sceneManager.switchTo("landingPage");;
+
         primaryStage.setOnCloseRequest(e -> {
             Platform.exit();
             System.exit(0);
