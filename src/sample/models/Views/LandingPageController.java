@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,8 +32,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import sample.models.notecardModels.NoteCardModel;
+import sample.models.notecardModels.noteCards.StackModel;
 
-public class landingPageController implements Initializable {
+public class LandingPageController extends Switch implements Initializable {
     @FXML
     private BorderPane borderPane;
     @FXML
@@ -42,14 +46,19 @@ public class landingPageController implements Initializable {
     public Label categories;
     @FXML
     public ListView categoryChoices;
-    private Stage stage;
-    ObservableList<String> categoryNames = FXCollections.observableArrayList();
 
-    public landingPageController() {
+    private Stage primaryStage;
+    ObservableList<String> categoryNames = FXCollections.observableArrayList();
+    NoteCardModel noteCardModel = new NoteCardModel();
+    Map<String, StackModel> stackModels = new HashMap<>();
+
+    public LandingPageController() {
     }
 
     public void initialize(URL url, ResourceBundle rb) {
+        stackModels = getStacks();
         this.getCategories();
+        this.makeStacks();
     }
 
     @FXML
@@ -64,46 +73,26 @@ public class landingPageController implements Initializable {
         this.categories.setStyle("-fx-border-color:white;");
     }
 
-    public void ready(Stage stage) {
+   /* public void ready(Stage stage) {
         this.stage = stage;
         this.makeStacks();
-    }
+   } */
 
     public void makeStacks() {
-        Connection conn = null;
-        Statement stmt = null;
-        Object stmtBack = null;
 
-        try {
-            conn = getMySqlConnection();
-            stmt = conn.createStatement();
-            String e = "select distinct subcategory1, stackname from notecard;";
-            ResultSet rs = stmt.executeQuery(e);
-
-            while(rs.next()) {
-                String subcategory = rs.getString("subcategory1");
-                String stackname = rs.getString("stackname");
-                String labelTitle = subcategory + " " + stackname;
-                StackPane sp = new StackPane();
-                Label label = this.getLabel();
-                label.setText(labelTitle);
-                sp.getChildren().add(label);
-                VBox menu = this.initDropDown(sp);
-                StackPane.setAlignment(menu, Pos.TOP_LEFT);
-                sp.getChildren().add(menu);
-                this.stacks.getChildren().add(sp);
-            }
-        } catch (Exception var20) {
-            var20.printStackTrace();
-            System.exit(1);
-        } finally {
-            try {
-                conn.close();
-            } catch (Exception var19) {
-                ;
-            }
-
-        }
+        stackModels.forEach((stackName, stack) -> {
+            String subcategory = stack.getCourse();
+            String name = stack.getName();
+            String labelTitle = subcategory + " " + name;
+            StackPane sp = new StackPane();
+            Label label = this.getLabel();
+            label.setText(labelTitle);
+            sp.getChildren().add(label);
+            VBox menu = this.initDropDown(sp);
+            StackPane.setAlignment(menu, Pos.TOP_LEFT);
+            sp.getChildren().add(menu);
+            this.stacks.getChildren().add(sp);
+        });
 
     }
 
@@ -173,31 +162,12 @@ public class landingPageController implements Initializable {
     }
 
     public void getCategories() {
-        Connection conn = null;
-        Statement stmt = null;
-        Object stmtBack = null;
 
-        try {
-            conn = getMySqlConnection();
-            stmt = conn.createStatement();
-            String e = "select distinct category from notecard;";
-            ResultSet rs = stmt.executeQuery(e);
-
-            while(rs.next()) {
-                String category = rs.getString("category");
-                this.categoryNames.add(category);
+        stackModels.forEach((stackName, stack) -> {
+            if(!this.categoryNames.contains(stack.getCourse())) {
+                this.categoryNames.add(stack.getCourse());
             }
-        } catch (Exception var15) {
-            var15.printStackTrace();
-            System.exit(1);
-        } finally {
-            try {
-                conn.close();
-            } catch (Exception var14) {
-                ;
-            }
-
-        }
+        });
 
         this.categoryChoices.setItems(this.categoryNames);
     }
@@ -223,14 +193,11 @@ public class landingPageController implements Initializable {
         return label;
     }
 
-    public static Connection getMySqlConnection() throws Exception {
-        String driver = "com.mysql.jdbc.Driver";
-        String url = "jdbc:mysql://localhost/capstonedb";
-        String username = "testuser";
-        String password = "12345";
-        Class.forName(driver);
-        Connection conn = DriverManager.getConnection(url, username, password);
-        return conn;
+
+    private Map<String, StackModel> getStacks() {
+        System.out.println("getStacks");
+        this.stackModels = noteCardModel.getAllStacks("test"); //TODO Change when user can create stacks
+        return stackModels;
     }
 }
 

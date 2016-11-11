@@ -51,6 +51,7 @@ public class SceneManager {
         if(controller == null) {
             controller = this.add(name);
             System.out.println(name);
+            System.out.println(controller.toString());
         }
 
         if(controller != null && this.scene != null) {

@@ -10,7 +10,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="landingpage.landingPageController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.models.Views.LandingPageController">
     <top>
         <HBox prefHeight="71.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
             <children>
@@ -18,7 +18,7 @@
                     <children>
                         <ImageView fitHeight="72.0" fitWidth="191.0" layoutX="4.0" layoutY="3.0">
                             <image>
-                                <Image url="logo1.PNG" />
+                                <Image url="../../../resources/logo1.PNG" />
                             </image>
                         </ImageView>
                     </children>
@@ -39,16 +39,16 @@
                 </AnchorPane>
                 <AnchorPane fx:id="rightAnch" prefHeight="71.0" prefWidth="341.0">
                     <children>
-                        <ImageView fitHeight="35.0" fitWidth="39.0" layoutX="250.0" layoutY="20.0">
+                        <!--<ImageView fitHeight="35.0" fitWidth="39.0" layoutX="250.0" layoutY="20.0">
                             <image>
-                                <Image url="searchIcon.png" />
+                                <Image url="../../../resources/searchIcon.png" />
                             </image>
                         </ImageView>
                         <ImageView fitHeight="30.0" fitWidth="35.0" layoutX="171.0" layoutY="23.0">
                             <image>
-                                <Image url="personIcon.png" />
+                                <Image url="../../../resources/personIcon.png" />
                             </image>
-                        </ImageView>
+                        </ImageView> !-->
                         <Line endX="35.0" endY="43.0" fill="#8a8181" layoutX="196.0" layoutY="11.0" startX="35.0" startY="10.0" stroke="#5e5656" />
                     </children>
                 </AnchorPane>
