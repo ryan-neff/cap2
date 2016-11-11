@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -61,10 +62,10 @@ public class LandingPageController extends Switch implements Initializable {
     }
 
     public void initialize(URL url, ResourceBundle rb) {
-        //noteCardModel= new NoteCardModel();
-        //stackModels = getStacks();
-        //this.getCategories();
-       // this.makeStacks();
+        noteCardModel= new NoteCardModel();
+        stackModels = getStacks();
+        this.getCategories();
+        this.makeStacks();
     }
 
     @FXML
@@ -113,35 +114,46 @@ public class LandingPageController extends Switch implements Initializable {
         container.setMinWidth(-1.0D / 0.0);
         container.setMaxWidth(-1.0D / 0.0);
         final Label edit = new Label();
-/*        edit.setOnMouseClicked(new EventHandler() {
-            public void handle(MouseEvent mouseEvent) {
-            }
+       edit.setOnMouseClicked(new EventHandler() {
+           @Override
+           public void handle(final Event event) {
+
+           }
         });
         edit.setOnMouseEntered(new EventHandler() {
-            public void handle(MouseEvent mouseEvent) {
+
+            @Override
+            public void handle(final Event event) {
                 edit.setStyle("-fx-text-fill:black");
             }
         });
         edit.setOnMouseExited(new EventHandler() {
-            public void handle(MouseEvent mouseEvent) {
+
+            @Override
+            public void handle(final Event event) {
                 edit.setStyle("-fx-text-fill: white; -fx-font: 16px \'Times New Roman\';");
             }
-        });  */
+        });
         edit.setMinWidth(75.0D);
         edit.setText("Edit");
         edit.setStyle("-fx-text-fill: white; -fx-font: 16px \'Times New Roman\';");
         final Label delete = new Label();
-/*        delete.setOnMouseEntered(new EventHandler() {
-            public void handle(MouseEvent mouseEvent) {
+
+        delete.setOnMouseEntered(new EventHandler() {
+
+            @Override
+            public void handle(final Event event) {
                 delete.setStyle("-fx-text-fill:black");
             }
         });
         delete.setOnMouseExited(new EventHandler() {
-            public void handle(MouseEvent mouseEvent) {
+
+            @Override
+            public void handle(final Event event) {
                 delete.setStyle("-fx-text-fill: white; -fx-font: 16px \'Times New Roman\'; ");
             }
         });
-*/      delete.setText("Delete");
+        delete.setText("Delete");
         delete.setMinWidth(75.0D);
         delete.setStyle("-fx-text-fill: white; -fx-font: 16px \'Times New Roman\'; ");
         menu.getChildren().addAll(new Node[]{edit, delete});
@@ -152,13 +164,18 @@ public class LandingPageController extends Switch implements Initializable {
         ImageView imageIcon = new ImageView(new Image("resources/Icon.PNG"));
         imageIcon.setFitWidth(40.0D);
         imageIcon.setFitHeight(40.0D);
-/*        imageIcon.setOnMouseClicked(new EventHandler() {
-            public void handle(MouseEvent mouseEvent) {
+
+        imageIcon.setOnMouseClicked(new EventHandler() {
+
+            @Override
+            public void handle(final Event event) {
                 menu.setVisible(true);
             }
         });
         container.setOnMouseExited(new EventHandler() {
-            public void handle(MouseEvent mouseEvent) {
+
+            @Override
+            public void handle(final Event event) {
                 menu.setVisible(false);
             }
         });
@@ -180,10 +197,12 @@ public class LandingPageController extends Switch implements Initializable {
 
     public Label getLabel() {
         Label label = new Label();
-/*        label.setOnMouseClicked(new EventHandler() {
-            public void handle(MouseEvent mouseEvent) {
+/       label.setOnMouseClicked(new EventHandler() {
+
+            @Override
+            public void handle(final Event event) {
             }
-        }); */
+        });
         label.setStyle("-fx-background-radius: 5;  -fx-text-fill:black;  -fx-font: 18px \'Segoe Script\'; -fx-font-weight: bold;; -fx-padding:10; -fx-border-color: white; -fx-border-width: 4px; -fx-background-image: url(\'../../../notecardBackFixed.png\');");
         label.setWrapText(true);
         label.setPadding(new Insets(0.0D, 10.0D, 0.0D, 10.0D));
