@@ -179,7 +179,7 @@ public class LandingPageController extends Switch implements Initializable {
                 menu.setVisible(false);
             }
         });
-*/      container.getChildren().addAll(new Node[]{imageIcon, menu});
+      container.getChildren().addAll(new Node[]{imageIcon, menu});
         menu.setVisible(false);
         return container;
     }
@@ -197,7 +197,7 @@ public class LandingPageController extends Switch implements Initializable {
 
     public Label getLabel() {
         Label label = new Label();
-/       label.setOnMouseClicked(new EventHandler() {
+        label.setOnMouseClicked(new EventHandler() {
 
             @Override
             public void handle(final Event event) {
