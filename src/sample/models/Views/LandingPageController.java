@@ -36,26 +36,32 @@ import sample.models.notecardModels.NoteCardModel;
 import sample.models.notecardModels.noteCards.StackModel;
 
 public class LandingPageController extends Switch implements Initializable {
+
     @FXML
     private BorderPane borderPane;
+
     @FXML
     public HBox stacks;
+
     @FXML
     public HBox quizzes;
+
     @FXML
     public Label categories;
+
     @FXML
     public ListView categoryChoices;
 
     private Stage primaryStage;
     ObservableList<String> categoryNames = FXCollections.observableArrayList();
-    NoteCardModel noteCardModel = new NoteCardModel();
+    NoteCardModel noteCardModel;
     Map<String, StackModel> stackModels = new HashMap<>();
 
     public LandingPageController() {
     }
 
     public void initialize(URL url, ResourceBundle rb) {
+        noteCardModel= new NoteCardModel();
         stackModels = getStacks();
         this.getCategories();
         this.makeStacks();
@@ -143,7 +149,7 @@ public class LandingPageController extends Switch implements Initializable {
         menu.setPrefWidth(75.0D);
         menu.setMinWidth(-1.0D / 0.0);
         new HBox();
-        ImageView imageIcon = new ImageView(new Image("Icon.PNG"));
+        ImageView imageIcon = new ImageView(new Image("resources/Icon.PNG"));
         imageIcon.setFitWidth(40.0D);
         imageIcon.setFitHeight(40.0D);
 /*        imageIcon.setOnMouseClicked(new EventHandler() {
@@ -156,7 +162,7 @@ public class LandingPageController extends Switch implements Initializable {
                 menu.setVisible(false);
             }
         });
-*/        container.getChildren().addAll(new Node[]{imageIcon, menu});
+*/      container.getChildren().addAll(new Node[]{imageIcon, menu});
         menu.setVisible(false);
         return container;
     }
@@ -178,7 +184,7 @@ public class LandingPageController extends Switch implements Initializable {
             public void handle(MouseEvent mouseEvent) {
             }
         }); */
-        label.setStyle("-fx-background-radius: 5;  -fx-text-fill:black;  -fx-font: 18px \'Segoe Script\'; -fx-font-weight: bold;; -fx-padding:10; -fx-border-color: white; -fx-border-width: 4px; -fx-background-image: url(\'notecardBackFixed.png\');");
+        label.setStyle("-fx-background-radius: 5;  -fx-text-fill:black;  -fx-font: 18px \'Segoe Script\'; -fx-font-weight: bold;; -fx-padding:10; -fx-border-color: white; -fx-border-width: 4px; -fx-background-image: url(\'../../../notecardBackFixed.png\');");
         label.setWrapText(true);
         label.setPadding(new Insets(0.0D, 10.0D, 0.0D, 10.0D));
         label.setAlignment(Pos.CENTER);
