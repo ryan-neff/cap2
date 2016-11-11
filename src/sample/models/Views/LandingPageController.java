@@ -61,10 +61,10 @@ public class LandingPageController extends Switch implements Initializable {
     }
 
     public void initialize(URL url, ResourceBundle rb) {
-        noteCardModel= new NoteCardModel();
-        stackModels = getStacks();
-        this.getCategories();
-        this.makeStacks();
+        //noteCardModel= new NoteCardModel();
+        //stackModels = getStacks();
+        //this.getCategories();
+       // this.makeStacks();
     }
 
     @FXML

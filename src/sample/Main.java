@@ -27,9 +27,7 @@ public class Main extends Application {
         root.getChildren().add(message);
         Scene scene = new Scene(root);
         this.sceneManager = new SceneManager(scene);
-        //this.sceneManager.switchTo("landingPageR");
-        //^^new home page^^
-        this.sceneManager.switchTo("home");
+        this.sceneManager.switchTo("landingPage");;
         primaryStage.setOnCloseRequest(e -> {
             Platform.exit();
             System.exit(0);

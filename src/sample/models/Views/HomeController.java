@@ -38,7 +38,7 @@ public class HomeController extends Switch implements Initializable {
 
     @FXML
     private void handleGoQuiz(ActionEvent event) {
-        this.getSceneManager().switchTo("landingPage");
+        this.getSceneManager().switchTo("quizpage");
     }
 
     @FXML
