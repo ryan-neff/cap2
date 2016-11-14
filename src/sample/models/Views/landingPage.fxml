@@ -39,11 +39,15 @@
                                 <Font name="Baskerville Old Face" size="18.0" />
                             </font>
                         </Text>
-                        <Text fill="#4d4a4a" layoutX="297.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Stats">
-                            <font>
-                                <Font name="Baskerville Old Face" size="18.0" />
-                            </font>
-                        </Text>
+                        <VBox layoutX="375.0" layoutY="33.0" prefHeight="70.0" prefWidth="44.0" style="-fx-background-color: #000000;" >
+                            <children>
+                                <Label fx:id="stats" onMouseClicked="#handleStats" prefHeight="22.0" style="-fx-background-color: #ffffff;" prefWidth="45.0" text="Stats" textFill="#656060">
+                                    <font>
+                                        <Font name="Baskerville Old Face" size="18.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
                     </children>
                 </AnchorPane>
                 <AnchorPane fx:id="rightAnch" prefHeight="71.0" prefWidth="341.0">

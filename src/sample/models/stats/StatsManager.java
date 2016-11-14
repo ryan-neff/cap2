@@ -10,7 +10,10 @@ public class StatsManager {
 
     public StatsManager(final Connection connection) {
         this.connection = connection;
+        System.out.println("Testing stats");
     }
+    
+    
 
 
 }
