@@ -19,7 +19,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.models.Views.LandingPageController">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.models.Views.LandingPageController">
     <top>
         <HBox prefHeight="71.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
             <children>
@@ -32,7 +32,7 @@
                         </ImageView>
                     </children>
                 </AnchorPane>
-                <AnchorPane fx:id="centerAnch" prefHeight="71.0" prefWidth="358.0">
+                <AnchorPane fx:id="centerAnch" prefHeight="75.0" prefWidth="377.0">
                     <children>
                         <Text fill="#595959" layoutX="6.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quizzes">
                             <font>
@@ -59,6 +59,11 @@
                             </image>
                         </ImageView>
                         <Line endX="35.0" endY="43.0" fill="#8a8181" layoutX="196.0" layoutY="11.0" startX="35.0" startY="10.0" stroke="#5e5656" />
+                  <ImageView fitHeight="42.0" fitWidth="50.0" layoutX="65.0" layoutY="17.0">
+                     <image>
+                        <Image url="@../../../resources/plus.png" />
+                     </image>
+                  </ImageView>
                     </children>
                 </AnchorPane>
             </children>

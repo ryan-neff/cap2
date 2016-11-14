@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -117,8 +118,11 @@ public class LandingPageController extends Switch implements Initializable {
        edit.setOnMouseClicked(new EventHandler() {
            @Override
            public void handle(final Event event) {
+               getSceneManager().switchTo("edit1");
+               }
 
-           }
+
+
         });
         edit.setOnMouseEntered(new EventHandler() {
 
@@ -153,6 +157,15 @@ public class LandingPageController extends Switch implements Initializable {
                 delete.setStyle("-fx-text-fill: white; -fx-font: 16px \'Times New Roman\'; ");
             }
         });
+
+        delete.setOnMouseClicked(new EventHandler() {
+
+            @Override
+            public void handle(final Event event) {
+
+            }
+        });
+
         delete.setText("Delete");
         delete.setMinWidth(75.0D);
         delete.setStyle("-fx-text-fill: white; -fx-font: 16px \'Times New Roman\'; ");
@@ -201,6 +214,7 @@ public class LandingPageController extends Switch implements Initializable {
 
             @Override
             public void handle(final Event event) {
+
             }
         });
         label.setStyle("-fx-background-radius: 5;  -fx-text-fill:black;  -fx-font: 18px \'Segoe Script\'; -fx-font-weight: bold;; -fx-padding:10; -fx-border-color: white; -fx-border-width: 4px; -fx-background-image: url(\'../../../notecardBackFixed.png\');");
