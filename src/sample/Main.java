@@ -37,7 +37,7 @@ public class Main extends Application {
                         .getResource("landingPage.css")
                         .toExternalForm());
         this.sceneManager = new SceneManager(scene);
-        this.sceneManager.switchTo("landingPage");;
+        this.sceneManager.switchTo("landingPage");
 
         primaryStage.setOnCloseRequest(e -> {
             Platform.exit();

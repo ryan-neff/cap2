@@ -36,6 +36,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import sample.models.notecardModels.NoteCardModel;
 import sample.models.notecardModels.noteCards.StackModel;
+import sample.models.stats.StatsManager;
 
 public class LandingPageController extends Switch implements Initializable {
 
@@ -71,7 +72,7 @@ public class LandingPageController extends Switch implements Initializable {
     @FXML
     private void handleStats(MouseEvent e)
     {
-        System.out.println("here");
+        StatsManager SM = new StatsManager();
     }
     
     
