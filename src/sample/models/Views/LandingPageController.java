@@ -4,16 +4,11 @@ package sample.models.Views;
  * Created by JOSH on 11/8/2016.
  */
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -28,14 +23,15 @@ import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import sample.models.notecardModels.NoteCardModel;
+import sample.models.notecardModels.UserModel;
 import sample.models.notecardModels.noteCards.StackModel;
+import sample.models.notecardModels.utils.UserSingleton;
 
 public class LandingPageController extends Switch implements Initializable {
 
@@ -52,20 +48,24 @@ public class LandingPageController extends Switch implements Initializable {
     @FXML
     public ListView categoryChoices;
 
-    QuoteMaker maker;
+    SessionController maker;
     ObservableList<String> categoryNames = FXCollections.observableArrayList();
     NoteCardModel noteCardModel;
     Map<String, StackModel> stackModels = new HashMap<>();
+    UserSingleton userSingleton;
 
     public LandingPageController() {
     }
 
     public void initialize(URL url, ResourceBundle rb) {
+        UserModel userModel = new UserModel(); //TODO delete once everything works
         noteCardModel= new NoteCardModel();
         stackModels = getStacks();
         this.getCategories();
         this.makeStacks();
-        maker = new QuoteMaker();
+        maker = new SessionController();
+        userSingleton = UserSingleton.getInstance();
+        userSingleton.setUser(userModel.getLoginInfo("test", "12345"));
     }
 
     @FXML
@@ -90,7 +90,7 @@ public class LandingPageController extends Switch implements Initializable {
             Label label = this.getLabel();
             label.setText(labelTitle);
             sp.getChildren().add(label);
-            VBox menu = this.initDropDown(sp);
+            VBox menu = this.initDropDown(sp, stack);
             StackPane.setAlignment(menu, Pos.TOP_LEFT);
             sp.getChildren().add(menu);
             this.stacks.getChildren().add(sp);
@@ -98,7 +98,7 @@ public class LandingPageController extends Switch implements Initializable {
 
     }
 
-    public VBox initDropDown(StackPane focusStack) {
+    public VBox initDropDown(StackPane focusStack, StackModel stackModel) {
         VBox container = new VBox();
         container.setMaxHeight(focusStack.getHeight() / 2.0D);
         container.setId("menuContainer");
@@ -112,9 +112,9 @@ public class LandingPageController extends Switch implements Initializable {
        edit.setOnMouseClicked(new EventHandler() {
            @Override
            public void handle(final Event event) {
-               getSceneManager().switchTo("edit1");
+               userSingleton.setStack(stackModel);
+               switchViews("editpage");
                }
-
 
 
         });
@@ -165,7 +165,6 @@ public class LandingPageController extends Switch implements Initializable {
         delete.setStyle("-fx-text-fill: white; -fx-font: 16px \'Times New Roman\'; ");
 
         final Label study = new Label();
-        //primaryStage = ((Stage)this.getRoot().getScene().getWindow());
         study.setOnMouseEntered(new EventHandler() {
 
             @Override
@@ -197,7 +196,35 @@ public class LandingPageController extends Switch implements Initializable {
         study.setMinWidth(75.0D);
         study.setStyle("-fx-text-fill: white; -fx-font: 16px \'Times New Roman\'; ");
 
-        menu.getChildren().addAll(new Node[]{edit, delete, study});
+        final Label quiz = new Label();
+        study.setOnMouseEntered(new EventHandler() {
+
+            @Override
+            public void handle(final Event event) {
+                quiz.setStyle("-fx-text-fill:black");
+            }
+        });
+
+        study.setOnMouseClicked(new EventHandler() {
+
+            @Override
+            public void handle(final Event event) {
+                userSingleton.setStack(stackModel);
+                switchViews("quizpage");
+            }
+        });
+        study.setOnMouseExited(new EventHandler() {
+
+            @Override
+            public void handle(final Event event) {
+                quiz.setStyle("-fx-text-fill: white; -fx-font: 16px \'Times New Roman\'; ");
+            }
+        });
+        quiz.setText("Quiz");
+        quiz.setMinWidth(75.0D);
+        quiz.setStyle("-fx-text-fill: white; -fx-font: 16px \'Times New Roman\'; ");
+
+        menu.getChildren().addAll(new Node[]{edit, delete, study, quiz});
         menu.setVisible(true);
         menu.setPrefWidth(75.0D);
         menu.setMinWidth(-1.0D / 0.0);
@@ -271,5 +298,11 @@ public class LandingPageController extends Switch implements Initializable {
         Stage stage = ((Stage)this.getRoot().getScene().getWindow());
         return stage;
     }
+
+    private void switchViews(final String view) {
+        this.getSceneManager().switchTo(view);
+
+    }
+
 }
 

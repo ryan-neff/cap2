@@ -88,6 +88,7 @@ public class NoteCardModel {
 
             while(result.next()) {
                 final StackModel stack = new StackModel();
+                stack.setId(result.getString("stack_id"));
                 stack.setName(result.getString("name"));
                 stack.setCourse(result.getString("course"));
                 stack.setSubject(result.getString("subject"));
