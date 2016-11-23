@@ -184,11 +184,11 @@ public class LandingPageController extends Switch implements Initializable {
             }
         });
         VBox newArea = new VBox(course, subject, stackName, buttonArea);
-        Scene newStkScene = new Scene(newArea, 150, 200);
+        Scene newStkScene = new Scene(newArea, 150, 130);
         catStage.setScene(newStkScene);
         catStage.show();
     }
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     public void makeStacks() {
 
         stackModels.forEach((stackName, stack) -> {
