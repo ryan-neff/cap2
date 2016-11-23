@@ -1,8 +1,8 @@
 
-.categoryPane {
+/*.categoryPane {
     fx-border-bottom: 1px solid black;
 }
-
+*/
 .cardLabel {
 -fx-background-radius: 5;
 -fx-text-fill:black;

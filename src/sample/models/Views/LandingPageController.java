@@ -56,6 +56,11 @@ public class LandingPageController extends Switch implements Initializable {
     @FXML
     public ListView categoryChoices;
 
+    @FXML
+    public ImageView plusBtn;
+    @FXML
+    public Label plusLabel;
+
     SessionController maker;
     ObservableList<String> categoryNames = FXCollections.observableArrayList();
     NoteCardModel noteCardModel;
@@ -74,6 +79,15 @@ public class LandingPageController extends Switch implements Initializable {
         maker = new SessionController();
         userSingleton = UserSingleton.getInstance();
         userSingleton.setUser(userModel.getLoginInfo("test", "12345"));
+       /* plusLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println("plusBtn");
+                newStack();
+                event.consume();
+            }
+        });*/
     }
 
     @FXML
