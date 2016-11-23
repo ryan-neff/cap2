@@ -16,8 +16,11 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
@@ -27,14 +30,19 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import sample.models.notecardModels.NoteCardModel;
 import sample.models.notecardModels.UserModel;
+import sample.models.notecardModels.noteCards.NoteCard;
 import sample.models.notecardModels.noteCards.StackModel;
 import sample.models.notecardModels.utils.UserSingleton;
 
 public class LandingPageController extends Switch implements Initializable {
 
+
+    public Stage primaryStage;
 
     @FXML
     public HBox stacks;
@@ -80,6 +88,91 @@ public class LandingPageController extends Switch implements Initializable {
         this.categories.setStyle("-fx-border-color:white;");
     }
 
+    @FXML
+    private void newStack(){
+        System.out.print("plus button  ");
+        StackModel nStack = new StackModel();
+        final Stage catStage = new Stage(StageStyle.UNDECORATED);
+        catStage.initModality(Modality.APPLICATION_MODAL);
+        catStage.initOwner(primaryStage);
+        HBox buttonArea = new HBox();
+
+        Button submit = new Button();
+        submit.setText("Submit");
+        submit.setStyle(
+                "-fx-background-radius: 15em; " +
+                        "-fx-min-width: 60px; " +
+                        "-fx-min-height: 30px; " +
+                        "-fx-max-width: 60px; " +
+                        "-fx-max-height: 30px;"
+        );
+
+        Button exit = new Button();
+        exit.setText("Exit");
+        exit.setStyle(
+                "-fx-background-radius: 15em; " +
+                        "-fx-min-width: 60px; " +
+                        "-fx-min-height: 30px; " +
+                        "-fx-max-width: 60px; " +
+                        "-fx-max-height: 30px;"
+        );
+        buttonArea.getChildren().add(submit);
+        buttonArea.getChildren().add(exit);
+        //TextArea EditorFld = new TextArea();
+        TextArea course = new TextArea();
+        TextArea subject = new TextArea();
+        TextArea stackName = new TextArea();
+        String currentText;
+
+        //EditorFld.setText(currentText);
+        //EditorFld.setPrefRowCount(10);
+        //EditorFld.setPrefColumnCount(100);
+        //EditorFld.setWrapText(true);
+        //EditorFld.setPrefWidth(400);
+        submit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent mouseEvent) {
+                //String sent = EditorFld.getText();
+                String courseSent = course.getText();
+                String subSent = subject.getText();
+                String nameSent = stackName.getText();
+                //NoteCard currentNotecard = focusStack.notecards.get(focusStack.index);
+                //if (currentNotecard.getIsFront()) {
+                //    currentNotecard.setFront(sent);
+                //} else {
+                //    currentNotecard.setBack(sent);
+                //}
+                nStack.setName(nameSent);
+                nStack.setSubject(subSent);
+                nStack.setCourse(courseSent);
+
+                //set first notecard in new stack
+                NoteCard newCard = new NoteCard();
+                //newCard.setStackIndex(1);
+                newCard.setFront("");
+                newCard.setBack("");
+                //newCard.setId("");
+                //newCard.setStackId("");
+
+
+                //NoteCardModel model = new NoteCardModel();
+                //System.out.println(currentNotecard.toString());
+                noteCardModel.updateNoteCard(newCard, "test");
+
+                catStage.close();
+            }
+        });
+        exit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent mouseEvent) {
+                catStage.close();
+
+            }
+        });
+        VBox newArea = new VBox(course, subject, stackName, buttonArea);
+        Scene newStkScene = new Scene(newArea, 150, 200);
+        catStage.setScene(newStkScene);
+        catStage.show();
+    }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void makeStacks() {
 
         stackModels.forEach((stackName, stack) -> {
