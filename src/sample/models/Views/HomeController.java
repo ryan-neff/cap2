@@ -4,7 +4,7 @@ package sample.models.Views;
  * Created by JOSH
  */
 import javafx.scene.Parent;
-import sample.models.Views.Switch;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -23,7 +23,7 @@ public class HomeController extends Switch implements Initializable {
     Parent p;
 
 
-    QuoteMaker maker = new QuoteMaker();
+    SessionController maker = new SessionController();
     public HomeController() {
     }
 

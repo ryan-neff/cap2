@@ -29,7 +29,7 @@ public class SceneManager {
     }
 
     public Switch add(String name) {
-        Switch controller = (Switch)this.controllers.get(name);
+        Switch controller = null;
         if(controller == null) {
             try {
                 FXMLLoader ex = new FXMLLoader(this.getClass().getResource(name + ".fxml"));
@@ -42,15 +42,15 @@ public class SceneManager {
                 controller = null;
             }
         }
-
         return controller;
     }
 
     public void switchTo(String name) {
-        Switch controller = (Switch)this.controllers.get(name);
+        Switch controller = null;
         if(controller == null) {
             controller = this.add(name);
             System.out.println(name);
+            System.out.println(this.controllers.get(name));
         }
 
         if(controller != null && this.scene != null) {
