@@ -7,6 +7,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -17,10 +19,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
@@ -133,9 +132,12 @@ public class LandingPageController extends Switch implements Initializable {
         buttonArea.getChildren().add(submit);
         buttonArea.getChildren().add(exit);
         //TextArea EditorFld = new TextArea();
-        TextArea course = new TextArea();
-        TextArea subject = new TextArea();
-        TextArea stackName = new TextArea();
+        TextField course = new TextField();
+        course.setPromptText("course");
+        TextField subject = new TextField();
+        subject.setPromptText("subject");
+        TextField stackName = new TextField();
+        stackName.setPromptText("stack name");
         String currentText;
 
         //EditorFld.setText(currentText);
