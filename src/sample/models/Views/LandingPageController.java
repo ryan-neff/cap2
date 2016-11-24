@@ -109,6 +109,17 @@ public class LandingPageController extends Switch implements Initializable {
         catStage.initModality(Modality.APPLICATION_MODAL);
         catStage.initOwner(primaryStage);
         HBox buttonArea = new HBox();
+        HBox labelArea = new HBox();
+
+        Label boxLabel = new Label();
+        boxLabel.setText("Create New Stack");
+        boxLabel.setStyle(
+                "-fx-background-radius: 15em; " +
+                        "-fx-min-width: 60px; " +
+                        "-fx-min-height: 30px; " +
+                        "-fx-max-width: 300px; " +
+                        "-fx-max-height: 30px;"
+        );
 
         Button submit = new Button();
         submit.setText("Submit");
@@ -116,7 +127,7 @@ public class LandingPageController extends Switch implements Initializable {
                 "-fx-background-radius: 15em; " +
                         "-fx-min-width: 60px; " +
                         "-fx-min-height: 30px; " +
-                        "-fx-max-width: 60px; " +
+                        "-fx-max-width: 120px; " +
                         "-fx-max-height: 30px;"
         );
 
@@ -129,6 +140,7 @@ public class LandingPageController extends Switch implements Initializable {
                         "-fx-max-width: 60px; " +
                         "-fx-max-height: 30px;"
         );
+        labelArea.getChildren().add(boxLabel);
         buttonArea.getChildren().add(submit);
         buttonArea.getChildren().add(exit);
         //TextArea EditorFld = new TextArea();
@@ -183,8 +195,8 @@ public class LandingPageController extends Switch implements Initializable {
 
             }
         });
-        VBox newArea = new VBox(course, subject, stackName, buttonArea);
-        Scene newStkScene = new Scene(newArea, 150, 130);
+        VBox newArea = new VBox(labelArea, course, subject, stackName, buttonArea);
+        Scene newStkScene = new Scene(newArea, 200, 155);
         catStage.setScene(newStkScene);
         catStage.show();
     }
