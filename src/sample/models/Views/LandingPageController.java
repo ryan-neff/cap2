@@ -318,7 +318,7 @@ public class LandingPageController extends Switch implements Initializable {
         study.setStyle("-fx-text-fill: white; -fx-font: 16px \'Times New Roman\'; ");
 
         final Label quiz = new Label();
-        study.setOnMouseEntered(new EventHandler() {
+        quiz.setOnMouseEntered(new EventHandler() {
 
             @Override
             public void handle(final Event event) {
@@ -326,7 +326,7 @@ public class LandingPageController extends Switch implements Initializable {
             }
         });
 
-        study.setOnMouseClicked(new EventHandler() {
+        quiz.setOnMouseClicked(new EventHandler() {
 
             @Override
             public void handle(final Event event) {
@@ -334,7 +334,7 @@ public class LandingPageController extends Switch implements Initializable {
                 switchViews("quizpage");
             }
         });
-        study.setOnMouseExited(new EventHandler() {
+        quiz.setOnMouseExited(new EventHandler() {
 
             @Override
             public void handle(final Event event) {
