@@ -71,14 +71,13 @@ public class LandingPageController extends Switch implements Initializable {
     }
 
     public void initialize(URL url, ResourceBundle rb) {
-        UserModel userModel = new UserModel(); //TODO delete once everything works
+        userSingleton = UserSingleton.getInstance();
         noteCardModel= new NoteCardModel();
         stackModels = getStacks();
         this.getCategories();
         this.makeStacks();
         maker = new SessionController();
-        userSingleton = UserSingleton.getInstance();
-        userSingleton.setUser(userModel.getLoginInfo("test", "12345"));
+        //userSingleton.setUser(userModel.getLoginInfo("test", "12345"));
        /* plusLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
             @Override
@@ -172,11 +171,13 @@ public class LandingPageController extends Switch implements Initializable {
                 defaultCard.setFront("Your first card for this Stack!");
                 defaultCard.setBack("Feel free to edit this card or delete it!");
                 defaultCard.setId(null);
-
                 nStack.getNoteCards().add(defaultCard);
 
                 noteCardModel.createStack(nStack, userSingleton.getUser().getUserId());
+                String id = noteCardModel.getStackID(nStack, userSingleton.getUser().getUserId());
                 noteCardModel.createNoteCard(defaultCard,userSingleton.getUser().getUserId(), nStack);
+                defaultCard.setId(noteCardModel.getNoteCardID(defaultCard,userSingleton.getUser().getUserId()));
+                defaultCard.setStackId(id);
                 userSingleton.setStack(nStack);
                 switchViews("editpage");
                 catStage.close();
@@ -404,8 +405,12 @@ public class LandingPageController extends Switch implements Initializable {
 
     private Map<String, StackModel> getStacks() {
         System.out.println("getStacks");
-        this.stackModels = noteCardModel.getAllStacks("test"); //TODO Change when user can create stacks
-        return stackModels;
+        this.stackModels = noteCardModel.getAllStacks(userSingleton.getUser().getUserId()); //TODO Change when user can create stacks
+
+        if(this.stackModels == null) {
+            this.stackModels = new HashMap<>();
+        }
+            return stackModels;
     }
 
     private Stage getPrimaryStage () {

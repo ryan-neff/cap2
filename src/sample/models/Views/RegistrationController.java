@@ -110,9 +110,9 @@ public class RegistrationController extends Switch implements Initializable {
         }
 
 
-        this.getSceneManager().switchTo("home");
+        this.getSceneManager().switchTo("landingPage");
         
-        singleton = new UserSingleton();
+        singleton = UserSingleton.getInstance();
         UserModel UM = new UserModel();
         User user = new User();
         user.setFirstName(FName);
@@ -128,7 +128,7 @@ public class RegistrationController extends Switch implements Initializable {
 
 
     public void handleLoginOk(ActionEvent actionEvent) {
-        singleton = new UserSingleton();
+        singleton = UserSingleton.getInstance();
         UserModel UM = new UserModel();
         singleton.setUser(UM.getLoginInfo(loginUsername.getText(), loginPassword.getText()));
         if(singleton.getUser() == null)
@@ -137,7 +137,7 @@ public class RegistrationController extends Switch implements Initializable {
         }
         else
         {
-            this.getSceneManager().switchTo("home");
+            this.getSceneManager().switchTo("landingPage");
         }
     }
 }

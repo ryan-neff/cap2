@@ -267,6 +267,28 @@ public class NoteCardModel {
         return null;
     }
 
+    public String getStackID(final StackModel stack, String userID) {
+        try {
+            final String getStackIdQuery = "SELECT stack_id FROM stacks " +
+                    "WHERE name = ? AND user_id = ?";
+
+            final PreparedStatement stmt = connection.prepareStatement(getStackIdQuery);
+            stmt.setString(1, stack.getName());
+            stmt.setString(2, userID);
+
+            final ResultSet id = stmt.executeQuery();
+
+            while(id.next()) {
+                stack.setId(id.getString("stack_id"));
+            }
+            return stack.getId();
+
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     /**
      * Insert a notecard into the database
      *
