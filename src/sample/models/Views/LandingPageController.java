@@ -77,16 +77,6 @@ public class LandingPageController extends Switch implements Initializable {
         this.getCategories();
         this.makeStacks();
         maker = new SessionController();
-        //userSingleton.setUser(userModel.getLoginInfo("test", "12345"));
-       /* plusLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent event) {
-                System.out.println("plusBtn");
-                newStack();
-                event.consume();
-            }
-        });*/
     }
 
     @FXML
