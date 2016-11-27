@@ -253,9 +253,23 @@ public class NoteCardModel {
      *
      * @return True if the insert was successful. False otherwise.
      */
-    public boolean createNoteCard(final NoteCard noteCard, final String userId) {
+    public boolean createNoteCard(final NoteCard noteCard, final String userId, final String stackName) {
         try{
-            final String query = "INSERT INTO notecard (id, front, back, stack_id, stack_index, user_id) " +
+            final String getStackIdQuery = "SELECT stack_id FROM stacks " +
+                                            "WHERE name = ? AND user_id = ?";
+            final PreparedStatement stackIdStmt = connection.prepareStatement(getStackIdQuery);
+            stackIdStmt.setString(1, stackName);
+            stackIdStmt.setString(2, userId);
+
+            final ResultSet id = stackIdStmt.executeQuery();
+
+            while(id.next()) {
+                System.out.println("A new note card was inserted successfully!");
+                noteCard.setStackId(id.getString("stack_id"));
+            }
+
+
+            final String query = "INSERT INTO notecard (card_id, front, back, stack_id, stack_index, user_id) " +
                                  "VALUES (?, ?, ?, ?, ?, ?)";
 
             final PreparedStatement stmt = connection.prepareStatement(query);
@@ -292,11 +306,11 @@ public class NoteCardModel {
      */
     public boolean createStack(final StackModel stackModel, final String userId) {
         try {
-            final String query = "INSERT INTO stackModel (id, name, date_modified, date_created, course, subject, user_id) " +
+            final String query = "INSERT INTO stacks (stack_id, name, date_modified, date_created, course, subject, user_id) " +
                                  "VALUES (?, ?, ?, ?, ?, ?, ?)";
             final PreparedStatement stmt = connection.prepareStatement(query);
 
-            stmt.setString(1, stackModel.getId());
+            stmt.setString(1, null);
             stmt.setString(2, stackModel.getName());
             stmt.setString(3, stackModel.getDateModified());
             stmt.setString(4, stackModel.getDateCreated());
@@ -307,7 +321,7 @@ public class NoteCardModel {
             final int rowsInserted = stmt.executeUpdate();
 
             if (rowsInserted > 0) {
-                System.out.println("A new note card was inserted successfully!");
+                System.out.println("A new stack was inserted successfully!");
                 return true;
             }
         } catch (SQLException e) {
