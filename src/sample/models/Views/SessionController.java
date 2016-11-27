@@ -61,6 +61,7 @@ import sample.models.DbConnectionManager;
 import sample.models.notecardModels.NoteCardModel;
 import sample.models.notecardModels.noteCards.NoteCard;
 import sample.models.notecardModels.noteCards.StackModel;
+import sample.models.notecardModels.utils.UserSingleton;
 
 
 public class SessionController extends Switch implements Initializable {
@@ -89,6 +90,8 @@ public class SessionController extends Switch implements Initializable {
     Scene fullScreen;
     ImageView picIcon;
     NoteCardModel model;
+    UserSingleton userSingleton;
+    StackModel stackModel;
 
   public void startQuote(final Stage primaryStage) throws Exception {
 
@@ -97,11 +100,13 @@ public class SessionController extends Switch implements Initializable {
     messageBoard.setStyle("-fx-background-color: cornsilk; -fx-background-insets: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, purple, 10, 0, 0, 0);");
     messageBoard.setPrefSize(1000, 700);
     model = new NoteCardModel();
+    userSingleton = UserSingleton.getInstance();
+    stackModel = userSingleton.getStack();
 
 
       //init first stack
-    String stackParam1 = "os";
-    String stackParam2 = "chapter1";
+    String stackParam1 = stackModel.getCourse();
+    String stackParam2 = stackModel.getName();
     makeStack(stackParam1, stackParam2);
     primaryStage.setTitle("NotePad Breeze");
 
@@ -227,17 +232,6 @@ public class SessionController extends Switch implements Initializable {
   public void makeStack(String param1, String param2){
       String title = param1 +" " + param2;
       Stack stack = new Stack(title);
-      /*ArrayList<String> front = fillFront(param1, param2);
-      ArrayList<String> back = fillBack(param1, param2);
-      ArrayList<Integer> ids = fillIDs(param1, param2);
-      ArrayList<String> imgPaths = new ArrayList<String>();
-      stack.related = getRelatedQuery();
-      for(int i = 0; i < front.size(); ++i){
-          imgPaths = getAssocImgs(ids.get(i));
-          stack.notecards.add(new NoteCard(front.get(i), back.get(i), ids.get(i), imgPaths));
-      }
-      */
-      StackModel stackModel = model.getSingleStack("Unit 1", "test"); //TODO Temporary
 
       stack.notecards = (ArrayList<NoteCard>) stackModel.getNoteCards();
       ArrayList<String> related = new ArrayList<>(); //TODO

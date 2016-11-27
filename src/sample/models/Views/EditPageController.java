@@ -7,6 +7,7 @@ package sample.models.Views;
         import java.sql.ResultSet;
         import java.sql.Statement;
         import java.util.ArrayList;
+        import java.util.Optional;
         import java.util.ResourceBundle;
         import javafx.event.ActionEvent;
         import javafx.event.EventHandler;
@@ -14,6 +15,7 @@ package sample.models.Views;
         import javafx.fxml.Initializable;
         import javafx.geometry.Insets;
         import javafx.geometry.Pos;
+        import javafx.scene.Node;
         import javafx.scene.control.Button;
         import javafx.scene.control.Label;
         import javafx.scene.control.ScrollPane;
@@ -32,6 +34,7 @@ package sample.models.Views;
         import javafx.scene.text.TextAlignment;
         import javafx.stage.Stage;
         import sample.models.notecardModels.NoteCardModel;
+        import sample.models.notecardModels.noteCards.NoteCard;
         import sample.models.notecardModels.noteCards.StackModel;
         import sample.models.notecardModels.utils.UserSingleton;
 
@@ -79,6 +82,7 @@ public class EditPageController extends Switch implements Initializable {
     private UserSingleton userSingleton;
     private StackModel stack;
     private NoteCardModel noteCardModel;
+    private NoteCard focusCard;
 
 
     @FXML
@@ -120,26 +124,33 @@ public class EditPageController extends Switch implements Initializable {
             String front1 = textareaFront.getText();
             String back1 = textareaBack.getText();
             if (newPressed) {
-                insertFront(front1);
-                insertBack(back1);
+
+                focusCard = new NoteCard();
+                focusCard.setFront(textareaFront.getText());
+                focusCard.setBack(textareaBack.getText());
+                focusCard.setStackId(stack.getId());
+                noteCardModel.createNoteCard(focusCard, userSingleton.getUser().getUserId(), stack);
+                String id = noteCardModel.getNoteCardID(focusCard, userSingleton.getUser().getUserId());
+                focusCard.setId(id);
+                stack.getNoteCards().add(focusCard);
+
+                Label label = getLabel();
+                label.setText(focusCard.getFront());
+                label.setId(id);
+
+                hTimeline.getChildren().add(label);
                 newPressed = false;
-                textareaFront.setStyle("-fx-textarea-box-border: transparent;");
-                textareaBack.setStyle("-fx-textarea-box-border: transparent;");
 
             } else {
-                // updateFront(front);
-                //updateBack(back);
+                focusCard.setFront(textareaFront.getText());
+                focusCard.setBack(textareaBack.getText());
+                noteCardModel.updateNoteCard(focusCard, userSingleton.getUser().getUserId());
             }
 
         });
 
 
         newBut.setOnMouseClicked(mouseEvent -> {
-            //System.out.println("we in sp on mouse clicked label");
-              /*String front = textareaFront.getText();
-              String back = textareaBack.getText();
-              insertFront(front);
-              insertBack(back);*/
             textareaFront.clear();
             textareaBack.clear();
             textareaFront.setStyle("-fx-border-color: red; -fx-border-width: 4px;");
@@ -150,17 +161,15 @@ public class EditPageController extends Switch implements Initializable {
         homeButton.setOnMouseClicked(event -> {
             switchViews("landingPage");
         });
-}
 
-    public void insertFront(String param2) {
-        //Implement insert statement
-
+        deleteBut.setOnMouseClicked(event -> {
+            noteCardModel.deleteNoteCard(focusCard, userSingleton.getUser().getUserId());
+            final Optional<Node> label = hTimeline.getChildren().stream().filter(x -> x.getId().equals(focusCard.getId())).findFirst();
+            hTimeline.getChildren().remove(label.get());
+            textareaFront.clear();
+            textareaBack.clear();
+        });
     }
-
-    public void insertBack(String param2) {
-        //Implement insert statment
-    }
-
     public void makeStacks() {
         //makeData();
         for (int i = 0; i < stack.getNoteCards().size(); ++i) {
@@ -181,9 +190,9 @@ public class EditPageController extends Switch implements Initializable {
     public void setFrontBack(String id) {
 
         int Id = Integer.parseInt(id);
-
-        textareaFront.setText(stack.getNoteCards().stream().filter(x -> x.getId().equals(id)).findFirst().get().getFront());
-        textareaBack.setText(stack.getNoteCards().stream().filter(x -> x.getId().equals(id)).findFirst().get().getBack());
+        focusCard = stack.getNoteCards().stream().filter(x -> x.getId().equals(id)).findFirst().get();
+        textareaFront.setText(focusCard.getFront());
+        textareaBack.setText(focusCard.getBack());
         globId = Id;
     }
 
@@ -192,9 +201,14 @@ public class EditPageController extends Switch implements Initializable {
         label.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                //System.out.println("we in sp on mouse clicked label");
+
+                if(newPressed) {
+                    textareaFront.setStyle("-fx-textarea-box-border: transparent;");
+                    textareaBack.setStyle("-fx-textarea-box-border: transparent;");
+                }
+
                 if (mouseEvent.getClickCount() == 2) {
-                    setFrontBack(label.getId());
+                        setFrontBack(label.getId());
                 }
             }
         });
@@ -224,7 +238,7 @@ public class EditPageController extends Switch implements Initializable {
         for (int i = 0; i < stack.getNoteCards().size(); ++i) {
             final Label label = new Label();
             label.setText(stack.getNoteCards().get(i).getFront());
-            String id = Integer.toString(i);
+            String id = stack.getNoteCards().get(i).getId();
             label.setId(id);
             final int idx = i;
             label.setOnMouseClicked(new EventHandler<MouseEvent>() {

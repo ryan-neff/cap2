@@ -4,6 +4,7 @@ package sample.models.Views;
  * Created by JOSH on 11/8/2016.
  */
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -70,23 +71,12 @@ public class LandingPageController extends Switch implements Initializable {
     }
 
     public void initialize(URL url, ResourceBundle rb) {
-        UserModel userModel = new UserModel(); //TODO delete once everything works
+        userSingleton = UserSingleton.getInstance();
         noteCardModel= new NoteCardModel();
         stackModels = getStacks();
         this.getCategories();
         this.makeStacks();
         maker = new SessionController();
-        userSingleton = UserSingleton.getInstance();
-        userSingleton.setUser(userModel.getLoginInfo("test", "12345"));
-       /* plusLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent event) {
-                System.out.println("plusBtn");
-                newStack();
-                event.consume();
-            }
-        });*/
     }
 
     @FXML
@@ -159,33 +149,27 @@ public class LandingPageController extends Switch implements Initializable {
         //EditorFld.setPrefWidth(400);
         submit.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override public void handle(MouseEvent mouseEvent) {
-                //String sent = EditorFld.getText();
                 String courseSent = course.getText();
                 String subSent = subject.getText();
                 String nameSent = stackName.getText();
-                //NoteCard currentNotecard = focusStack.notecards.get(focusStack.index);
-                //if (currentNotecard.getIsFront()) {
-                //    currentNotecard.setFront(sent);
-                //} else {
-                //    currentNotecard.setBack(sent);
-                //}
                 nStack.setName(nameSent);
                 nStack.setSubject(subSent);
                 nStack.setCourse(courseSent);
+                nStack.setNoteCards(new ArrayList<>());
 
-                //set first notecard in new stack
-                NoteCard newCard = new NoteCard();
-                //newCard.setStackIndex(1);
-                newCard.setFront("");
-                newCard.setBack("");
-                //newCard.setId("");
-                //newCard.setStackId("");
+                NoteCard defaultCard = new NoteCard();
+                defaultCard.setFront("Your first card for this Stack!");
+                defaultCard.setBack("Feel free to edit this card or delete it!");
+                defaultCard.setId(null);
+                nStack.getNoteCards().add(defaultCard);
 
-
-                //NoteCardModel model = new NoteCardModel();
-                //System.out.println(currentNotecard.toString());
-                noteCardModel.updateNoteCard(newCard, "test");
-
+                noteCardModel.createStack(nStack, userSingleton.getUser().getUserId());
+                String id = noteCardModel.getStackID(nStack, userSingleton.getUser().getUserId());
+                noteCardModel.createNoteCard(defaultCard,userSingleton.getUser().getUserId(), nStack);
+                defaultCard.setId(noteCardModel.getNoteCardID(defaultCard,userSingleton.getUser().getUserId()));
+                defaultCard.setStackId(id);
+                userSingleton.setStack(nStack);
+                switchViews("editpage");
                 catStage.close();
             }
         });
@@ -411,8 +395,12 @@ public class LandingPageController extends Switch implements Initializable {
 
     private Map<String, StackModel> getStacks() {
         System.out.println("getStacks");
-        this.stackModels = noteCardModel.getAllStacks("test"); //TODO Change when user can create stacks
-        return stackModels;
+        this.stackModels = noteCardModel.getAllStacks(userSingleton.getUser().getUserId()); //TODO Change when user can create stacks
+
+        if(this.stackModels == null) {
+            this.stackModels = new HashMap<>();
+        }
+            return stackModels;
     }
 
     private Stage getPrimaryStage () {
