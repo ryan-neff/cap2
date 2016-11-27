@@ -242,6 +242,31 @@ public class NoteCardModel {
         return null;
     }
 
+    public String getNoteCardID(final NoteCard noteCard, String userID) {
+        try {
+            final String query = "SELECT card_id FROM notecard " +
+                                 "WHERE front = ? " +
+                                 "AND back = ? " +
+                                 "AND user_id = ?";
+
+            final PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, noteCard.getFront());
+            stmt.setString(2, noteCard.getBack());
+            stmt.setString(3, userID);
+
+            final ResultSet id = stmt.executeQuery();
+
+            while(id.next()) {
+                noteCard.setId(id.getString("card_id"));
+            }
+            return noteCard.getId();
+
+        }catch(SQLException e) {
+        e.printStackTrace();
+    }
+        return null;
+    }
+
     /**
      * Insert a notecard into the database
      *
@@ -253,12 +278,12 @@ public class NoteCardModel {
      *
      * @return True if the insert was successful. False otherwise.
      */
-    public boolean createNoteCard(final NoteCard noteCard, final String userId, final String stackName) {
+    public boolean createNoteCard(final NoteCard noteCard, final String userId, final StackModel stack) {
         try{
             final String getStackIdQuery = "SELECT stack_id FROM stacks " +
                                             "WHERE name = ? AND user_id = ?";
             final PreparedStatement stackIdStmt = connection.prepareStatement(getStackIdQuery);
-            stackIdStmt.setString(1, stackName);
+            stackIdStmt.setString(1, stack.getId());
             stackIdStmt.setString(2, userId);
 
             final ResultSet id = stackIdStmt.executeQuery();
@@ -269,8 +294,8 @@ public class NoteCardModel {
             }
 
 
-            final String query = "INSERT INTO notecard (card_id, front, back, stack_id, stack_index, user_id) " +
-                                 "VALUES (?, ?, ?, ?, ?, ?)";
+            final String query = "INSERT INTO notecard (card_id, front, back, stack_id, stack_index, user_id, stackname, category, subcategory1) " +
+                                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             final PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, noteCard.getId());
@@ -279,6 +304,9 @@ public class NoteCardModel {
             stmt.setString(4, noteCard.getStackId());
             stmt.setInt(5, noteCard.getStackIndex());
             stmt.setString(6, userId);
+            stmt.setString(7, stack.getName());
+            stmt.setString(8, stack.getCourse());
+            stmt.setString(9, stack.getSubject());
 
             final int rowsInserted = stmt.executeUpdate();
 
@@ -420,8 +448,8 @@ public class NoteCardModel {
     public boolean deleteNoteCard(NoteCard noteCard, String userId) {
         try {
             final String query = "DELETE FROM notecard " +
-                                 "WHERE id=? " +
-                                 "AND user_id=? ";
+                                 "WHERE card_id= ? " +
+                                 "AND user_id= ? ";
 
             final PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, noteCard.getId());

@@ -176,7 +176,7 @@ public class LandingPageController extends Switch implements Initializable {
                 nStack.getNoteCards().add(defaultCard);
 
                 noteCardModel.createStack(nStack, userSingleton.getUser().getUserId());
-                noteCardModel.createNoteCard(defaultCard,userSingleton.getUser().getUserId(), nStack.getName());
+                noteCardModel.createNoteCard(defaultCard,userSingleton.getUser().getUserId(), nStack);
                 userSingleton.setStack(nStack);
                 switchViews("editpage");
                 catStage.close();
