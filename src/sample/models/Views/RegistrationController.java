@@ -71,6 +71,7 @@ public class RegistrationController extends Switch implements Initializable {
     }
 
     public void initialize(URL url, ResourceBundle rb) {
+    anchorPane.setStyle("-fx-background-color:  #0080ff");
     }
 
     @FXML

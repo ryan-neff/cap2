@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.models.Views.QuizpageController">
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.models.Views.QuizpageController">
     <top>
         <AnchorPane prefHeight="161.0" prefWidth="900.0" BorderPane.alignment="CENTER">
             <children>
                 <HBox alignment="CENTER" layoutX="331.0" prefHeight="83.0" prefWidth="900.0" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <children>
+                  <Button fx:id="homeButton" mnemonicParsing="false" text="Home" translateX="-300.0">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
                         <Text boundsType="LOGICAL_VERTICAL_CENTER" strokeType="OUTSIDE" strokeWidth="0.0" text="Quiz" textOrigin="CENTER">
                             <font>
                                 <Font name="Baskerville Old Face" size="46.0" />
@@ -55,7 +60,10 @@
                                         <Insets left="15.0" right="15.0" />
                                     </HBox.margin>
                                 </RadioButton>
-                                <HBox fx:id="answer1" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="807.0" />
+                                <HBox fx:id="answer1" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="807.0">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin></HBox>
                             </children></HBox>
                     </children>
                 </HBox>
