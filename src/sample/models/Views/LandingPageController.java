@@ -142,11 +142,6 @@ public class LandingPageController extends Switch implements Initializable {
         stackName.setPromptText("stack name");
         String currentText;
 
-        //EditorFld.setText(currentText);
-        //EditorFld.setPrefRowCount(10);
-        //EditorFld.setPrefColumnCount(100);
-        //EditorFld.setWrapText(true);
-        //EditorFld.setPrefWidth(400);
         submit.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override public void handle(MouseEvent mouseEvent) {
                 String courseSent = course.getText();
@@ -394,8 +389,7 @@ public class LandingPageController extends Switch implements Initializable {
 
 
     private Map<String, StackModel> getStacks() {
-        System.out.println("getStacks");
-        this.stackModels = noteCardModel.getAllStacks(userSingleton.getUser().getUserId()); //TODO Change when user can create stacks
+        this.stackModels = noteCardModel.getAllStacks(userSingleton.getUser().getUserId());
 
         if(this.stackModels == null) {
             this.stackModels = new HashMap<>();

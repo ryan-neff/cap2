@@ -65,6 +65,8 @@ public class QuizpageController extends Switch implements Initializable {
     @FXML
     private Button next;
     @FXML
+    private Button homeButton;
+    @FXML
     private CheckBox right;
     @FXML
     private Text wrong;
@@ -154,10 +156,19 @@ public class QuizpageController extends Switch implements Initializable {
                 answerNum = -1;
                 right.setVisible(false);
                 wrong.setVisible(false);
-                ++globalIdx;
-                makeQuestions();
+
+                if(stack.getNoteCards().size() - 1 == globalIdx){
+                    System.out.println("STOP");
+                }else {
+                    ++globalIdx;
+                    makeQuestions();
+                }
 
             }
+        });
+
+        homeButton.setOnMouseClicked(event -> {
+            switchViews("landingPage");
         });
 
     }
@@ -202,7 +213,7 @@ public class QuizpageController extends Switch implements Initializable {
         String finalAnswer = answers.get(randIdx);
         System.out.println("finalAnswer1: " + finalAnswer);
         Text textAnswer = makeTextObj(finalAnswer);
-        textAnswer.setWrappingWidth(answer1.getWidth());
+        textAnswer.setWrappingWidth(800);
         //answer1.setAlignment(Pos.CENTER);
         answer1.getChildren().add(textAnswer);
         makeAnswer2(indexes, answers);
@@ -259,7 +270,7 @@ public class QuizpageController extends Switch implements Initializable {
 
         String finalAnswer = answers.get(randIdx);
         Text textAnswer = makeTextObj(finalAnswer);
-        textAnswer.setWrappingWidth(answer2.getWidth());
+        textAnswer.setWrappingWidth(800);
         answer2.getChildren().add(textAnswer);
         makeAnswer3(indexes, answers);
     }
@@ -271,7 +282,7 @@ public class QuizpageController extends Switch implements Initializable {
         String finalAnswer = answers.get(idx);
         System.out.println("idx: " + idx);
         Text textAnswer = makeTextObj(finalAnswer);
-        textAnswer.setWrappingWidth(answer3.getWidth());
+        textAnswer.setWrappingWidth(800);
         answer3.getChildren().add(textAnswer);
     }
 
@@ -280,6 +291,11 @@ public class QuizpageController extends Switch implements Initializable {
         container2.setStyle("-fx-background-color: cornsilk; -fx-background-insets: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, purple, 10, 0, 0, 0);");
         container3.setStyle("-fx-background-color: cornsilk; -fx-background-insets: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, purple, 10, 0, 0, 0);");
         container1.setStyle("-fx-background-color: cornsilk; -fx-background-insets: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, purple, 10, 0, 0, 0);");
+    }
+
+    private void switchViews(final String view) {
+        this.getSceneManager().switchTo(view);
+
     }
 
 }
