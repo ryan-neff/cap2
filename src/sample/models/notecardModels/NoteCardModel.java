@@ -495,8 +495,8 @@ public class NoteCardModel {
      */
     public boolean deleteStack(StackModel stackModel, String userId) { //TODO may need refactor
         try {
-            final String query = "DELETE FROM stackModel " +
-                    "WHERE id=? " +
+            final String query = "DELETE FROM stacks " +
+                    "WHERE stack_id= ? " +
                     "AND user_id=?";
 
             final PreparedStatement stmt = connection.prepareStatement(query);
