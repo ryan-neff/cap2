@@ -32,14 +32,17 @@ public class SceneManager {
         Switch controller = null;
         if(controller == null) {
             try {
+                System.out.println(name + ".fxml");
                 FXMLLoader ex = new FXMLLoader(this.getClass().getResource(name + ".fxml"));
                 Parent root = (Parent)ex.load();
+                
                 controller = (Switch)ex.getController();
                 controller.setRoot(root);
                 controller.setSceneManager(this);
                 this.controllers.put(name, controller);
             } catch (Exception var5) {
                 controller = null;
+                System.out.println(var5);
             }
         }
         return controller;

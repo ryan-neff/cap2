@@ -80,6 +80,13 @@ public class LandingPageController extends Switch implements Initializable {
     }
 
     @FXML
+    private void handleStats(MouseEvent e)
+    {
+        
+    }
+    
+    
+    @FXML
     private void handleCategories(MouseEvent e) {
         this.categoryChoices.setVisible(true);
         this.categories.setStyle("-fx-border-color:blue;");
