@@ -18,15 +18,22 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import sample.models.notecardModels.NoteCardModel;
 import sample.models.notecardModels.noteCards.StackModel;
 import sample.models.notecardModels.utils.UserSingleton;
@@ -47,11 +54,11 @@ public class QuizpageController extends Switch implements Initializable {
     @FXML
     public HBox questionBody;
     @FXML
-    public HBox answer1;
+    public TextArea answer1;
     @FXML
-    public HBox answer2;
+    public TextArea answer2;
     @FXML
-    public HBox answer3;
+    public TextArea answer3;
     @FXML
     public HBox title;
     @FXML
@@ -82,6 +89,8 @@ public class QuizpageController extends Switch implements Initializable {
     public ArrayList<Integer> ids = new ArrayList<Integer>();
     public int globalIdx = 0;
     public int answerNum = -1;
+    public int gotRight = 0;
+    public int gotWrong = 0;
     private UserSingleton userSingleton;
     private NoteCardModel noteCardModel;
     private StackModel stack;
@@ -97,6 +106,8 @@ public class QuizpageController extends Switch implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         userSingleton = UserSingleton.getInstance();
         stack = userSingleton.getStack();
+        setToggleGroup();
+        
         setStyle();
         Text titleText = new Text();
         titleText.setText(stack.getCourse() + stack.getName());
@@ -106,7 +117,12 @@ public class QuizpageController extends Switch implements Initializable {
         makeQuestions();
     }
 
-
+    public void setToggleGroup(){
+        ToggleGroup tg = new ToggleGroup();
+        radbut1.setToggleGroup(tg);
+        radbut2.setToggleGroup(tg);
+        radbut3.setToggleGroup(tg);
+    }
 
     public void initButtons(){
 
@@ -115,31 +131,39 @@ public class QuizpageController extends Switch implements Initializable {
                 if(radbut1.isSelected()){
                     if(answerNum ==1){
                         right.setVisible(true);
+                        ++gotRight;
                     }
                     else{
                         wrong.setVisible(true);
+                        ++gotWrong;
                     }
 
                 }
                 if(radbut2.isSelected()){
                     if(answerNum ==2){
                         right.setVisible(true);
+                        ++gotRight;
                     }
                     else{
                         wrong.setVisible(true);
+                        ++gotWrong;
                     }
 
                 }
                 if(radbut3.isSelected()){
                     if(answerNum ==3){
                         right.setVisible(true);
+                        ++gotRight;
                     }
                     else{
                         wrong.setVisible(true);
+                        ++gotWrong;
                     }
 
                 }
-
+                radbut1.setDisable(true);
+                radbut2.setDisable(true);
+                radbut3.setDisable(true);
             }
         });
 
@@ -147,18 +171,21 @@ public class QuizpageController extends Switch implements Initializable {
         next.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override public void handle(MouseEvent mouseEvent) {
                 questionBody.getChildren().clear();
-                answer1.getChildren().clear();
-                answer2.getChildren().clear();
-                answer3.getChildren().clear();
+                answer1.clear();
+                answer2.clear();
+                answer3.clear();
                 radbut1.setSelected(false);
                 radbut2.setSelected(false);
                 radbut3.setSelected(false);
                 answerNum = -1;
                 right.setVisible(false);
                 wrong.setVisible(false);
-
+                radbut1.setDisable(false);
+                radbut2.setDisable(false);
+                radbut3.setDisable(false);
                 if(stack.getNoteCards().size() - 1 == globalIdx){
-                    System.out.println("STOP");
+                    System.out.println("stop");
+                    System.out.println("stop it");
                 }else {
                     ++globalIdx;
                     makeQuestions();
@@ -191,6 +218,8 @@ public class QuizpageController extends Switch implements Initializable {
         Text frontText = new Text();
         frontText.setText(stack.getNoteCards().get(globalIdx).getFront());
         frontText.setStyle("-fx-font: 18px 'Times New Roman';");
+        Label answer1Lab = new Label();
+        answer1Lab.setText(stack.getNoteCards().get(globalIdx).getFront());
         frontText.setWrappingWidth(answer1.getWidth());
         questionBody.getChildren().add(frontText);
     }
@@ -215,7 +244,7 @@ public class QuizpageController extends Switch implements Initializable {
         Text textAnswer = makeTextObj(finalAnswer);
         textAnswer.setWrappingWidth(800);
         //answer1.setAlignment(Pos.CENTER);
-        answer1.getChildren().add(textAnswer);
+        answer1.appendText(finalAnswer);
         makeAnswer2(indexes, answers);
 
 
@@ -271,7 +300,7 @@ public class QuizpageController extends Switch implements Initializable {
         String finalAnswer = answers.get(randIdx);
         Text textAnswer = makeTextObj(finalAnswer);
         textAnswer.setWrappingWidth(800);
-        answer2.getChildren().add(textAnswer);
+        answer2.appendText(finalAnswer);
         makeAnswer3(indexes, answers);
     }
     public void makeAnswer3(ArrayList<Integer> indexes, ArrayList<String> answers){
@@ -283,14 +312,14 @@ public class QuizpageController extends Switch implements Initializable {
         System.out.println("idx: " + idx);
         Text textAnswer = makeTextObj(finalAnswer);
         textAnswer.setWrappingWidth(800);
-        answer3.getChildren().add(textAnswer);
+        answer3.appendText(finalAnswer);
     }
 
     public void setStyle(){
         root.setStyle("-fx-background-color:  #0080ff");
-        container2.setStyle("-fx-background-color: cornsilk; -fx-background-insets: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, purple, 10, 0, 0, 0);");
-        container3.setStyle("-fx-background-color: cornsilk; -fx-background-insets: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, purple, 10, 0, 0, 0);");
-        container1.setStyle("-fx-background-color: cornsilk; -fx-background-insets: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, purple, 10, 0, 0, 0);");
+        //container2.setStyle("-fx-background-color: cornsilk; -fx-background-insets: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, purple, 10, 0, 0, 0);");
+        //container3.setStyle("-fx-background-color: cornsilk; -fx-background-insets: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, purple, 10, 0, 0, 0);");
+        //container1.setStyle("-fx-background-color: cornsilk; -fx-background-insets: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, purple, 10, 0, 0, 0);");
     }
 
     private void switchViews(final String view) {
