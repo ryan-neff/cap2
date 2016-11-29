@@ -215,7 +215,7 @@ public class QuizpageController extends Switch implements Initializable {
                     double decimal = ((double)gotRight/(double)total);
                     System.out.println("decimal: " + decimal);
                     int percent = (int) (decimal * 100);
-                    System.out.println("percent: " + percent);
+                    
                     String currentText = "Congrats!!!\n" + gotRight + "/"+total+ " \n"+percent+"%";
                     EditorFld.setWrapText(true);
                     EditorFld.setPrefWidth(400);
