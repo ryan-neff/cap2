@@ -41,8 +41,8 @@ public class NoteCardModel {
         final StackModel stackModel = new StackModel();
         try {
          final String query = "SELECT stack_id, name, course, subject, date_created, date_modified " +
-                              " FROM stacks WHERE name=?" +
-                              " AND user_id=?" +
+                              " FROM stacks WHERE name= ?" +
+                              " AND user_id= ?" +
                               " ORDER BY date_created DESC";
 
          final PreparedStatement stmt = connection.prepareStatement(query);

@@ -164,17 +164,17 @@ public class SessionController extends Switch implements Initializable {
     
     //set all of the objects for the sidebar area
     Text relatedTitle = new Text();
-    relatedTitle.setText("Related StackModel");
+    relatedTitle.setText("Related Stacks");
     relatedTitle.setStyle("-fx-text-fill: #6666ff; -fx-font: 16px 'Times New Roman';");
     ImageView logo = new ImageView(new Image("resources/logo1.PNG"));
     logo.setFitWidth(180);
     logo.setFitHeight(60);
-  //  VBox relatedNotecards = getRelated(); TODO
-  //  relatedNotecards.setStyle(" -fx-background-color: cornsilk; -fx-background-insets: 3; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, #ccccff, 10, 0, 0, 0);");
+    VBox relatedNotecards = getRelated();
+    relatedNotecards.setStyle(" -fx-background-color: cornsilk; -fx-background-insets: 3; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, #ccccff, 10, 0, 0, 0);");
     Text dimensions = new Text();
     dimensions.setText("Notecard\nDimensions");
     dimensions.setStyle("-fx-text-fill: #6666ff; -fx-font: 16px 'Times New Roman';");
-//    controls.getChildren().addAll(logo, relatedTitle, new Separator(), relatedNotecards, new Separator(), dimensions, new Separator(), widthSlider, heightSlider, layoutXSlider, layoutYSlider, new Separator());
+    controls.getChildren().addAll(logo, relatedTitle, new Separator(), relatedNotecards, new Separator(), dimensions, new Separator(), widthSlider, heightSlider, layoutXSlider, layoutYSlider, new Separator());
     controls.setPrefWidth(180);
     controls.setMinWidth(180);
     controls.setMaxWidth(Control.USE_PREF_SIZE);
@@ -224,7 +224,7 @@ public class SessionController extends Switch implements Initializable {
     // show the stage.
     primaryStage.setScene(scene);
     primaryStage.show();
-    dragDrop();
+    //dragDrop();
     setupLoadWoDrag();
     //animate.setOnAction(e-> makeAnimation(newQuote));
   }
@@ -303,7 +303,7 @@ public class SessionController extends Switch implements Initializable {
       VBox temp = new VBox();
      
       
-      for(int i = 0; i >= focusStack.related.size(); ++i){
+      for(int i = 0; i < focusStack.related.size(); ++i){
           Label label = new Label();
           String relatedResults = focusStack.related.get(i);
           String[] resultsArr = relatedResults.split(" ");//split up the db keywords and send them to makeStack
@@ -312,13 +312,13 @@ public class SessionController extends Switch implements Initializable {
 
           label.setOnMouseClicked(new EventHandler<MouseEvent>() {
           @Override public void handle(MouseEvent mouseEvent) {
-            makeStack(name, course);
+            makeStack(course, name);
           }
         });
           label.setText(relatedResults);
           label.setStyle("-fx-background-radius: 5; -fx-background-color: #6666ff; -fx-text-fill: white; -fx-font: 12px 'Segoe Script'; -fx-padding:10;");
           
-          //label.setStyle("-fx-box-shadow: 0 0 0 3px #fff, 0 0 0 5px #ddd, 0 0 0 10px #fff, 0");
+          label.setStyle("-fx-box-shadow: 0 0 0 3px #fff, 0 0 0 5px #ddd, 0 0 0 10px #fff, 0");
           label.setWrapText(true);
           label.setAlignment(Pos.CENTER);
           label.setTextAlignment(TextAlignment.CENTER);
