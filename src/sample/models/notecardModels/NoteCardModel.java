@@ -41,8 +41,8 @@ public class NoteCardModel {
         final StackModel stackModel = new StackModel();
         try {
          final String query = "SELECT stack_id, name, course, subject, date_created, date_modified " +
-                              " FROM stacks WHERE name=?" +
-                              " AND user_id=?" +
+                              " FROM stacks WHERE name= ?" +
+                              " AND user_id= ?" +
                               " ORDER BY date_created DESC";
 
          final PreparedStatement stmt = connection.prepareStatement(query);
@@ -117,12 +117,12 @@ public class NoteCardModel {
      *
      * @return A Map of stacks mapped by stack name
      */
-    public Map<String, StackModel> getStacksByCourse(final String course, final String userId) {
+    public List<String> getStacksByCourse(final String course, final String userId) {
        final PreparedStatement stmt;
        final ResultSet result;
-        final List<StackModel> stacks;
+        final List<String> stacks;
         try {
-        final String query = "SELECT stack_id, name, course, subject, date_created, date_modified " +
+        final String query = "SELECT name " +
                              "FROM stacks WHERE course = ?" +
                              " AND user_id = ?" +
                              " ORDER BY date_created DESC";
@@ -135,17 +135,10 @@ public class NoteCardModel {
 
         while(result.next()) {
             final StackModel stack = new StackModel();
-            stack.setName(result.getString("name"));
-            stack.setCourse(result.getString("course"));
-            stack.setSubject(result.getString("subject"));
-            stack.setDateCreated(result.getString("date_created"));
-            stack.setDateModified(result.getString("date_modified"));
-            stack.setNoteCards(getNoteCardsForStack(result.getString("stack_id"), userId));
-            stacks.add(stack);
+            stacks.add(result.getString("name"));
         }
+        return stacks;
 
-        final Map<String, StackModel> mapByStackName = stacks.stream().collect(Collectors.toMap(StackModel::getName, Function.identity()));
-            return mapByStackName;
         } catch (SQLException e) {
             e.printStackTrace();
         }

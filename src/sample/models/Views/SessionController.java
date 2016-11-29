@@ -105,9 +105,9 @@ public class SessionController extends Switch implements Initializable {
 
 
       //init first stack
-    String stackParam1 = stackModel.getCourse();
-    String stackParam2 = stackModel.getName();
-    makeStack(stackParam1, stackParam2);
+    String course = stackModel.getCourse();
+    String stackName = stackModel.getName();
+    makeStack(course, stackName);
     primaryStage.setTitle("NotePad Breeze");
 
     
@@ -164,17 +164,17 @@ public class SessionController extends Switch implements Initializable {
     
     //set all of the objects for the sidebar area
     Text relatedTitle = new Text();
-    relatedTitle.setText("Related StackModel");
+    relatedTitle.setText("Related Stacks");
     relatedTitle.setStyle("-fx-text-fill: #6666ff; -fx-font: 16px 'Times New Roman';");
     ImageView logo = new ImageView(new Image("resources/logo1.PNG"));
     logo.setFitWidth(180);
     logo.setFitHeight(60);
-  //  VBox relatedNotecards = getRelated(); TODO
-  //  relatedNotecards.setStyle(" -fx-background-color: cornsilk; -fx-background-insets: 3; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, #ccccff, 10, 0, 0, 0);");
+    VBox relatedNotecards = getRelated();
+    relatedNotecards.setStyle(" -fx-background-color: cornsilk; -fx-background-insets: 3; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, #ccccff, 10, 0, 0, 0);");
     Text dimensions = new Text();
     dimensions.setText("Notecard\nDimensions");
     dimensions.setStyle("-fx-text-fill: #6666ff; -fx-font: 16px 'Times New Roman';");
-//    controls.getChildren().addAll(logo, relatedTitle, new Separator(), relatedNotecards, new Separator(), dimensions, new Separator(), widthSlider, heightSlider, layoutXSlider, layoutYSlider, new Separator());
+    controls.getChildren().addAll(logo, relatedTitle, new Separator(), relatedNotecards, new Separator(), dimensions, new Separator(), widthSlider, heightSlider, layoutXSlider, layoutYSlider, new Separator());
     controls.setPrefWidth(180);
     controls.setMinWidth(180);
     controls.setMaxWidth(Control.USE_PREF_SIZE);
@@ -224,19 +224,19 @@ public class SessionController extends Switch implements Initializable {
     // show the stage.
     primaryStage.setScene(scene);
     primaryStage.show();
-    dragDrop();
+    //dragDrop();
     setupLoadWoDrag();
     //animate.setOnAction(e-> makeAnimation(newQuote));
   }
   
-  public void makeStack(String param1, String param2){
-      String title = param1 +" " + param2;
+  public void makeStack(String course, String name){
+      String title = course +" " + name;
       Stack stack = new Stack(title);
-
+      stackModel = model.getSingleStack(name, userSingleton.getUser().getUserId());
       stack.notecards = (ArrayList<NoteCard>) stackModel.getNoteCards();
-      ArrayList<String> related = new ArrayList<>(); //TODO
-      related.add("Unit 2");
-      stack.related = related;
+      List<String> related = model.getStacksByCourse(course, userSingleton.getUser().getUserId());
+      //related.add("Unit 2");
+      stack.related = (ArrayList<String>) related;
       focusStack = stack;
       stackList.add(focusStack);
       
@@ -298,26 +298,27 @@ public class SessionController extends Switch implements Initializable {
         
   }
   
-  /*  TODO
+
   public VBox getRelated(){//This displays the related notecards in teh sidebar up to 10
       VBox temp = new VBox();
      
       
-      for(int i = 0; i < 13; ++i){
+      for(int i = 0; i < focusStack.related.size(); ++i){
           Label label = new Label();
           String relatedResults = focusStack.related.get(i);
           String[] resultsArr = relatedResults.split(" ");//split up the db keywords and send them to makeStack
-          final String param1 = resultsArr[0];
-          final String param2 = resultsArr[1];
+          final String name = focusStack.related.get(i);
+          final String course = stackModel.getCourse();
+
           label.setOnMouseClicked(new EventHandler<MouseEvent>() {
           @Override public void handle(MouseEvent mouseEvent) {
-            makeStack(param1, param2);
+            makeStack(course, name);
           }
         });
           label.setText(relatedResults);
           label.setStyle("-fx-background-radius: 5; -fx-background-color: #6666ff; -fx-text-fill: white; -fx-font: 12px 'Segoe Script'; -fx-padding:10;");
           
-          //label.setStyle("-fx-box-shadow: 0 0 0 3px #fff, 0 0 0 5px #ddd, 0 0 0 10px #fff, 0");
+          label.setStyle("-fx-box-shadow: 0 0 0 3px #fff, 0 0 0 5px #ddd, 0 0 0 10px #fff, 0");
           label.setWrapText(true);
           label.setAlignment(Pos.CENTER);
           label.setTextAlignment(TextAlignment.CENTER);
@@ -333,45 +334,6 @@ public class SessionController extends Switch implements Initializable {
   }
   
 
-  
-  
-  public ArrayList<String> getRelatedQuery(){
-        ArrayList<String> related = new ArrayList<String>();
-        Connection conn = null;
-        Statement stmt = null;
-        Statement stmtBack = null;
-        try {
-          // get connection to an Oracle database
-          conn = getMySqlConnection();
-     
-          stmt = conn.createStatement();
-          String sql;
-          sql = "select distinct subcategory1, stackname from notecard;";
-          ResultSet rs = stmt.executeQuery(sql);
-          while(rs.next()){
-              String subcategory = (rs.getString("subcategory1"));
-              String stackname = (rs.getString("stackname"));
-              String labelTitle = subcategory + " " + stackname;
-              related.add(labelTitle);
-          }
-              
-          }
-          
-          catch (Exception e) {
-          // handle the exception
-          e.printStackTrace();
-          System.exit(1);
-        } finally {
-          // release database resources
-          try {
-            conn.close();
-          } catch (Exception ignore) {
-          }
-        }
-        
-        return related;
-  }
-*/
 
     public void initialize(URL location, ResourceBundle resources) {
 
