@@ -13,6 +13,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -25,10 +27,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import static javafx.scene.layout.Region.USE_PREF_SIZE;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -52,6 +57,8 @@ public class QuizpageController extends Switch implements Initializable {
     @FXML
     public HBox question;
     @FXML
+    public HBox topContainer;
+    @FXML
     public HBox questionBody;
     @FXML
     public TextArea answer1;
@@ -71,8 +78,8 @@ public class QuizpageController extends Switch implements Initializable {
     private Button submit;
     @FXML
     private Button next;
-    @FXML
-    private Button homeButton;
+    //@FXML
+    //private Button homeButton;
     @FXML
     private CheckBox right;
     @FXML
@@ -83,6 +90,10 @@ public class QuizpageController extends Switch implements Initializable {
     private HBox container2;
     @FXML
     private HBox container3;
+    @FXML   
+    private VBox vboxContainer;
+    @FXML 
+    private HBox bigContainer;
 
     public ArrayList<String> front = new ArrayList<String>();
     public ArrayList<String> back = new ArrayList<String>();
@@ -107,7 +118,7 @@ public class QuizpageController extends Switch implements Initializable {
         userSingleton = UserSingleton.getInstance();
         stack = userSingleton.getStack();
         setToggleGroup();
-        
+        vboxContainer.minWidthProperty().bind(bigContainer.minWidthProperty());
         setStyle();
         Text titleText = new Text();
         titleText.setText(stack.getCourse() + stack.getName());
@@ -125,7 +136,13 @@ public class QuizpageController extends Switch implements Initializable {
     }
 
     public void initButtons(){
-
+      Button homeButton = new Button();
+      ImageView im = new ImageView(new Image("resources/Icon.PNG"));
+      im.setFitWidth(90);
+      im.setFitHeight(60);
+      homeButton.setGraphic(im);
+      //homeButton.translateXProperty().bind(topContainer.widthProperty().subtract(homeButton.maxWidth(USE_PREF_SIZE)+20));
+      topContainer.getChildren().add(homeButton);
         submit.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override public void handle(MouseEvent mouseEvent) {
                 if(radbut1.isSelected()){
@@ -184,8 +201,66 @@ public class QuizpageController extends Switch implements Initializable {
                 radbut2.setDisable(false);
                 radbut3.setDisable(false);
                 if(stack.getNoteCards().size() - 1 == globalIdx){
-                    System.out.println("stop");
-                    
+                    next.setDisable(true);
+                    submit.setDisable(true);
+                    final Stage statsStage = new Stage(StageStyle.UNDECORATED);
+                    statsStage.initModality(Modality.APPLICATION_MODAL);
+                    statsStage.initOwner(stage);
+                    HBox buttonArea = new HBox();
+                    TextArea EditorFld = new TextArea();
+                    int total = gotRight + gotWrong;
+                    System.out.println("total: " + total);
+                    System.out.println("gotright: " + gotRight);
+                    System.out.println("gotwrong: " + gotWrong);
+                    double decimal = ((double)gotRight/(double)total);
+                    System.out.println("decimal: " + decimal);
+                    int percent = (int) (decimal * 100);
+                    System.out.println("percent: " + percent);
+                    String currentText = "Congrats!!!\n" + gotRight + "/"+total+ " \n"+percent+"%";
+                    EditorFld.setWrapText(true);
+                    EditorFld.setPrefWidth(400);
+                    EditorFld.setStyle("-fx-text-fill: black; -fx-font: 45px 'Times New Roman';");
+                    EditorFld.setText(currentText);
+                    EditorFld.setPrefRowCount(10);
+                    EditorFld.setPrefColumnCount(100);
+                    EditorFld.setEditable(false);
+                    Button submit = new Button();
+                    submit.setText("Stats");
+                    submit.setStyle(
+                          "-fx-background-radius: 15em; " +
+                          "-fx-min-width: 60px; " +
+                          "-fx-min-height: 30px; " +
+                          "-fx-max-width: 60px; " +
+                          "-fx-max-height: 30px;"
+                    );
+
+                    Button exit = new Button();
+                    exit.setText("Exit");
+                    exit.setStyle(
+                          "-fx-background-radius: 15em; " +
+                          "-fx-min-width: 60px; " +
+                          "-fx-min-height: 30px; " +
+                          "-fx-max-width: 60px; " +
+                          "-fx-max-height: 30px;"
+                    );
+                    buttonArea.getChildren().add(submit);
+                    buttonArea.getChildren().add(exit);
+                    submit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override public void handle(MouseEvent mouseEvent) {
+                            
+                        }
+                      });
+                      exit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override public void handle(MouseEvent mouseEvent) {
+                            statsStage.close();
+
+                        }
+                      });
+                      VBox editArea = new VBox(EditorFld, buttonArea);
+                      Scene editScene = new Scene(editArea, 500, 300);
+                      statsStage.setScene(editScene);
+                      statsStage.show();
+
                 }else {
                     ++globalIdx;
                     makeQuestions();
