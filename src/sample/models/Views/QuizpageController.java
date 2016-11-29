@@ -13,20 +13,32 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import static javafx.scene.layout.Region.USE_PREF_SIZE;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import sample.models.notecardModels.NoteCardModel;
 import sample.models.notecardModels.noteCards.StackModel;
 import sample.models.notecardModels.utils.UserSingleton;
@@ -45,13 +57,15 @@ public class QuizpageController extends Switch implements Initializable {
     @FXML
     public HBox question;
     @FXML
+    public HBox topContainer;
+    @FXML
     public HBox questionBody;
     @FXML
-    public HBox answer1;
+    public TextArea answer1;
     @FXML
-    public HBox answer2;
+    public TextArea answer2;
     @FXML
-    public HBox answer3;
+    public TextArea answer3;
     @FXML
     public HBox title;
     @FXML
@@ -64,8 +78,8 @@ public class QuizpageController extends Switch implements Initializable {
     private Button submit;
     @FXML
     private Button next;
-    @FXML
-    private Button homeButton;
+    //@FXML
+    //private Button homeButton;
     @FXML
     private CheckBox right;
     @FXML
@@ -76,12 +90,18 @@ public class QuizpageController extends Switch implements Initializable {
     private HBox container2;
     @FXML
     private HBox container3;
+    @FXML   
+    private VBox vboxContainer;
+    @FXML 
+    private HBox bigContainer;
 
     public ArrayList<String> front = new ArrayList<String>();
     public ArrayList<String> back = new ArrayList<String>();
     public ArrayList<Integer> ids = new ArrayList<Integer>();
     public int globalIdx = 0;
     public int answerNum = -1;
+    public int gotRight = 0;
+    public int gotWrong = 0;
     private UserSingleton userSingleton;
     private NoteCardModel noteCardModel;
     private StackModel stack;
@@ -97,6 +117,8 @@ public class QuizpageController extends Switch implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         userSingleton = UserSingleton.getInstance();
         stack = userSingleton.getStack();
+        setToggleGroup();
+        vboxContainer.minWidthProperty().bind(bigContainer.minWidthProperty());
         setStyle();
         Text titleText = new Text();
         titleText.setText(stack.getCourse() + stack.getName());
@@ -106,40 +128,59 @@ public class QuizpageController extends Switch implements Initializable {
         makeQuestions();
     }
 
-
+    public void setToggleGroup(){
+        ToggleGroup tg = new ToggleGroup();
+        radbut1.setToggleGroup(tg);
+        radbut2.setToggleGroup(tg);
+        radbut3.setToggleGroup(tg);
+    }
 
     public void initButtons(){
-
+      Button homeButton = new Button();
+      ImageView im = new ImageView(new Image("resources/Icon.PNG"));
+      im.setFitWidth(90);
+      im.setFitHeight(60);
+      homeButton.setGraphic(im);
+      //homeButton.translateXProperty().bind(topContainer.widthProperty().subtract(homeButton.maxWidth(USE_PREF_SIZE)+20));
+      topContainer.getChildren().add(homeButton);
         submit.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override public void handle(MouseEvent mouseEvent) {
                 if(radbut1.isSelected()){
                     if(answerNum ==1){
                         right.setVisible(true);
+                        ++gotRight;
                     }
                     else{
                         wrong.setVisible(true);
+                        ++gotWrong;
                     }
 
                 }
                 if(radbut2.isSelected()){
                     if(answerNum ==2){
                         right.setVisible(true);
+                        ++gotRight;
                     }
                     else{
                         wrong.setVisible(true);
+                        ++gotWrong;
                     }
 
                 }
                 if(radbut3.isSelected()){
                     if(answerNum ==3){
                         right.setVisible(true);
+                        ++gotRight;
                     }
                     else{
                         wrong.setVisible(true);
+                        ++gotWrong;
                     }
 
                 }
-
+                radbut1.setDisable(true);
+                radbut2.setDisable(true);
+                radbut3.setDisable(true);
             }
         });
 
@@ -147,18 +188,79 @@ public class QuizpageController extends Switch implements Initializable {
         next.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override public void handle(MouseEvent mouseEvent) {
                 questionBody.getChildren().clear();
-                answer1.getChildren().clear();
-                answer2.getChildren().clear();
-                answer3.getChildren().clear();
+                answer1.clear();
+                answer2.clear();
+                answer3.clear();
                 radbut1.setSelected(false);
                 radbut2.setSelected(false);
                 radbut3.setSelected(false);
                 answerNum = -1;
                 right.setVisible(false);
                 wrong.setVisible(false);
-
+                radbut1.setDisable(false);
+                radbut2.setDisable(false);
+                radbut3.setDisable(false);
                 if(stack.getNoteCards().size() - 1 == globalIdx){
-                    System.out.println("STOP");
+                    next.setDisable(true);
+                    submit.setDisable(true);
+                    final Stage statsStage = new Stage(StageStyle.UNDECORATED);
+                    statsStage.initModality(Modality.APPLICATION_MODAL);
+                    statsStage.initOwner(stage);
+                    HBox buttonArea = new HBox();
+                    TextArea EditorFld = new TextArea();
+                    int total = gotRight + gotWrong;
+                    System.out.println("total: " + total);
+                    System.out.println("gotright: " + gotRight);
+                    System.out.println("gotwrong: " + gotWrong);
+                    double decimal = ((double)gotRight/(double)total);
+                    
+                    int percent = (int) (decimal * 100);
+                    
+                    String currentText = "Congrats!!!\n" + gotRight + "/"+total+ " \n"+percent+"%";
+                    EditorFld.setWrapText(true);
+                    EditorFld.setPrefWidth(400);
+                    EditorFld.setStyle("-fx-text-fill: black; -fx-font: 45px 'Times New Roman';");
+                    EditorFld.setText(currentText);
+                    EditorFld.setPrefRowCount(10);
+                    EditorFld.setPrefColumnCount(100);
+                    EditorFld.setEditable(false);
+                    Button submit = new Button();
+                    submit.setText("Stats");
+                    submit.setStyle(
+                          "-fx-background-radius: 15em; " +
+                          "-fx-min-width: 60px; " +
+                          "-fx-min-height: 30px; " +
+                          "-fx-max-width: 60px; " +
+                          "-fx-max-height: 30px;"
+                    );
+
+                    Button exit = new Button();
+                    exit.setText("Exit");
+                    exit.setStyle(
+                          "-fx-background-radius: 15em; " +
+                          "-fx-min-width: 60px; " +
+                          "-fx-min-height: 30px; " +
+                          "-fx-max-width: 60px; " +
+                          "-fx-max-height: 30px;"
+                    );
+                    buttonArea.getChildren().add(submit);
+                    buttonArea.getChildren().add(exit);
+                    submit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override public void handle(MouseEvent mouseEvent) {
+                            
+                        }
+                      });
+                      exit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override public void handle(MouseEvent mouseEvent) {
+                            statsStage.close();
+
+                        }
+                      });
+                      VBox editArea = new VBox(EditorFld, buttonArea);
+                      Scene editScene = new Scene(editArea, 500, 300);
+                      statsStage.setScene(editScene);
+                      statsStage.show();
+
                 }else {
                     ++globalIdx;
                     makeQuestions();
@@ -191,6 +293,8 @@ public class QuizpageController extends Switch implements Initializable {
         Text frontText = new Text();
         frontText.setText(stack.getNoteCards().get(globalIdx).getFront());
         frontText.setStyle("-fx-font: 18px 'Times New Roman';");
+        Label answer1Lab = new Label();
+        answer1Lab.setText(stack.getNoteCards().get(globalIdx).getFront());
         frontText.setWrappingWidth(answer1.getWidth());
         questionBody.getChildren().add(frontText);
     }
@@ -215,7 +319,7 @@ public class QuizpageController extends Switch implements Initializable {
         Text textAnswer = makeTextObj(finalAnswer);
         textAnswer.setWrappingWidth(800);
         //answer1.setAlignment(Pos.CENTER);
-        answer1.getChildren().add(textAnswer);
+        answer1.appendText(finalAnswer);
         makeAnswer2(indexes, answers);
 
 
@@ -271,7 +375,7 @@ public class QuizpageController extends Switch implements Initializable {
         String finalAnswer = answers.get(randIdx);
         Text textAnswer = makeTextObj(finalAnswer);
         textAnswer.setWrappingWidth(800);
-        answer2.getChildren().add(textAnswer);
+        answer2.appendText(finalAnswer);
         makeAnswer3(indexes, answers);
     }
     public void makeAnswer3(ArrayList<Integer> indexes, ArrayList<String> answers){
@@ -283,14 +387,14 @@ public class QuizpageController extends Switch implements Initializable {
         System.out.println("idx: " + idx);
         Text textAnswer = makeTextObj(finalAnswer);
         textAnswer.setWrappingWidth(800);
-        answer3.getChildren().add(textAnswer);
+        answer3.appendText(finalAnswer);
     }
 
     public void setStyle(){
         root.setStyle("-fx-background-color:  #0080ff");
-        container2.setStyle("-fx-background-color: cornsilk; -fx-background-insets: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, purple, 10, 0, 0, 0);");
-        container3.setStyle("-fx-background-color: cornsilk; -fx-background-insets: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, purple, 10, 0, 0, 0);");
-        container1.setStyle("-fx-background-color: cornsilk; -fx-background-insets: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, purple, 10, 0, 0, 0);");
+        //container2.setStyle("-fx-background-color: cornsilk; -fx-background-insets: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, purple, 10, 0, 0, 0);");
+        //container3.setStyle("-fx-background-color: cornsilk; -fx-background-insets: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, purple, 10, 0, 0, 0);");
+        //container1.setStyle("-fx-background-color: cornsilk; -fx-background-insets: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, purple, 10, 0, 0, 0);");
     }
 
     private void switchViews(final String view) {
