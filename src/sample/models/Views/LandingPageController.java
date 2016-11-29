@@ -37,6 +37,7 @@ import sample.models.notecardModels.NoteCardModel;
 import sample.models.notecardModels.UserModel;
 import sample.models.notecardModels.noteCards.NoteCard;
 import sample.models.notecardModels.noteCards.StackModel;
+import sample.models.notecardModels.utils.UserSingleton;
 
 public class LandingPageController extends Switch implements Initializable {
 
