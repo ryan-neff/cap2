@@ -4,16 +4,14 @@ package sample.models.Views;
  * Created by JOSH on 11/8/2016.
  */
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -21,26 +19,29 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import sample.models.notecardModels.NoteCardModel;
+import sample.models.notecardModels.UserModel;
+import sample.models.notecardModels.noteCards.NoteCard;
 import sample.models.notecardModels.noteCards.StackModel;
-import sample.models.stats.QueryResult;
-import sample.models.stats.StatsManager;
 
 public class LandingPageController extends Switch implements Initializable {
 
+
+    public Stage primaryStage;
 
     @FXML
     public HBox stacks;
@@ -54,20 +55,27 @@ public class LandingPageController extends Switch implements Initializable {
     @FXML
     public ListView categoryChoices;
 
-    QuoteMaker maker;
+    @FXML
+    public ImageView plusBtn;
+    @FXML
+    public Label plusLabel;
+
+    SessionController maker;
     ObservableList<String> categoryNames = FXCollections.observableArrayList();
     NoteCardModel noteCardModel;
     Map<String, StackModel> stackModels = new HashMap<>();
+    UserSingleton userSingleton;
 
     public LandingPageController() {
     }
 
     public void initialize(URL url, ResourceBundle rb) {
+        userSingleton = UserSingleton.getInstance();
         noteCardModel= new NoteCardModel();
         stackModels = getStacks();
         this.getCategories();
         this.makeStacks();
-        maker = new QuoteMaker();
+        maker = new SessionController();
     }
 
     @FXML
@@ -89,6 +97,95 @@ public class LandingPageController extends Switch implements Initializable {
         this.categories.setStyle("-fx-border-color:white;");
     }
 
+    @FXML
+    private void newStack(){
+        System.out.print("plus button  ");
+        StackModel nStack = new StackModel();
+        final Stage catStage = new Stage(StageStyle.UNDECORATED);
+        catStage.initModality(Modality.APPLICATION_MODAL);
+        catStage.initOwner(primaryStage);
+        HBox buttonArea = new HBox();
+        HBox labelArea = new HBox();
+
+        Label boxLabel = new Label();
+        boxLabel.setText("Create New Stack");
+        boxLabel.setStyle(
+                "-fx-background-radius: 15em; " +
+                        "-fx-min-width: 60px; " +
+                        "-fx-min-height: 30px; " +
+                        "-fx-max-width: 300px; " +
+                        "-fx-max-height: 30px;"
+        );
+
+        Button submit = new Button();
+        submit.setText("Submit");
+        submit.setStyle(
+                "-fx-background-radius: 15em; " +
+                        "-fx-min-width: 60px; " +
+                        "-fx-min-height: 30px; " +
+                        "-fx-max-width: 120px; " +
+                        "-fx-max-height: 30px;"
+        );
+
+        Button exit = new Button();
+        exit.setText("Exit");
+        exit.setStyle(
+                "-fx-background-radius: 15em; " +
+                        "-fx-min-width: 60px; " +
+                        "-fx-min-height: 30px; " +
+                        "-fx-max-width: 60px; " +
+                        "-fx-max-height: 30px;"
+        );
+        labelArea.getChildren().add(boxLabel);
+        buttonArea.getChildren().add(submit);
+        buttonArea.getChildren().add(exit);
+        //TextArea EditorFld = new TextArea();
+        TextField course = new TextField();
+        course.setPromptText("course");
+        TextField subject = new TextField();
+        subject.setPromptText("subject");
+        TextField stackName = new TextField();
+        stackName.setPromptText("stack name");
+        String currentText;
+
+        submit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent mouseEvent) {
+                String courseSent = course.getText();
+                String subSent = subject.getText();
+                String nameSent = stackName.getText();
+                nStack.setName(nameSent);
+                nStack.setSubject(subSent);
+                nStack.setCourse(courseSent);
+                nStack.setNoteCards(new ArrayList<>());
+
+                NoteCard defaultCard = new NoteCard();
+                defaultCard.setFront("Your first card for this Stack!");
+                defaultCard.setBack("Feel free to edit this card or delete it!");
+                defaultCard.setId(null);
+                nStack.getNoteCards().add(defaultCard);
+
+                noteCardModel.createStack(nStack, userSingleton.getUser().getUserId());
+                String id = noteCardModel.getStackID(nStack, userSingleton.getUser().getUserId());
+                noteCardModel.createNoteCard(defaultCard,userSingleton.getUser().getUserId(), nStack);
+                defaultCard.setId(noteCardModel.getNoteCardID(defaultCard,userSingleton.getUser().getUserId()));
+                defaultCard.setStackId(id);
+                userSingleton.setStack(nStack);
+                switchViews("editpage");
+                catStage.close();
+            }
+        });
+        exit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent mouseEvent) {
+                catStage.close();
+
+            }
+        });
+        VBox newArea = new VBox(labelArea, course, subject, stackName, buttonArea);
+        Scene newStkScene = new Scene(newArea, 200, 155);
+        catStage.setScene(newStkScene);
+        catStage.show();
+    }
+
     public void makeStacks() {
 
         stackModels.forEach((stackName, stack) -> {
@@ -99,7 +196,7 @@ public class LandingPageController extends Switch implements Initializable {
             Label label = this.getLabel();
             label.setText(labelTitle);
             sp.getChildren().add(label);
-            VBox menu = this.initDropDown(sp);
+            VBox menu = this.initDropDown(sp, stack);
             StackPane.setAlignment(menu, Pos.TOP_LEFT);
             sp.getChildren().add(menu);
             this.stacks.getChildren().add(sp);
@@ -107,7 +204,7 @@ public class LandingPageController extends Switch implements Initializable {
 
     }
 
-    public VBox initDropDown(StackPane focusStack) {
+    public VBox initDropDown(StackPane focusStack, StackModel stackModel) {
         VBox container = new VBox();
         container.setMaxHeight(focusStack.getHeight() / 2.0D);
         container.setId("menuContainer");
@@ -121,9 +218,9 @@ public class LandingPageController extends Switch implements Initializable {
        edit.setOnMouseClicked(new EventHandler() {
            @Override
            public void handle(final Event event) {
-               getSceneManager().switchTo("edit1");
+               userSingleton.setStack(stackModel);
+               switchViews("editpage");
                }
-
 
 
         });
@@ -174,7 +271,6 @@ public class LandingPageController extends Switch implements Initializable {
         delete.setStyle("-fx-text-fill: white; -fx-font: 16px \'Times New Roman\'; ");
 
         final Label study = new Label();
-        //primaryStage = ((Stage)this.getRoot().getScene().getWindow());
         study.setOnMouseEntered(new EventHandler() {
 
             @Override
@@ -206,7 +302,35 @@ public class LandingPageController extends Switch implements Initializable {
         study.setMinWidth(75.0D);
         study.setStyle("-fx-text-fill: white; -fx-font: 16px \'Times New Roman\'; ");
 
-        menu.getChildren().addAll(new Node[]{edit, delete, study});
+        final Label quiz = new Label();
+        quiz.setOnMouseEntered(new EventHandler() {
+
+            @Override
+            public void handle(final Event event) {
+                quiz.setStyle("-fx-text-fill:black");
+            }
+        });
+
+        quiz.setOnMouseClicked(new EventHandler() {
+
+            @Override
+            public void handle(final Event event) {
+                userSingleton.setStack(stackModel);
+                switchViews("quizpage");
+            }
+        });
+        quiz.setOnMouseExited(new EventHandler() {
+
+            @Override
+            public void handle(final Event event) {
+                quiz.setStyle("-fx-text-fill: white; -fx-font: 16px \'Times New Roman\'; ");
+            }
+        });
+        quiz.setText("Quiz");
+        quiz.setMinWidth(75.0D);
+        quiz.setStyle("-fx-text-fill: white; -fx-font: 16px \'Times New Roman\'; ");
+
+        menu.getChildren().addAll(new Node[]{edit, delete, study, quiz});
         menu.setVisible(true);
         menu.setPrefWidth(75.0D);
         menu.setMinWidth(-1.0D / 0.0);
@@ -271,14 +395,23 @@ public class LandingPageController extends Switch implements Initializable {
 
 
     private Map<String, StackModel> getStacks() {
-        System.out.println("getStacks");
-        this.stackModels = noteCardModel.getAllStacks("test"); //TODO Change when user can create stacks
-        return stackModels;
+        this.stackModels = noteCardModel.getAllStacks(userSingleton.getUser().getUserId());
+
+        if(this.stackModels == null) {
+            this.stackModels = new HashMap<>();
+        }
+            return stackModels;
     }
 
     private Stage getPrimaryStage () {
         Stage stage = ((Stage)this.getRoot().getScene().getWindow());
         return stage;
     }
+
+    private void switchViews(final String view) {
+        this.getSceneManager().switchTo(view);
+
+    }
+
 }
 

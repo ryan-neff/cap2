@@ -22,7 +22,7 @@ public class NoteCard {
     }
 
     public NoteCard(String front, String back, String id, ArrayList<String> ImgPaths) {
-        if (ImgPaths.size() > 0) {
+        if (ImgPaths != null && ImgPaths.size() > 0) {
             imgPaths = ImgPaths;
             hasPics = true;
 

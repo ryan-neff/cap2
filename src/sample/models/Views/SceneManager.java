@@ -29,7 +29,7 @@ public class SceneManager {
     }
 
     public Switch add(String name) {
-        Switch controller = (Switch)this.controllers.get(name);
+        Switch controller = null;
         if(controller == null) {
             try {
                 System.out.println(name + ".fxml");
@@ -45,15 +45,15 @@ public class SceneManager {
                 System.out.println(var5);
             }
         }
-
         return controller;
     }
 
     public void switchTo(String name) {
-        Switch controller = (Switch)this.controllers.get(name);
+        Switch controller = null;
         if(controller == null) {
             controller = this.add(name);
             System.out.println(name);
+            System.out.println(this.controllers.get(name));
         }
 
         if(controller != null && this.scene != null) {
