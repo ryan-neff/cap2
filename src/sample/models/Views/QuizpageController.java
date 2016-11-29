@@ -185,7 +185,7 @@ public class QuizpageController extends Switch implements Initializable {
                 radbut3.setDisable(false);
                 if(stack.getNoteCards().size() - 1 == globalIdx){
                     System.out.println("stop");
-                    System.out.println("stop it");
+                    
                 }else {
                     ++globalIdx;
                     makeQuestions();
