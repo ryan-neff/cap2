@@ -279,9 +279,6 @@ public class EditPageController extends Switch implements Initializable {
     private void switchViews(final String view) {
         this.getSceneManager().switchTo(view);
     }
-    //private void makeData() {
-      //  userSingleton = UserSingleton.getInstance();
-       // stack = userSingleton.getStack();
-   // }
+
 }
 

@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.beans.property.StringProperty;
@@ -197,6 +198,7 @@ public class LandingPageController extends Switch implements Initializable {
             Label label = this.getLabel();
             label.setText(labelTitle);
             sp.getChildren().add(label);
+            sp.setId(stack.getId());
             VBox menu = this.initDropDown(sp, stack);
             StackPane.setAlignment(menu, Pos.TOP_LEFT);
             sp.getChildren().add(menu);
@@ -263,7 +265,9 @@ public class LandingPageController extends Switch implements Initializable {
 
             @Override
             public void handle(final Event event) {
-
+                noteCardModel.deleteStack(stackModel, userSingleton.getUser().getUserId());
+                Optional<Node> stackPane = stacks.getChildren().stream().filter(x -> x.getId().equals(stackModel.getId())).findFirst();
+                stacks.getChildren().remove(stackPane.get());
             }
         });
 
