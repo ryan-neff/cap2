@@ -166,6 +166,7 @@ public class SessionController extends Switch implements Initializable {
     Text relatedTitle = new Text();
     relatedTitle.setText("Related Stacks");
     relatedTitle.setStyle("-fx-text-fill: #6666ff; -fx-font: 16px 'Times New Roman';");
+    
     ImageView logo = new ImageView(new Image("resources/logo1.PNG"));
     logo.setFitWidth(180);
     logo.setFitHeight(60);
