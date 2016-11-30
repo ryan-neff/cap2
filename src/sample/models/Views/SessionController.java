@@ -114,7 +114,7 @@ public class SessionController extends Switch implements Initializable {
 
     // create a control panel for the message board.
     VBox controls = new VBox(10);
-    controls.setStyle("-fx-background-color: #ccccff; -fx-padding: 10;");
+    controls.setStyle("-fx-background-color: #0080ff; -fx-padding: 10;");
     controls.setAlignment(Pos.TOP_CENTER);
 
     // create some sliders to modify properties of the existing quote.
@@ -316,9 +316,9 @@ public class SessionController extends Switch implements Initializable {
           }
         });
           label.setText(relatedResults);
-          label.setStyle("-fx-background-radius: 5; -fx-background-color: #6666ff; -fx-text-fill: white; -fx-font: 12px 'Segoe Script'; -fx-padding:10;");
+          label.setStyle("-fx-background-radius: 5; -fx-background-color: white; -fx-text-fill: black; -fx-font: 12px 'Segoe Script'; -fx-padding:10;");
           
-          label.setStyle("-fx-box-shadow: 0 0 0 3px #fff, 0 0 0 5px #ddd, 0 0 0 10px #fff, 0");
+          //label.setStyle("-fx-box-shadow: 0 0 0 3px #fff, 0 0 0 5px #ddd, 0 0 0 10px #fff, 0");
           label.setWrapText(true);
           label.setAlignment(Pos.CENTER);
           label.setTextAlignment(TextAlignment.CENTER);
@@ -421,7 +421,7 @@ public class SessionController extends Switch implements Initializable {
       label.setId("myLabel");
       //-fx-background-image: url('flipThickGrey.png');ladder(" + bgColor +", lavender 49%, midnightblue 50%);-fx-opacity: 0.5;
       String bgColor = "#" + color.deriveColor(color.getHue(), color.getSaturation(), color.getBrightness(), random.nextDouble() * 0.5 + 0.5).toString().substring(2, 10);
-      label.setStyle("-fx-background-radius: 5; -fx-background-color: linear-gradient(to bottom, " + bgColor + ", derive(" + bgColor + ", 20%)); -fx-text-fill:black;  -fx-font: 18px 'Segoe Script'; -fx-font-weight: bold;; -fx-padding:10; -fx-border-color: white; -fx-border-width: 4px; -fx-background-image: url('notecardBackFixed.png');");
+      label.setStyle("-fx-background-radius: 5; -fx-background-color: linear-gradient(to bottom, " + bgColor + ", derive(" + bgColor + ", 20%)); -fx-text-fill:black;  -fx-font: 18px 'Segoe Script'; -fx-font-weight: bold;; -fx-padding:10; -fx-border-color: white; -fx-border-width: 4px; -fx-background-image: url('resources/notecardBackFixed.png');");
       label.setWrapText(true);
       label.setAlignment(Pos.CENTER);
       label.setTextAlignment(TextAlignment.CENTER);
@@ -1302,7 +1302,7 @@ public class SessionController extends Switch implements Initializable {
             
             //-fx-background-image: url('flipThickGrey.png');ladder(" + bgColor +", lavender 49%, midnightblue 50%);-fx-opacity: 0.5;
             //String bgColor = "#" + color.deriveColor(color.getHue(), color.getSaturation(), color.getBrightness(), random.nextDouble() * 0.5 + 0.5).toString().substring(2, 10);
-            label.setStyle("-fx-background-radius: 5;  -fx-text-fill:black;  -fx-font: 6px 'Segoe Script'; -fx-font-weight: bold;; -fx-padding:10; -fx-border-color: white; -fx-border-width: 4px; -fx-background-image: url('notecardBackFixed.png');");
+            label.setStyle("-fx-background-radius: 5;  -fx-text-fill:black;  -fx-font: 6px 'Segoe Script'; -fx-font-weight: bold;; -fx-padding:10; -fx-border-color: white; -fx-border-width: 4px; -fx-background-image: url('resources/notecardBackFixed.png');");
             label.setWrapText(true);
             label.setAlignment(Pos.CENTER);
             label.setTextAlignment(TextAlignment.CENTER);
