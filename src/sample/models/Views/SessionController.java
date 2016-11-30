@@ -43,6 +43,7 @@ import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import static javafx.scene.layout.Region.USE_PREF_SIZE;
@@ -110,7 +111,30 @@ public class SessionController extends Switch implements Initializable {
     makeStack(course, stackName);
     primaryStage.setTitle("NotePad Breeze");
 
+    HBox controlPanel = new HBox(10);
+    controlPanel.setStyle("-fx-background-color: #0080ff; -fx-padding: 10;");
+    controlPanel.setAlignment(Pos.TOP_LEFT);
+    ImageView listen = new ImageView(new Image("resources/listen.png"));
+    listen.setFitWidth(30);
+    listen.setFitHeight(30);
+    listen.setOnMouseClicked(new EventHandler<MouseEvent>() {
+          @Override public void handle(MouseEvent mouseEvent) {
+                helloWorld hw = new helloWorld();
+                HelloWorld HW = new HelloWorld(hw);
+                String resultText = HW.run();
+            
+       }
+    });
+    listen.setOnMouseEntered(new EventHandler<MouseEvent>() {
+          @Override public void handle(MouseEvent mouseEvent) {
+            
+            //voiceActivation();
+            listen.setCursor(Cursor.HAND);
+                  
+          }
+    });
     
+    controlPanel.getChildren().add(listen);
 
     // create a control panel for the message board.
     VBox controls = new VBox(10);
@@ -175,7 +199,7 @@ public class SessionController extends Switch implements Initializable {
     Text dimensions = new Text();
     dimensions.setText("Notecard\nDimensions");
     dimensions.setStyle("-fx-text-fill: #6666ff; -fx-font: 16px 'Times New Roman';");
-    controls.getChildren().addAll(logo, relatedTitle, new Separator(), relatedNotecards, new Separator(), dimensions, new Separator(), widthSlider, heightSlider, layoutXSlider, layoutYSlider, new Separator());
+    controls.getChildren().addAll(logo, controlPanel, new Separator(), relatedTitle, new Separator(), relatedNotecards, new Separator(), dimensions, new Separator(), widthSlider, heightSlider, layoutXSlider, layoutYSlider, new Separator());
     controls.setPrefWidth(180);
     controls.setMinWidth(180);
     controls.setMaxWidth(Control.USE_PREF_SIZE);
@@ -645,7 +669,7 @@ public class SessionController extends Switch implements Initializable {
       else{
               focusStack.resetIndex();
       }
-      if(focusStack.notecards.get(focusStack.index).isHasPics()){
+      /*if(focusStack.notecards.get(focusStack.index).isHasPics()){
           picIcon.setVisible(true);
       }
       else{
@@ -655,7 +679,7 @@ public class SessionController extends Switch implements Initializable {
       focusStack.projector.imageFiles.clear();
       focusStack.projector.currentImageView.setImage(null);
       focusStack.projector.currentIndex = -1;
-      setupLoadWoDrag();
+      setupLoadWoDrag();*/
   }
 
     public VBox initDropDown(){
@@ -1586,6 +1610,41 @@ public class SessionController extends Switch implements Initializable {
         Connection conn = DriverManager.getConnection(url, username, password);
         return conn;
     }
+    
+       public Task createVoiceWorker() {
+        return new Task() {
+            @Override
+            protected Object call() throws Exception {
+                // on the worker thread...
+                
+             Platform.runLater(() -> {
+                    helloWorld hw = new helloWorld();
+                    HelloWorld HW = new HelloWorld(hw);
+                    HW.run();
+                });
+                return true;
+                
+                
+            }
+        };
+    }
+       
+      public String ScheduleService(){
+            ScheduledService<String> svc = new ScheduledService<String>() {
+           protected Task<String> createTask() {
+               return new Task<String>() {
+                   protected String call() {
+                              helloWorld hw = new helloWorld();
+                              HelloWorld HW = new HelloWorld(hw);
+                              String resultText = HW.run();
+                       return resultText;
+                   }
+               };
+           }
+       };
+       svc.setPeriod(Duration.seconds(1));
+       return null;
+    }
 
      class Stack {
          int index;
@@ -1648,7 +1707,25 @@ public class SessionController extends Switch implements Initializable {
          
          
      }
-     
+    public class helloWorld{
+
+          public helloWorld(){
+              
+          }
+          public void flipcard(){
+              flipCard();
+          }
+          public void nextcard(){
+              nextCard();
+          }
+          public void prevcard(){
+              PrevCard();
+          }
+         
+
+    
+    
+}  
      
     
     
