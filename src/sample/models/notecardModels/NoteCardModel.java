@@ -392,7 +392,7 @@ public class NoteCardModel {
     public boolean updateNoteCard(NoteCard updatedNoteCard, String userId) {
         try{
             final String query = "UPDATE notecard " +
-                                 "SET front= ?, back= ?, stack_index= ? "+
+                                 "SET front= ?, back= ?, stack_index= ?, attempts = ?, attemptsCorrect= ? "+
                                  "WHERE stack_id= ? " +
                                  "AND card_id= ? " +
                                  "AND user_id= ?";
@@ -401,9 +401,11 @@ public class NoteCardModel {
             stmt.setString(1, updatedNoteCard.getFront());
             stmt.setString(2, updatedNoteCard.getBack());
             stmt.setInt(3, updatedNoteCard.getStackIndex());
-            stmt.setString(4, updatedNoteCard.getStackId());
-            stmt.setString(5, updatedNoteCard.getId());
-            stmt.setString(6, userId);
+            stmt.setInt(4, updatedNoteCard.getAttempts());
+            stmt.setInt(5, updatedNoteCard.getAttemptsCorrect());
+            stmt.setString(6, updatedNoteCard.getStackId());
+            stmt.setString(7, updatedNoteCard.getId());
+            stmt.setString(8, userId);
 
             int rowsUpdated = stmt.executeUpdate();
             if (rowsUpdated > 0) {
