@@ -194,7 +194,7 @@ public class SessionController extends Switch implements Initializable {
         
     
     // allow the selected quote to be deleted.
-    scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+    /*scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
       @Override public void handle(KeyEvent keyEvent) {
         if (keyEvent.getCode().equals(KeyCode.BACK_SPACE)) {
           //System.out.println("we are in key event");
@@ -221,7 +221,8 @@ public class SessionController extends Switch implements Initializable {
         }
         
       }
-    });
+    });*/
+    setKeyEvents(scene);
     
     
 
@@ -301,7 +302,33 @@ public class SessionController extends Switch implements Initializable {
         
         
   }
-  
+   public void setKeyEvents(Scene scene){
+      scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+      @Override public void handle(KeyEvent keyEvent) {
+        if (keyEvent.getCode().equals(KeyCode.BACK_SPACE)) {
+          //System.out.println("we are in key event");
+          //System.out.println(messageBoard.getChildren().size());
+            for(int i = 0; i < messageBoard.getChildren().size(); ++i){
+                messageBoard.getChildren().get(i);
+            } 
+        }
+        
+        if(keyEvent.getCode().equals(KeyCode.N)){
+            nextCard();
+        }
+        if(keyEvent.getCode().equals(KeyCode.B)){
+            PrevCard();
+        }
+        if(keyEvent.getCode().equals(KeyCode.F)){
+            flipCard();
+        }
+        
+       
+        
+      }
+    });
+    
+  }
 
   public VBox getRelated(){//This displays the related notecards in teh sidebar up to 10
       VBox temp = new VBox();
@@ -786,6 +813,45 @@ public class SessionController extends Switch implements Initializable {
         addImg.setMinWidth(75);
         addImg.setStyle("-fx-text-fill: white; -fx-font: 16px 'Times New Roman'; ");
         Label fullscreen = new Label();
+         fullscreen.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        @Override public void handle(MouseEvent mouseEvent) {
+            final Stage fullStage = new Stage(StageStyle.UNDECORATED);
+            fullStage.initModality(Modality.APPLICATION_MODAL);
+            fullStage.initOwner(primaryStage);  
+            fullStage.setFullScreen(true);
+            Label fullLabel = new Label();
+            fullLabel.setStyle("-fx-background-radius: 5;  -fx-text-fill:black;  -fx-font: 45px 'Segoe Script'; -fx-font-weight: bold;; -fx-padding:10; -fx-border-color: white; -fx-border-width: 4px; -fx-background-image: url('notecardBackFixed.png');");
+            fullLabel.setAlignment(Pos.CENTER);
+            fullLabel.setWrapText(true);
+           
+           fullStage.setFullScreenExitHint("Double Click to exit fullscreen");
+            fullLabel.textProperty().bindBidirectional(focusStack.label.textProperty());
+            Scene editScene = new Scene(fullLabel);
+             fullLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override public void handle(MouseEvent mouseEvent) {
+                if (mouseEvent.getClickCount() == 2) {
+                    System.out.println("we are in double click");
+                    fullStage.close();
+                    
+                }
+                }
+              });
+             editScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+                @Override public void handle(KeyEvent keyEvent) {
+                    if(keyEvent.getCode().equals(KeyCode.E)){
+                        System.out.println("we are in escape");
+                        fullStage.setFullScreen(false);
+                        fullLabel.setVisible(false);
+                        fullStage.close();
+                    }
+                }
+                });
+            setKeyEvents(editScene);
+            fullStage.setScene(editScene);
+            fullStage.show();
+          
+        }
+      });
         fullscreen.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override public void handle(MouseEvent mouseEvent) {
 
