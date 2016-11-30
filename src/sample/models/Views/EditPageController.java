@@ -215,7 +215,8 @@ public class EditPageController extends Switch implements Initializable {
 
         //-fx-background-image: url('flipThickGrey.png');ladder(" + bgColor +", lavender 49%, midnightblue 50%);-fx-opacity: 0.5;
         //String bgColor = "#" + color.deriveColor(color.getHue(), color.getSaturation(), color.getBrightness(), random.nextDouble() * 0.5 + 0.5).toString().substring(2, 10);
-        label.setStyle("-fx-background-radius: 5;  -fx-text-fill:black;  -fx-font: 14px 'Segoe Script'; -fx-font-weight: bold;; -fx-padding:10; -fx-border-color: white; -fx-border-width: 4px; -fx-background-image: url('notecardBackFixed.png');");
+        //label.setStyle("-fx-background-radius: 5;  -fx-text-fill:black;  -fx-font: 14px 'Segoe Script'; -fx-font-weight: bold;; -fx-padding:10; -fx-border-color: white; -fx-border-width: 4px; -fx-background-image: url('notecardBackFixed.png');");
+        label.getStyleClass().add("cardLabel");
         label.setWrapText(true);
         label.setPadding(new Insets(0, 10, 0, 10));
         label.setAlignment(Pos.CENTER);
@@ -237,6 +238,7 @@ public class EditPageController extends Switch implements Initializable {
         hTimeline = new HBox();
         for (int i = 0; i < stack.getNoteCards().size(); ++i) {
             final Label label = new Label();
+            label.getStyleClass().add("cardLabel");
             label.setText(stack.getNoteCards().get(i).getFront());
             String id = stack.getNoteCards().get(i).getId();
             label.setId(id);
@@ -253,7 +255,6 @@ public class EditPageController extends Switch implements Initializable {
 
             //-fx-background-image: url('flipThickGrey.png');ladder(" + bgColor +", lavender 49%, midnightblue 50%);-fx-opacity: 0.5;
             //String bgColor = "#" + color.deriveColor(color.getHue(), color.getSaturation(), color.getBrightness(), random.nextDouble() * 0.5 + 0.5).toString().substring(2, 10);
-            label.setStyle("-fx-background-radius: 5;  -fx-text-fill:black;  -fx-font: 6px 'Segoe Script'; -fx-font-weight: bold;; -fx-padding:10; -fx-border-color: white; -fx-border-width: 4px; -fx-background-image: url('notecardBackFixed.png');");
             label.setWrapText(true);
             label.setAlignment(Pos.CENTER);
             label.setTextAlignment(TextAlignment.CENTER);
@@ -265,6 +266,7 @@ public class EditPageController extends Switch implements Initializable {
             int prefSizeX = 100;
             int prefSizeY = 50;
             label.setPrefSize(prefSizeX, prefSizeY);
+
 
 
             hTimeline.getChildren().add(label);
