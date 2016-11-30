@@ -39,9 +39,9 @@
                                 <Font name="Baskerville Old Face" size="18.0" />
                             </font>
                         </Text>
-                        <VBox layoutX="375.0" layoutY="33.0" prefHeight="70.0" prefWidth="69.0" style="-fx-background-color: #000000;">
+                        <VBox layoutX="375.0" layoutY="33.0" prefHeight="70.0" prefWidth="69.0" style="-fx-background-color: white;">
                             <children>
-                                <Label fx:id="stats" onMouseClicked="#handleStats" prefHeight="23.0" prefWidth="71.0" style="-fx-background-color: #ffffff;" text="Logout" textFill="#656060">
+                                <Label fx:id="stats" onMouseClicked="#handleStats" prefHeight="23.0" prefWidth="71.0" style="-fx-background-color: white;" text="Logout" textFill="#656060">
                                     <font>
                                         <Font name="Baskerville Old Face" size="18.0" />
                                     </font>
