@@ -674,9 +674,9 @@ public class SessionController extends Switch implements Initializable {
       }
       else{
           picIcon.setVisible(false);
-      }
+      }*/
       focusStack.label.setText(focusStack.notecards.get(focusStack.index).getFront());
-      focusStack.projector.imageFiles.clear();
+      /*focusStack.projector.imageFiles.clear();
       focusStack.projector.currentImageView.setImage(null);
       focusStack.projector.currentIndex = -1;
       setupLoadWoDrag();*/
