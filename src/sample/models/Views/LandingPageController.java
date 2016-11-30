@@ -301,7 +301,7 @@ public class LandingPageController extends Switch implements Initializable {
                     }
                     this.toString();
                     userSingleton.setStack(stackModel);
-                    maker.startQuote(getPrimaryStage(), getSceneManager());
+                    maker.startQuote(getPrimaryStage());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
