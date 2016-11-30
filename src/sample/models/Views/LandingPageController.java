@@ -163,6 +163,8 @@ public class LandingPageController extends Switch implements Initializable {
                 NoteCard defaultCard = new NoteCard();
                 defaultCard.setFront("Your first card for this Stack!");
                 defaultCard.setBack("Feel free to edit this card or delete it!");
+                defaultCard.setAttemptsCorrect(0);
+                defaultCard.setAttempts(0);
                 defaultCard.setId(null);
 
                 noteCardModel.createStack(nStack, userSingleton.getUser().getUserId());

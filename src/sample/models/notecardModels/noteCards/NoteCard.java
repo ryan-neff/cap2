@@ -15,6 +15,8 @@ public class NoteCard {
     private boolean isFront;
     private boolean hasPics = false;
     private List<String> imgPaths = new ArrayList();
+    private Integer attempts;
+    private Integer attemptsCorrect;
 
 
     public NoteCard() {
@@ -102,6 +104,22 @@ public class NoteCard {
         imgPaths.add(url);
         hasPics = true;
 
+    }
+
+    public Integer getAttempts() {
+        return attempts;
+    }
+
+    public void setAttempts(final Integer attempts) {
+        this.attempts = attempts;
+    }
+
+    public Integer getAttemptsCorrect() {
+        return attemptsCorrect;
+    }
+
+    public void setAttemptsCorrect(final Integer attemptsCorrect) {
+        this.attemptsCorrect = attemptsCorrect;
     }
 
     @Override

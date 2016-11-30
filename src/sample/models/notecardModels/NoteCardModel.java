@@ -207,7 +207,7 @@ public class NoteCardModel {
      */
     private List<NoteCard> getNoteCardsForStack(final String stackId, final String uid ) {
         try {
-           final String query = "SELECT front, back, stack_index, card_id, stack_id FROM notecard " +
+           final String query = "SELECT front, back, stack_index, card_id, stack_id, attempts, attemptsCorrect FROM notecard " +
                                 "WHERE stack_id = ? " +
                                 "AND user_id = ? " +
                                 "ORDER BY card_id DESC";
@@ -225,6 +225,8 @@ public class NoteCardModel {
                 noteCard.setStackIndex(results.getInt("stack_index"));
                 noteCard.setStackId(results.getString("stack_id"));
                 noteCard.setId(results.getString("card_id"));
+                noteCard.setAttempts(results.getInt("attempts"));
+                noteCard.setAttemptsCorrect(results.getInt("attemptsCorrect"));
                 noteCards.add(noteCard);
             }
 
@@ -309,8 +311,8 @@ public class NoteCardModel {
             }
 
 
-            final String query = "INSERT INTO notecard (card_id, front, back, stack_id, stack_index, user_id, stackname, category, subcategory1) " +
-                                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            final String query = "INSERT INTO notecard (card_id, front, back, stack_id, stack_index, user_id, stackname, category, subcategory1, attempts, attemptsCorrect) " +
+                                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             final PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, noteCard.getId());
@@ -322,6 +324,9 @@ public class NoteCardModel {
             stmt.setString(7, stack.getName());
             stmt.setString(8, stack.getCourse());
             stmt.setString(9, stack.getSubject());
+            stmt.setString(10, noteCard.getAttempts().toString());
+            stmt.setString(11, noteCard.getAttemptsCorrect().toString());
+
 
             final int rowsInserted = stmt.executeUpdate();
 
@@ -387,7 +392,7 @@ public class NoteCardModel {
     public boolean updateNoteCard(NoteCard updatedNoteCard, String userId) {
         try{
             final String query = "UPDATE notecard " +
-                                 "SET front= ?, back= ?, stack_index= ? "+
+                                 "SET front= ?, back= ?, stack_index= ?, attempts = ?, attemptsCorrect= ? "+
                                  "WHERE stack_id= ? " +
                                  "AND card_id= ? " +
                                  "AND user_id= ?";
@@ -396,9 +401,11 @@ public class NoteCardModel {
             stmt.setString(1, updatedNoteCard.getFront());
             stmt.setString(2, updatedNoteCard.getBack());
             stmt.setInt(3, updatedNoteCard.getStackIndex());
-            stmt.setString(4, updatedNoteCard.getStackId());
-            stmt.setString(5, updatedNoteCard.getId());
-            stmt.setString(6, userId);
+            stmt.setInt(4, updatedNoteCard.getAttempts());
+            stmt.setInt(5, updatedNoteCard.getAttemptsCorrect());
+            stmt.setString(6, updatedNoteCard.getStackId());
+            stmt.setString(7, updatedNoteCard.getId());
+            stmt.setString(8, userId);
 
             int rowsUpdated = stmt.executeUpdate();
             if (rowsUpdated > 0) {
