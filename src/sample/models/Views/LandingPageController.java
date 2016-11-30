@@ -83,7 +83,9 @@ public class LandingPageController extends Switch implements Initializable {
     @FXML
     private void handleStats(MouseEvent e)
     {
-        
+        userSingleton.setUser(null);
+        userSingleton.setStack(null);
+        switchViews("registration");
     }
     
     
