@@ -154,7 +154,7 @@ public class SessionController extends Switch implements Initializable {
           layoutYSlider.slider.valueProperty().bindBidirectional(sp.layoutYProperty());
 
           
-          dragDrop();
+          //dragDrop();
           setupLoadWoDrag();
           //quotedText.textProperty().bind(newQuote.textProperty());
         }
@@ -681,7 +681,7 @@ public class SessionController extends Switch implements Initializable {
                         }
 
                         System.out.println(currentNotecard.toString());
-                        model.updateNoteCard(currentNotecard, "test");
+                        model.updateNoteCard(currentNotecard, userSingleton.getUser().getUserId());
                         editStage.close();
                     }
                 });
@@ -760,7 +760,7 @@ public class SessionController extends Switch implements Initializable {
         addImg.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override public void handle(MouseEvent mouseEvent) {
 
-                dragDrop();
+                //dragDrop();
             }
         });
         addImg.setText("Add Img");
