@@ -209,6 +209,9 @@ public class SessionController extends Switch implements Initializable {
         if(keyEvent.getCode().equals(KeyCode.F)){
             flipCard();
         }
+        if(keyEvent.getCode().equals(KeyCode.B)){
+            PrevCard();
+        }
         
         if(keyEvent.getCode().equals(KeyCode.UP)){
             widthSlider.slider.increment();
@@ -591,6 +594,22 @@ public class SessionController extends Switch implements Initializable {
               focusStack.notecards.get(focusStack.index).setIsFront(true);
       }
   }
+   public void PrevCard(){
+      
+      if(focusStack.index > 0){//index has to restart when it hits the size of the array
+              focusStack.decIndex();
+      }
+      else{
+              focusStack.index = focusStack.notecards.size()-1;
+      }
+      
+      focusStack.label.setText(focusStack.notecards.get(focusStack.index).getFront());
+      /*focusStack.projector.imageFiles.clear();
+      focusStack.projector.currentImageView.setImage(null);
+      focusStack.projector.currentIndex = -1;
+      setupLoadWoDrag();*/
+  }
+  
   public void nextCard(){
       
       if(focusStack.index < focusStack.notecards.size()-1){//index has to restart when it hits the size of the array
