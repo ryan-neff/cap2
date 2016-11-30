@@ -129,6 +129,8 @@ public class EditPageController extends Switch implements Initializable {
                 focusCard.setFront(textareaFront.getText());
                 focusCard.setBack(textareaBack.getText());
                 focusCard.setStackId(stack.getId());
+                focusCard.setAttempts(0);
+                focusCard.setAttemptsCorrect(0);
                 noteCardModel.createNoteCard(focusCard, userSingleton.getUser().getUserId(), stack);
                 String id = noteCardModel.getNoteCardID(focusCard, userSingleton.getUser().getUserId());
                 focusCard.setId(id);

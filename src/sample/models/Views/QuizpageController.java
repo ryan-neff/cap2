@@ -115,6 +115,7 @@ public class QuizpageController extends Switch implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        noteCardModel = new NoteCardModel();
         userSingleton = UserSingleton.getInstance();
         stack = userSingleton.getStack();
         setToggleGroup();
@@ -149,10 +150,13 @@ public class QuizpageController extends Switch implements Initializable {
                     if(answerNum ==1){
                         right.setVisible(true);
                         ++gotRight;
+                        stack.getNoteCards().get(globalIdx).setAttemptsCorrect(stack.getNoteCards().get(globalIdx).getAttemptsCorrect() + 1);
                     }
                     else{
                         wrong.setVisible(true);
                         ++gotWrong;
+                        stack.getNoteCards().get(globalIdx).setAttemptsCorrect(stack.getNoteCards().get(globalIdx).getAttemptsCorrect() + 1);
+
                     }
 
                 }
@@ -160,6 +164,7 @@ public class QuizpageController extends Switch implements Initializable {
                     if(answerNum ==2){
                         right.setVisible(true);
                         ++gotRight;
+                        stack.getNoteCards().get(globalIdx).setAttemptsCorrect(stack.getNoteCards().get(globalIdx).getAttemptsCorrect() + 1);
                     }
                     else{
                         wrong.setVisible(true);
@@ -171,6 +176,7 @@ public class QuizpageController extends Switch implements Initializable {
                     if(answerNum ==3){
                         right.setVisible(true);
                         ++gotRight;
+                        stack.getNoteCards().get(globalIdx).setAttemptsCorrect(stack.getNoteCards().get(globalIdx).getAttemptsCorrect() + 1);
                     }
                     else{
                         wrong.setVisible(true);
@@ -201,6 +207,11 @@ public class QuizpageController extends Switch implements Initializable {
                 radbut2.setDisable(false);
                 radbut3.setDisable(false);
                 if(stack.getNoteCards().size() - 1 == globalIdx){
+
+                    stack.getNoteCards().forEach(x -> {
+                        noteCardModel.updateNoteCard(x, userSingleton.getUser().getUserId());
+                    });
+
                     next.setDisable(true);
                     submit.setDisable(true);
                     final Stage statsStage = new Stage(StageStyle.UNDECORATED);
@@ -292,6 +303,8 @@ public class QuizpageController extends Switch implements Initializable {
     public void makeQuestionBody(){
         Text frontText = new Text();
         frontText.setText(stack.getNoteCards().get(globalIdx).getFront());
+        stack.getNoteCards().get(globalIdx).setAttempts(stack.getNoteCards().get(globalIdx).getAttempts() + 1);
+
         frontText.setStyle("-fx-font: 18px 'Times New Roman';");
         Label answer1Lab = new Label();
         answer1Lab.setText(stack.getNoteCards().get(globalIdx).getFront());
