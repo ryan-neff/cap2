@@ -164,13 +164,14 @@ public class LandingPageController extends Switch implements Initializable {
                 defaultCard.setFront("Your first card for this Stack!");
                 defaultCard.setBack("Feel free to edit this card or delete it!");
                 defaultCard.setId(null);
-                nStack.getNoteCards().add(defaultCard);
 
                 noteCardModel.createStack(nStack, userSingleton.getUser().getUserId());
                 String id = noteCardModel.getStackID(nStack, userSingleton.getUser().getUserId());
                 noteCardModel.createNoteCard(defaultCard,userSingleton.getUser().getUserId(), nStack);
                 defaultCard.setId(noteCardModel.getNoteCardID(defaultCard,userSingleton.getUser().getUserId()));
                 defaultCard.setStackId(id);
+                nStack.getNoteCards().add(defaultCard);
+
                 userSingleton.setStack(nStack);
                 switchViews("editpage");
                 catStage.close();
@@ -289,9 +290,18 @@ public class LandingPageController extends Switch implements Initializable {
             @Override
             public void handle(final Event event) {
                 try {
+                    if (stackModel.getNoteCards() == null || stackModel.getNoteCards().isEmpty()) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Empty Stack");
+                        alert.setContentText("You can't study if you don't have any cards in your stack!\n Go make some :) ");
+
+                        alert.showAndWait();
+                        return;
+                    }
                     this.toString();
                     userSingleton.setStack(stackModel);
-                    maker.startQuote(getPrimaryStage());
+                    maker.startQuote(getPrimaryStage(), getSceneManager());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -321,6 +331,16 @@ public class LandingPageController extends Switch implements Initializable {
 
             @Override
             public void handle(final Event event) {
+
+                if(stackModel.getNoteCards() == null|| stackModel.getNoteCards().size() < 4 || stackModel.getNoteCards().isEmpty()){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Not Enough Cards");
+                    alert.setContentText("You need 4 or more cards in your stack to take a quiz!\n Go make some more :) ");
+
+                    alert.showAndWait();
+                    return;
+                }
                 userSingleton.setStack(stackModel);
                 switchViews("quizpage");
             }
