@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="studyTool.models.controllersAndViews.RegistrationController">
+   <children>
+      <BorderPane layoutX="299.0" layoutY="196.0" prefHeight="458.0" prefWidth="402.0" AnchorPane.leftAnchor="299.0" AnchorPane.rightAnchor="299.0">
+   <center>
+      <VBox opacity="0.74" prefHeight="379.0" prefWidth="304.0" style="-fx-background-color: #626678;" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="52.0" prefWidth="304.0" spacing="10.0" style="-fx-border-color: #383A44;">
+               <children>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Sign In" translateX="10.0" HBox.hgrow="NEVER">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="82.0" prefWidth="304.0" VBox.vgrow="NEVER">
+               <children>
+                  <HBox alignment="BOTTOM_LEFT" prefHeight="57.0" prefWidth="196.0" HBox.hgrow="NEVER">
+                     <HBox.margin>
+                        <Insets bottom="15.0" top="15.0" />
+                     </HBox.margin>
+                     <children>
+                         
+                        <ImageView fitHeight="52.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../resources/blueMan.jpg" />
+                           </image>
+                           <HBox.margin>
+                              <Insets bottom="1.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <TextField fx:id="loginUsername" prefHeight="41.0" prefWidth="160.0" promptText="Username" HBox.hgrow="NEVER">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="1.0" />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="87.0" prefWidth="304.0" VBox.vgrow="NEVER">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="196.0">
+                     <HBox.margin>
+                        <Insets bottom="15.0" top="15.0" />
+                     </HBox.margin>
+                     <children>
+                        <ImageView fitHeight="41.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
+                           <image>
+                              <Image url="@../../../resources/blueLock2.jpg" />
+                           </image>
+                        </ImageView>
+                        <PasswordField fx:id="loginPassword" prefHeight="43.0" prefWidth="157.0" promptText="Password">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </PasswordField>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <HBox alignment="BOTTOM_CENTER" onDragDetected="#handleLoginOk" prefHeight="63.0" prefWidth="304.0" VBox.vgrow="NEVER">
+               <children>
+                  <Label fx:id="register" prefHeight="30.0" prefWidth="166.0" text="Register A New Account" textFill="WHITE" HBox.hgrow="NEVER">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#handleLoginOk" prefHeight="44.0" prefWidth="196.0" style="-fx-background-color: #00e600;" text="Log In" HBox.hgrow="NEVER">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="423.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../resources/Icon.PNG" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
