@@ -3,15 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package studyTool.models.controllersAndViews;
+package sample.models.Views;
+import java.awt.TextField;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -24,6 +36,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import static javafx.scene.layout.Region.USE_PREF_SIZE;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -225,9 +239,9 @@ public class QuizpageController extends Switch implements Initializable {
                     EditorFld.setPrefRowCount(10);
                     EditorFld.setPrefColumnCount(100);
                     EditorFld.setEditable(false);
-                    Button submit = new Button();
-                    submit.setText("Stats");
-                    submit.setStyle(
+                    Button stats = new Button();
+                    stats.setText("Stats");
+                    stats.setStyle(
                           "-fx-background-radius: 15em; " +
                           "-fx-min-width: 60px; " +
                           "-fx-min-height: 30px; " +
@@ -244,11 +258,12 @@ public class QuizpageController extends Switch implements Initializable {
                           "-fx-max-width: 60px; " +
                           "-fx-max-height: 30px;"
                     );
-                    buttonArea.getChildren().add(submit);
+                    buttonArea.getChildren().add(stats);
                     buttonArea.getChildren().add(exit);
-                    submit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    stats.setOnMouseClicked(new EventHandler<MouseEvent>() {
                         @Override public void handle(MouseEvent mouseEvent) {
-                            
+                            statsStage.close();
+                            switchViews("Stats");
                         }
                       });
                       exit.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -318,6 +333,8 @@ public class QuizpageController extends Switch implements Initializable {
             answerNum = 1;
         }
         String finalAnswer = answers.get(randIdx);
+        String answerSwitch = stack.getNoteCards().get(globalIdx).getBack();
+        //processBuildIt(answerSwitch);
         System.out.println("finalAnswer1: " + finalAnswer);
         Text textAnswer = makeTextObj(finalAnswer);
         textAnswer.setWrappingWidth(800);
@@ -357,10 +374,12 @@ public class QuizpageController extends Switch implements Initializable {
         else{
             randAnswer2 = stack.getNoteCards().get(random2 + 1).getBack();
         }
+        //String answersSwitch[] = processBuildIt(answer);
         answers.add(answer);
+        //answers.add(answersSwitch[0]);
+        //answers.add(answersSwitch[1]);
         answers.add(randAnswer1);
         answers.add(randAnswer2);
-
         return answers;
     }
 
@@ -404,5 +423,38 @@ public class QuizpageController extends Switch implements Initializable {
         this.getSceneManager().switchTo(view);
 
     }
+    
+    public String[] processBuildIt(String answer){
+        try{
+            // for tilda expansion
+            //if (filepath.startsWith("~" + File.separator)) {
+                //filepath = System.getProperty("user.home") + filepath.substring(1);
+            //}
+
+            //ProcessBuilder builder = new ProcessBuilder("python", "-c", "import sys; import nltk; print \"whatever\"");
+            ProcessBuilder builder = new ProcessBuilder("python", "C:/Users/derek/documents/visual studio 2015/Projects/quizNLP/quizNLP/quizNLP.py", answer, "1");
+            builder.directory(new File("C:/users/derek/documents/Visual Studio 2015/Projects/test.py/test.py/"));
+            System.out.println(builder.directory());
+            builder.redirectErrorStream(true);
+            Process p = builder.start();
+            InputStream stdout = p.getInputStream();
+            BufferedReader reader = new BufferedReader (new InputStreamReader(stdout));
+            String fullAnswer = "";
+            String line;
+            while ((line = reader.readLine ()) != null) {
+                fullAnswer = fullAnswer.concat(line);
+            }
+            System.out.println("fullans " + fullAnswer);
+            String answers[] = fullAnswer.split("~");
+            System.out.println("answers0 "+ answers[0]);
+            System.out.println("answer1 " + answers[1]);
+            return answers;
+        } catch (Exception e){
+            System.out.println("error biatch");
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
 
 }
