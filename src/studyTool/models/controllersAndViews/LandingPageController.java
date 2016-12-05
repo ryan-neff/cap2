@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -45,9 +46,18 @@ public class LandingPageController extends Switch implements Initializable {
 
     @FXML
     public HBox stacks;
-
+    @FXML   
+    public HBox imgBox;
+    @FXML
+    public HBox accountBox;
+    @FXML
+    public TextField searchBox;
     @FXML
     public HBox quizzes;
+    @FXML
+    public ImageView personIcon;
+    @FXML
+    public ImageView searchIcon;
 
     @FXML
     public Label categories;
@@ -65,6 +75,7 @@ public class LandingPageController extends Switch implements Initializable {
     NoteCardModel noteCardModel;
     Map<String, StackModel> stackModels = new HashMap<>();
     UserSingleton userSingleton;
+    boolean isVisible = false;
 
     public LandingPageController() {
     }
@@ -73,9 +84,10 @@ public class LandingPageController extends Switch implements Initializable {
         userSingleton = UserSingleton.getInstance();
         noteCardModel= new NoteCardModel();
         stackModels = getStacks();
-        this.getCategories();
+        //this.getCategories();
         this.makeStacks();
         maker = new SessionController();
+        initEvents();
     }
 
     @FXML
@@ -87,17 +99,47 @@ public class LandingPageController extends Switch implements Initializable {
     }
     
     
-    @FXML
+    /*@FXML;
     private void handleCategories(MouseEvent e) {
         this.categoryChoices.setVisible(true);
         this.categories.setStyle("-fx-border-color:blue;");
+    }*/
+    
+    public void initEvents(){
+        personIcon.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent mouseEvent) {
+                if(!isVisible){
+                    accountBox.setVisible(true);
+                    isVisible = true;
+                }
+                else{
+                    accountBox.setVisible(false);
+                    isVisible = false;
+                }
+                    
+                }
+        });
+        searchIcon.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent mouseEvent) {
+                if(!isVisible){
+                    accountBox.setVisible(true);
+                    isVisible = true;
+                }
+                else{
+                    accountBox.setVisible(false);
+                    isVisible = false;
+                }
+                    
+                }
+        });
+        
     }
 
-    @FXML
+   /* @FXML
     private void handleCategoriesOut(MouseEvent e) {
         this.categoryChoices.setVisible(false);
         this.categories.setStyle("-fx-border-color:white;");
-    }
+    }*/
 
     @FXML
     private void newStack(){
@@ -386,7 +428,7 @@ public class LandingPageController extends Switch implements Initializable {
         return container;
     }
 
-    public void getCategories() {
+    /*public void getCategories() {
 
         stackModels.forEach((stackName, stack) -> {
             if(!this.categoryNames.contains(stack.getCourse())) {
@@ -395,7 +437,7 @@ public class LandingPageController extends Switch implements Initializable {
         });
 
         this.categoryChoices.setItems(this.categoryNames);
-    }
+    }*/
 
     public Label getLabel() {
         Label label = new Label();
