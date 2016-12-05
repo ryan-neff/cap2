@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="studyTool.models.controllersAndViews.LandingPageController">
+    <bottom>
+        <GridPane alignment="BOTTOM_LEFT" prefHeight="729.0" prefWidth="997.0" BorderPane.alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints hgrow="ALWAYS" maxWidth="1000.0" minWidth="10.0" prefWidth="1000.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="495.0" minWidth="0.0" prefWidth="0.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="477.0" minHeight="10.0" prefHeight="433.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="238.0" minHeight="10.0" prefHeight="201.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="131.0" minHeight="10.0" prefHeight="95.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="422.0" prefWidth="949.0" style="-fx-background-color: #0080ff;" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="BOTTOM" GridPane.vgrow="ALWAYS">
+                    <children>
+                        <AnchorPane prefHeight="90.0" prefWidth="949.0" styleClass="categoryPane">
+                            <children>
+                                <ProgressBar layoutX="64.0" layoutY="46.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="10.0" prefWidth="354.0" progress="0.0" style="-fx-border-color: #0080ff;" />
+                                <ProgressBar layoutX="506.0" layoutY="46.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="10.0" prefWidth="354.0" progress="0.0" style="-fx-border-color: #0080ff;" />
+                        <HBox alignment="CENTER" layoutX="398.0" layoutY="6.0" prefHeight="81.0" prefWidth="131.0">
+                           <children>
+                              <Label onMouseClicked="#newStack" text="Stacks">
+                                 <font>
+                                    <Font name="Baskerville Old Face" size="26.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <ImageView fitHeight="47.0" fitWidth="46.0" layoutX="889.0" layoutY="28.0" onMouseClicked="#newStack" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../resources/addNew4.jpg" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="OPEN_HAND" />
+                           </cursor>
+                        </ImageView>
+                            </children>
+                        </AnchorPane>
+                        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefHeight="246.0" prefWidth="949.0" style="-fx-background-color: #0080ff;" vbarPolicy="NEVER">
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                            <content>
+                                <HBox fx:id="stacks" prefHeight="228.0" prefWidth="947.0" style="-fx-background-color: #0080ff;" />
+                            </content>
+                            <opaqueInsets>
+                                <Insets bottom="5.0" top="5.0" />
+                            </opaqueInsets>
+                        </ScrollPane>
+                    </children>
+                </VBox>
+                <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="239.0" prefWidth="850.0" style="-fx-background-color: #29487d;" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                    <GridPane.margin>
+                        <Insets top="-20.0" />
+                    </GridPane.margin></VBox>
+            </children>
+        </GridPane>
+    </bottom>
+   <top>
+      <AnchorPane prefHeight="81.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="83.0" prefWidth="231.0">
+               <children>
+                      <AnchorPane fx:id="leftAnch" prefHeight="73.0" prefWidth="231.0">
+                          <children>
+                              <ImageView fitHeight="72.0" fitWidth="139.0" layoutX="35.0" layoutY="6.0">
+                                  <image>
+                                      <Image url="@../../../resources/Icon.PNG" />
+                                  </image>
+                              </ImageView>
+                          </children>
+                      </AnchorPane>
+               </children>
+            </HBox>
+                <AnchorPane fx:id="rightAnch" layoutX="611.0" layoutY="6.0" prefHeight="71.0" prefWidth="388.0">
+                    <children>
+                  <HBox fx:id="imgBox" alignment="CENTER" layoutX="240.0" layoutY="2.0" prefHeight="69.0" prefWidth="114.0" spacing="20.0">
+                     <children>
+                              <ImageView fx:id="personIcon" fitHeight="30.0" fitWidth="35.0">
+                                  <image>
+                                      <Image url="@../../../resources/personIcon.png" />
+                                  </image>
+                           <cursor>
+                              <Cursor fx:constant="OPEN_HAND" />
+                           </cursor>
+                              </ImageView>
+                              <Line endX="35.0" endY="43.0" fill="#8a8181" startX="35.0" startY="10.0" stroke="#5e5656" />
+                              <ImageView fx:id="searchIcon" fitHeight="35.0" fitWidth="39.0">
+                                  <image>
+                                      <Image url="@../../../resources/searchIcon.png" />
+                                  </image>
+                           <cursor>
+                              <Cursor fx:constant="OPEN_HAND" />
+                           </cursor>
+                              </ImageView>
+                     </children>
+                  </HBox>
+                  <TextField fx:id="searchBox" layoutX="365.0" layoutY="17.0" prefHeight="38.0" prefWidth="19.0" visible="false" />
+                  <HBox fx:id="accountBox" alignment="CENTER_RIGHT" prefHeight="72.0" prefWidth="225.0" spacing="10.0" visible="false">
+                     <children>
+                        <Label text="Account">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="OPEN_HAND" />
+                           </cursor></Label>
+                        <Line endX="35.0" endY="43.0" fill="#8a8181" startX="35.0" startY="10.0" stroke="#5e5656" />
+                        <Label text="Log Out">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="OPEN_HAND" />
+                           </cursor></Label>
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </HBox>
+                    </children>
+                </AnchorPane>
+            <Text fill="#32429e" layoutX="374.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NotePad Breeze">
+               <font>
+                  <Font name="Baskerville Old Face" size="32.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+   </top>
+</BorderPane>
