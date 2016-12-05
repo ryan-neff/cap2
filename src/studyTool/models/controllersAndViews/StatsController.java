@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sample.models.Views;
+package studyTool.models.controllersAndViews;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -19,8 +19,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
-import sample.models.notecardModels.noteCards.StackModel;
-import sample.models.notecardModels.utils.UserSingleton;
+import studyTool.models.notecardModels.noteCards.StackModel;
+import studyTool.models.notecardModels.utils.UserSingleton;
 
 /**
  * FXML Controller class

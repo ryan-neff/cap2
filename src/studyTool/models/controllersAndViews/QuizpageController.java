@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sample.models.Views;
+package studyTool.models.controllersAndViews;
 import java.awt.TextField;
 import java.io.BufferedReader;
 import java.io.File;
@@ -43,6 +43,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import studyTool.models.controllersAndViews.Switch;
 import studyTool.models.notecardModels.NoteCardModel;
 import studyTool.models.notecardModels.noteCards.StackModel;
 import studyTool.models.notecardModels.utils.UserSingleton;
