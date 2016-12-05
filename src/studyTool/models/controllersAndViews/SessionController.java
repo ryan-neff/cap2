@@ -32,6 +32,7 @@ import java.sql.PreparedStatement;
 import java.util.*;
 
 import javafx.application.Platform;
+import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import static javafx.scene.layout.Region.USE_PREF_SIZE;
@@ -40,6 +41,8 @@ import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
+import sample.models.Views.HelloWorld;
 import studyTool.models.notecardModels.NoteCardModel;
 import studyTool.models.notecardModels.noteCards.NoteCard;
 import studyTool.models.notecardModels.noteCards.StackModel;
@@ -92,7 +95,30 @@ public class SessionController extends Switch implements Initializable {
     makeStack(course, stackName);
     primaryStage.setTitle("NotePad Breeze");
 
+    HBox controlPanel = new HBox(10);
+    controlPanel.setStyle("-fx-background-color: #0080ff; -fx-padding: 10;");
+    controlPanel.setAlignment(Pos.TOP_LEFT);
+    ImageView listen = new ImageView(new Image("resources/listen.png"));
+    listen.setFitWidth(30);
+    listen.setFitHeight(30);
+    listen.setOnMouseClicked(new EventHandler<MouseEvent>() {
+          @Override public void handle(MouseEvent mouseEvent) {
+                helloWorld hw = new helloWorld();
+                HelloWorld HW = new HelloWorld(hw);
+                String resultText = HW.run();
+            
+       }
+    });
+    listen.setOnMouseEntered(new EventHandler<MouseEvent>() {
+          @Override public void handle(MouseEvent mouseEvent) {
+            
+            //voiceActivation();
+            listen.setCursor(Cursor.HAND);
+                  
+          }
+    });
     
+    controlPanel.getChildren().add(listen);
 
     // create a control panel for the message board.
     VBox controls = new VBox(10);
@@ -157,7 +183,7 @@ public class SessionController extends Switch implements Initializable {
     Text dimensions = new Text();
     dimensions.setText("Notecard\nDimensions");
     dimensions.setStyle("-fx-text-fill: #6666ff; -fx-font: 16px 'Times New Roman';");
-    controls.getChildren().addAll(logo, relatedTitle, new Separator(), relatedNotecards, new Separator(), dimensions, new Separator(), widthSlider, heightSlider, layoutXSlider, layoutYSlider, new Separator());
+    controls.getChildren().addAll(logo, controlPanel, new Separator(), relatedTitle, new Separator(), relatedNotecards, new Separator(), dimensions, new Separator(), widthSlider, heightSlider, layoutXSlider, layoutYSlider, new Separator());
     controls.setPrefWidth(180);
     controls.setMinWidth(180);
     controls.setMaxWidth(Control.USE_PREF_SIZE);
@@ -176,7 +202,7 @@ public class SessionController extends Switch implements Initializable {
         
     
     // allow the selected quote to be deleted.
-    scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+    /*scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
       @Override public void handle(KeyEvent keyEvent) {
         if (keyEvent.getCode().equals(KeyCode.BACK_SPACE)) {
           //System.out.println("we are in key event");
@@ -191,6 +217,9 @@ public class SessionController extends Switch implements Initializable {
         if(keyEvent.getCode().equals(KeyCode.F)){
             flipCard();
         }
+        if(keyEvent.getCode().equals(KeyCode.B)){
+            PrevCard();
+        }
         
         if(keyEvent.getCode().equals(KeyCode.UP)){
             widthSlider.slider.increment();
@@ -200,7 +229,8 @@ public class SessionController extends Switch implements Initializable {
         }
         
       }
-    });
+    });*/
+    setKeyEvents(scene);
     
     
 
@@ -280,7 +310,33 @@ public class SessionController extends Switch implements Initializable {
         
         
   }
-  
+   public void setKeyEvents(Scene scene){
+      scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+      @Override public void handle(KeyEvent keyEvent) {
+        if (keyEvent.getCode().equals(KeyCode.BACK_SPACE)) {
+          //System.out.println("we are in key event");
+          //System.out.println(messageBoard.getChildren().size());
+            for(int i = 0; i < messageBoard.getChildren().size(); ++i){
+                messageBoard.getChildren().get(i);
+            } 
+        }
+        
+        if(keyEvent.getCode().equals(KeyCode.N)){
+            nextCard();
+        }
+        if(keyEvent.getCode().equals(KeyCode.B)){
+            PrevCard();
+        }
+        if(keyEvent.getCode().equals(KeyCode.F)){
+            flipCard();
+        }
+        
+       
+        
+      }
+    });
+    
+  }
 
   public VBox getRelated(){//This displays the related notecards in teh sidebar up to 10
       VBox temp = new VBox();
@@ -573,6 +629,22 @@ public class SessionController extends Switch implements Initializable {
               focusStack.notecards.get(focusStack.index).setIsFront(true);
       }
   }
+   public void PrevCard(){
+      
+      if(focusStack.index > 0){//index has to restart when it hits the size of the array
+              focusStack.decIndex();
+      }
+      else{
+              focusStack.index = focusStack.notecards.size()-1;
+      }
+      
+      focusStack.label.setText(focusStack.notecards.get(focusStack.index).getFront());
+      /*focusStack.projector.imageFiles.clear();
+      focusStack.projector.currentImageView.setImage(null);
+      focusStack.projector.currentIndex = -1;
+      setupLoadWoDrag();*/
+  }
+  
   public void nextCard(){
       
       if(focusStack.index < focusStack.notecards.size()-1){//index has to restart when it hits the size of the array
@@ -581,17 +653,17 @@ public class SessionController extends Switch implements Initializable {
       else{
               focusStack.resetIndex();
       }
-      if(focusStack.notecards.get(focusStack.index).isHasPics()){
+      /*if(focusStack.notecards.get(focusStack.index).isHasPics()){
           picIcon.setVisible(true);
       }
       else{
           picIcon.setVisible(false);
-      }
+      }*/
       focusStack.label.setText(focusStack.notecards.get(focusStack.index).getFront());
-      focusStack.projector.imageFiles.clear();
+      /*focusStack.projector.imageFiles.clear();
       focusStack.projector.currentImageView.setImage(null);
       focusStack.projector.currentIndex = -1;
-      setupLoadWoDrag();
+      setupLoadWoDrag();*/
   }
 
     public VBox initDropDown(){
@@ -749,6 +821,45 @@ public class SessionController extends Switch implements Initializable {
         addImg.setMinWidth(75);
         addImg.setStyle("-fx-text-fill: white; -fx-font: 16px 'Times New Roman'; ");
         Label fullscreen = new Label();
+         fullscreen.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        @Override public void handle(MouseEvent mouseEvent) {
+            final Stage fullStage = new Stage(StageStyle.UNDECORATED);
+            fullStage.initModality(Modality.APPLICATION_MODAL);
+            fullStage.initOwner(primaryStage);  
+            fullStage.setFullScreen(true);
+            Label fullLabel = new Label();
+            fullLabel.setStyle("-fx-background-radius: 5;  -fx-text-fill:black;  -fx-font: 45px 'Segoe Script'; -fx-font-weight: bold;; -fx-padding:10; -fx-border-color: white; -fx-border-width: 4px; -fx-background-image: url('notecardBackFixed.png');");
+            fullLabel.setAlignment(Pos.CENTER);
+            fullLabel.setWrapText(true);
+           
+           fullStage.setFullScreenExitHint("Double Click to exit fullscreen");
+            fullLabel.textProperty().bindBidirectional(focusStack.label.textProperty());
+            Scene editScene = new Scene(fullLabel);
+             fullLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override public void handle(MouseEvent mouseEvent) {
+                if (mouseEvent.getClickCount() == 2) {
+                    System.out.println("we are in double click");
+                    fullStage.close();
+                    
+                }
+                }
+              });
+             editScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+                @Override public void handle(KeyEvent keyEvent) {
+                    if(keyEvent.getCode().equals(KeyCode.E)){
+                        System.out.println("we are in escape");
+                        fullStage.setFullScreen(false);
+                        fullLabel.setVisible(false);
+                        fullStage.close();
+                    }
+                }
+                });
+            setKeyEvents(editScene);
+            fullStage.setScene(editScene);
+            fullStage.show();
+          
+        }
+      });
         fullscreen.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override public void handle(MouseEvent mouseEvent) {
 
@@ -1483,6 +1594,41 @@ public class SessionController extends Switch implements Initializable {
         Connection conn = DriverManager.getConnection(url, username, password);
         return conn;
     }
+    
+       public Task createVoiceWorker() {
+        return new Task() {
+            @Override
+            protected Object call() throws Exception {
+                // on the worker thread...
+                
+             Platform.runLater(() -> {
+                    helloWorld hw = new helloWorld();
+                    HelloWorld HW = new HelloWorld(hw);
+                    HW.run();
+                });
+                return true;
+                
+                
+            }
+        };
+    }
+       
+      public String ScheduleService(){
+            ScheduledService<String> svc = new ScheduledService<String>() {
+           protected Task<String> createTask() {
+               return new Task<String>() {
+                   protected String call() {
+                              helloWorld hw = new helloWorld();
+                              HelloWorld HW = new HelloWorld(hw);
+                              String resultText = HW.run();
+                       return resultText;
+                   }
+               };
+           }
+       };
+       svc.setPeriod(Duration.seconds(1));
+       return null;
+    }
 
      class Stack {
          int index;
@@ -1545,7 +1691,25 @@ public class SessionController extends Switch implements Initializable {
          
          
      }
-     
+    public class helloWorld{
+
+          public helloWorld(){
+              
+          }
+          public void flipcard(){
+              flipCard();
+          }
+          public void nextcard(){
+              nextCard();
+          }
+          public void prevcard(){
+              PrevCard();
+          }
+         
+
+    
+    
+}  
      
     
     
