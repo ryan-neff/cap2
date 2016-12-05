@@ -1,4 +1,4 @@
-package sample.models;
+package studyTool.models;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

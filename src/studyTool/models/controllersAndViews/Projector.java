@@ -1,4 +1,4 @@
-package sample.models.Views;
+package studyTool.models.controllersAndViews;
 
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.ImageView;

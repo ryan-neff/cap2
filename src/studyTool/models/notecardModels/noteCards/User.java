@@ -1,4 +1,4 @@
-package sample.models.notecardModels.noteCards;
+package studyTool.models.notecardModels.noteCards;
 
 /**
  * @author

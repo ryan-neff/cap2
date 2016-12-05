@@ -1,7 +1,7 @@
-package sample.models.notecardModels;
+package studyTool.models.notecardModels;
 
-import sample.models.DbConnectionManager;
-import sample.models.notecardModels.noteCards.User;
+import studyTool.models.DbConnectionManager;
+import studyTool.models.notecardModels.noteCards.User;
 
 import java.security.MessageDigest;
 import java.sql.Connection;
@@ -9,7 +9,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.security.MessageDigest;
 import java.util.Random;
 
 

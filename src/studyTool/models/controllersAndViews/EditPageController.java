@@ -1,11 +1,6 @@
-package sample.models.Views;
+package studyTool.models.controllersAndViews;
 
         import java.net.URL;
-        import java.sql.Connection;
-        import java.sql.DriverManager;
-        import java.sql.PreparedStatement;
-        import java.sql.ResultSet;
-        import java.sql.Statement;
         import java.util.ArrayList;
         import java.util.Optional;
         import java.util.ResourceBundle;
@@ -20,7 +15,6 @@ package sample.models.Views;
         import javafx.scene.control.Label;
         import javafx.scene.control.ScrollPane;
         import javafx.scene.control.TextArea;
-        import javafx.scene.control.TextField;
         import javafx.scene.effect.DropShadow;
         import javafx.scene.effect.Glow;
         import javafx.scene.image.Image;
@@ -28,15 +22,13 @@ package sample.models.Views;
         import javafx.scene.input.MouseEvent;
         import javafx.scene.layout.BorderPane;
         import javafx.scene.layout.HBox;
-        import javafx.scene.layout.StackPane;
-        import javafx.scene.layout.VBox;
         import javafx.scene.text.Text;
         import javafx.scene.text.TextAlignment;
         import javafx.stage.Stage;
-        import sample.models.notecardModels.NoteCardModel;
-        import sample.models.notecardModels.noteCards.NoteCard;
-        import sample.models.notecardModels.noteCards.StackModel;
-        import sample.models.notecardModels.utils.UserSingleton;
+        import studyTool.models.notecardModels.NoteCardModel;
+        import studyTool.models.notecardModels.noteCards.NoteCard;
+        import studyTool.models.notecardModels.noteCards.StackModel;
+        import studyTool.models.notecardModels.utils.UserSingleton;
 
 /**
  *

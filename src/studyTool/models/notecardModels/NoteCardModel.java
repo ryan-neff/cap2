@@ -1,14 +1,13 @@
-package sample.models.notecardModels;
+package studyTool.models.notecardModels;
 
-import sample.models.DbConnectionManager;
-import sample.models.notecardModels.noteCards.NoteCard;
-import sample.models.notecardModels.noteCards.StackModel;
+import studyTool.models.DbConnectionManager;
+import studyTool.models.notecardModels.noteCards.NoteCard;
+import studyTool.models.notecardModels.noteCards.StackModel;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

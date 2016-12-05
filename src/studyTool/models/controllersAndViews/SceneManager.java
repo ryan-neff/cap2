@@ -1,10 +1,9 @@
-package sample.models.Views;
+package studyTool.models.controllersAndViews;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import java.util.HashMap;
-import sample.models.Views.Switch;
 
 /**
  * Created by JOSH

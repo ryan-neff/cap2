@@ -3,11 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sample.models.Views;
+package studyTool.models.controllersAndViews;
 
 import java.net.MalformedURLException;
 import javafx.beans.property.*;
-import javafx.application.Application;
 import javafx.beans.value.*;
 import javafx.event.*;
 import javafx.fxml.FXML;
@@ -26,42 +25,25 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.util.*;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-import javafx.animation.FadeTransition;
-import javafx.animation.Interpolator;
-import javafx.animation.KeyFrame;
-import javafx.animation.ParallelTransition;
-import javafx.animation.PathTransition;
-import javafx.animation.RotateTransition;
-import javafx.animation.SequentialTransition;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import static javafx.scene.layout.Region.USE_PREF_SIZE;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Scale;
 import javafx.stage.StageStyle;
-import javafx.util.Duration;
-import sample.models.DbConnectionManager;
-import sample.models.notecardModels.NoteCardModel;
-import sample.models.notecardModels.noteCards.NoteCard;
-import sample.models.notecardModels.noteCards.StackModel;
-import sample.models.notecardModels.utils.UserSingleton;
+import studyTool.models.notecardModels.NoteCardModel;
+import studyTool.models.notecardModels.noteCards.NoteCard;
+import studyTool.models.notecardModels.noteCards.StackModel;
+import studyTool.models.notecardModels.utils.UserSingleton;
 
 
 public class SessionController extends Switch implements Initializable {

@@ -1,4 +1,4 @@
-package sample.models.Views;
+package studyTool.models.controllersAndViews;
 
 /**
  * Created by JOSH on 11/8/2016.
@@ -34,11 +34,10 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import sample.models.notecardModels.NoteCardModel;
-import sample.models.notecardModels.UserModel;
-import sample.models.notecardModels.noteCards.NoteCard;
-import sample.models.notecardModels.noteCards.StackModel;
-import sample.models.notecardModels.utils.UserSingleton;
+import studyTool.models.notecardModels.NoteCardModel;
+import studyTool.models.notecardModels.noteCards.NoteCard;
+import studyTool.models.notecardModels.noteCards.StackModel;
+import studyTool.models.notecardModels.utils.UserSingleton;
 
 public class LandingPageController extends Switch implements Initializable {
 
@@ -91,7 +90,13 @@ public class LandingPageController extends Switch implements Initializable {
         initEvents();
     }
 
-    
+    @FXML
+    private void handleStats(MouseEvent e)
+    {
+        userSingleton.setUser(null);
+        userSingleton.setStack(null);
+        switchViews("registration");
+    }
     
     
     /*@FXML;

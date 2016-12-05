@@ -1,7 +1,6 @@
-package sample.models.Views;
+package studyTool.models.controllersAndViews;
 
 import javafx.scene.Parent;
-import sample.models.Views.SceneManager;
 
 /**
  * Created by JOSH
