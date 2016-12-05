@@ -222,14 +222,11 @@ public class RegistrationController extends Switch implements Initializable {
             showAlert("Password");
             return;
         }
-        if(!p2Box.equals((pBox))) {
+        if(!p2Box.getText().equals(pBox.getText())) {
             showAlert("Password Confirmation");
             return;
         }
 
-
-        this.getSceneManager().switchTo("landingPage");
-        
         singleton = UserSingleton.getInstance();
         UserModel UM = new UserModel();
         User user = new User();
@@ -237,6 +234,9 @@ public class RegistrationController extends Switch implements Initializable {
         user.setLastName(LName);
         user.setUserId(usernameText);
         UM.createUser(user, passwordText);
+        singleton.setUser(user);
+        this.getSceneManager().switchTo("landingPage");
+
     }
 
     /*private void SetErrorLabel(String errorMessage) {
