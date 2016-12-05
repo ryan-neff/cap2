@@ -9,7 +9,6 @@ package sample.models.Views;
  *
  * @author derek
  */
-import sample.models.Views.SessionController;
 import edu.cmu.sphinx.frontend.util.Microphone;
 import edu.cmu.sphinx.recognizer.Recognizer;
 import edu.cmu.sphinx.result.Result;
@@ -24,7 +23,7 @@ import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
-import sample.models.Views.SessionController.helloWorld;
+import studyTool.models.controllersAndViews.SessionController;
 
 
 /**
@@ -34,9 +33,9 @@ import sample.models.Views.SessionController.helloWorld;
  */
 public class HelloWorld {
 
-    helloWorld hw;
+    SessionController.helloWorld hw;
     
-    public HelloWorld(helloWorld HW){
+    public HelloWorld(SessionController.helloWorld HW){
         this.hw = HW;
     }
     public String run(){

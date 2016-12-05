@@ -41,6 +41,8 @@ import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
+import sample.models.Views.HelloWorld;
 import studyTool.models.notecardModels.NoteCardModel;
 import studyTool.models.notecardModels.noteCards.NoteCard;
 import studyTool.models.notecardModels.noteCards.StackModel;
